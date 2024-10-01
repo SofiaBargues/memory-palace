@@ -1,6 +1,5 @@
 import React from "react";
-import { download } from "../../public";
-import { downloadImage } from "../utils";
+import { downloadImage } from "@/utils";
 
 export type Post = {
   _id: string;
@@ -39,7 +38,7 @@ p-4 rounded-md"
             className="outline-none bg-transparent border-none"
           >
             <img
-              src={download}
+              src="/download.png"
               alt="download"
               className="w-6 h-6 object-contain invert"
             />
