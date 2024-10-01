@@ -49,7 +49,7 @@ const Home = () => {
     fetchPosts();
   }, []);
 
-  const handleSearchChange = (e: any) => {
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     clearTimeout(searchTimeout);
 
     setSearchText(e.target.value);

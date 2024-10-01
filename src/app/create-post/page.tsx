@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { FormField, Loader } from "@/components";
-import { Router, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { getRandomPrompt } from "@/utils";
 const CreatePost = () => {
   // rerender con el nuevo valor de form
