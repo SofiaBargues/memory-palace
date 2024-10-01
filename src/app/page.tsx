@@ -16,12 +16,14 @@ const RenderCards = ({ data, title }: { data: Post[]; title: string }) => {
 };
 
 const Home = () => {
-  const [loading, setLoading] = useState(false);
-  const [allPosts, setAllPosts] = useState<null | Post[]>(null);
+  const [loading, setLoading] = useState(true);
+  const [allPosts, setAllPosts] = useState<Post[]>([]);
 
   const [searchText, setSearchText] = useState("");
-  const [searchedResults, setSearchedResults] = useState<null | Post[]>(null);
-  const [searchTimeout, setSearchTimeout] = useState(null);
+  const [searchedResults, setSearchedResults] = useState<Post[]>([]);
+  const [searchTimeout, setSearchTimeout] = useState<ReturnType<
+    typeof setTimeout
+  > | null>(null);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -50,7 +52,9 @@ const Home = () => {
   }, []);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    clearTimeout(searchTimeout);
+    if (searchTimeout) {
+      clearTimeout(searchTimeout);
+    }
 
     setSearchText(e.target.value);
 
@@ -58,7 +62,7 @@ const Home = () => {
 
     setSearchTimeout(
       setTimeout(() => {
-        const searchResults = allPosts?.filter(
+        const searchResults = allPosts.filter(
           (item) =>
             item.name
               .toLocaleLowerCase()
@@ -95,7 +99,7 @@ const Home = () => {
         />
       </div>
       <div className="mt-10">
-        {loading || !allPosts ? (
+        {loading ? (
           <div className="flex justify-center items-center">
             <Loader />
           </div>
