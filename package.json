@@ -9,16 +9,16 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "cloudinary": "^1.33.0",
     "file-saver": "^2.0.5",
     "mongoose": "^8.7.0",
     "next": "14.2.13",
-    "react": "^18",
-    "react-dom": "^18",
     "openai": "^3.1.0",
-    "cloudinary": "^1.33.0"
-  
+    "react": "^18",
+    "react-dom": "^18"
   },
   "devDependencies": {
+    "@types/file-saver": "^2.0.7",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
@@ -28,5 +28,4 @@
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
   }
-
 }

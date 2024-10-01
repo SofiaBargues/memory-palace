@@ -26,6 +26,7 @@ export async function POST(request: Request) {
     return Response.json({ photo: image });
   } catch (error) {
     console.log(error);
-    return new Response(error.message, { status: 500 });
+    // return new Response(error.message, { status: 500 });
+    return new Response();
   }
 }

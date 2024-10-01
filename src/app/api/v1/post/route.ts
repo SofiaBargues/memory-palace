@@ -2,13 +2,15 @@ import dbConnect from "@/mongodb/connect";
 import PostSchema from "@/mongodb/models/post";
 import { v2 as cloudinary } from "cloudinary";
 
-export async function GET(request: Request) {
+export async function GET() {
   try {
     await dbConnect();
     const posts = await PostSchema.find({});
     return Response.json({ success: true, data: posts });
   } catch (error) {
-    return new Response(error.message, { status: 500 });
+    const errorMessage =
+      error instanceof Error ? error.message : "An unknown error occurred";
+    return new Response(errorMessage, { status: 500 });
   }
 }
 export async function POST(request: Request) {
@@ -30,6 +32,8 @@ export async function POST(request: Request) {
 
     return Response.json({ success: true, data: newPost });
   } catch (error) {
-    return new Response(error.message, { status: 500 });
+    const errorMessage =
+      error instanceof Error ? error.message : "An unknown error occurred";
+    return new Response(errorMessage, { status: 500 });
   }
 }

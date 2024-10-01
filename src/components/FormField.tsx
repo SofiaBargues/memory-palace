@@ -16,8 +16,8 @@ const FormField = ({
   name: string;
   placeholder: string;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  isSurpriseMe: boolean;
-  handleSurpriseMe: () => void;
+  isSurpriseMe?: boolean;
+  handleSurpriseMe?: () => void;
 }) => {
   return (
     <div>
