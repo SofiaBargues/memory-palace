@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import React from "react";
 
-import { Loader, Card, FormField } from "../components/index";
-import { Post } from "../components/Card";
+import { Loader, Card, FormField } from "@/components/index";
+import { Post } from "@/components/Card";
 
 const RenderCards = ({ data, title }: { data: Post[]; title: string }) => {
   if (data?.length > 0) {
