@@ -3,8 +3,8 @@ import PostSchema from "@/mongodb/models/post";
 import { v2 as cloudinary } from "cloudinary";
 
 export async function GET() {
+  await dbConnect();
   try {
-    await dbConnect();
     const posts = await PostSchema.find({});
     return Response.json({ success: true, data: posts });
   } catch (error) {
