@@ -1,5 +1,7 @@
 import { OpenAI } from "openai";
 
+export const runtime = "edge";
+
 export async function GET() {
   return new Response("Hello from DALL-E!");
 }
@@ -13,9 +15,12 @@ export async function POST(request: Request) {
     const aiResponse = await openai.images.generate({
       response_format: "b64_json",
       model: "dall-e-3",
+      size: "1024x1024",
+
+      // model: "dall-e-2",
+      // size: "256x256",
       prompt,
       n: 1,
-      size: "1024x1024",
       quality: "standard",
     });
     // console.log(aiResponse);
