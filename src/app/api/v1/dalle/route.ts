@@ -19,13 +19,13 @@ export async function POST(request: Request) {
       quality: "standard",
     });
     // console.log(aiResponse);
-
     const image = aiResponse.data[0].b64_json;
 
     return Response.json({ photo: image });
   } catch (error) {
-    console.log(error);
-    // return new Response(error.message, { status: 500 });
-    return new Response();
+    const errorMessage = (error as Error).message;
+    return new Response(JSON.stringify({ message: errorMessage }), {
+      status: 500,
+    });
   }
 }

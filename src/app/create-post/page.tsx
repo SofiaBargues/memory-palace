@@ -25,9 +25,11 @@ const CreatePost = () => {
           },
           body: JSON.stringify({ prompt: form.prompt }),
         });
-        if (response.status != 200) {
-          console.error("error de servidor");
-          console.log(response.statusText);
+        if (!response.ok) {
+          // Intentar obtener el error desde el body de la respuesta
+          const errorData = await response.json();
+          console.log(errorData);
+          throw new Error(errorData.message || "Error en la solicitud");
         }
         const data = await response.json();
 
@@ -58,6 +60,14 @@ const CreatePost = () => {
           },
           body: JSON.stringify(form),
         });
+
+        if (!response.ok) {
+          // Intentar obtener el error desde el body de la respuesta
+          const errorData = await response.json();
+          console.log(errorData);
+          throw new Error(errorData.message || "Error en la solicitud");
+        }
+
         await response.json();
         router.push("/");
       } catch (err) {

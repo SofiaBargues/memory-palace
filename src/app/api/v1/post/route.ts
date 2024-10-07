@@ -8,9 +8,10 @@ export async function GET() {
     const posts = await PostSchema.find({});
     return Response.json({ success: true, data: posts });
   } catch (error) {
-    const errorMessage =
-      error instanceof Error ? error.message : "An unknown error occurred";
-    return new Response(errorMessage, { status: 500 });
+    const errorMessage = (error as Error).message;
+    return new Response(JSON.stringify({ message: errorMessage }), {
+      status: 500,
+    });
   }
 }
 export async function POST(request: Request) {
@@ -32,8 +33,9 @@ export async function POST(request: Request) {
 
     return Response.json({ success: true, data: newPost });
   } catch (error) {
-    const errorMessage =
-      error instanceof Error ? error.message : "An unknown error occurred";
-    return new Response(errorMessage, { status: 500 });
+    const errorMessage = (error as Error).message;
+    return new Response(JSON.stringify({ message: errorMessage }), {
+      status: 500,
+    });
   }
 }

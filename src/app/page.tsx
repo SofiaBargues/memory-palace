@@ -35,11 +35,16 @@ const Home = () => {
             "Content-Type": "application/json",
           },
         });
+
         if (response.ok) {
           console.log(response);
           const result = await response.json();
           console.log(result);
           setAllPosts(result.data.reverse());
+        } else {
+          const errorData = await response.json();
+          console.log(errorData);
+          throw new Error(errorData.message || "Error en la solicitud");
         }
       } catch (error) {
         alert(error);
