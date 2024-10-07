@@ -26,6 +26,7 @@ export async function POST(request: Request) {
     console.error(error);
 
     const errorMessage = (error as Error).message;
+    console.error(errorMessage);
     return new Response(JSON.stringify({ message: errorMessage }), {
       status: 500,
     });
