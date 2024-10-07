@@ -8,6 +8,8 @@ export async function GET() {
     const posts = await PostSchema.find({});
     return Response.json({ success: true, data: posts });
   } catch (error) {
+    console.error(error)
+
     const errorMessage = (error as Error).message;
     return new Response(JSON.stringify({ message: errorMessage }), {
       status: 500,
@@ -33,6 +35,7 @@ export async function POST(request: Request) {
 
     return Response.json({ success: true, data: newPost });
   } catch (error) {
+    console.error(error)
     const errorMessage = (error as Error).message;
     return new Response(JSON.stringify({ message: errorMessage }), {
       status: 500,

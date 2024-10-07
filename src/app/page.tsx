@@ -47,6 +47,7 @@ const Home = () => {
           throw new Error(errorData.message || "Error en la solicitud");
         }
       } catch (error) {
+        
         alert(error);
       } finally {
         setLoading(false);

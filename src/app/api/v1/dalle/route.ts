@@ -23,6 +23,8 @@ export async function POST(request: Request) {
 
     return Response.json({ photo: image });
   } catch (error) {
+    console.error(error);
+
     const errorMessage = (error as Error).message;
     return new Response(JSON.stringify({ message: errorMessage }), {
       status: 500,
