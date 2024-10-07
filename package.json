@@ -9,11 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "cloudinary": "1.33.0",
+    "axios": "^1.7.7",
+    "cloudinary": "^1.41.3",
     "file-saver": "2.0.5",
     "mongoose": "8.7.0",
     "next": "14.2.13",
-    "openai": "3.1.0",
+    "openai": "4.67.1",
     "react": "^18",
     "react-dom": "^18"
   },
