@@ -1,7 +1,7 @@
 "use client";
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import { Story } from "../api/v1/generate/route";
-const data = [
+const initialWords = [
   "Casa",
   "Bufanda",
   "Árbol",
@@ -36,14 +36,62 @@ const imagesData = [
   "https://oaidalleapiprodscus.blob.core.windows.net/private/org-XTBnmOzM1EDto3GC2mdnRzHK/user-ZxWc0pZk4yZd44RFsTL1d6IA/img-3pVcyy5jlcW0910nS1LOG65E.png?st=2024-10-15T07%3A30%3A34Z&se=2024-10-15T09%3A30%3A34Z&sp=r&sv=2024-08-04&sr=b&rscd=inline&rsct=image/png&skoid=d505667d-d6c1-4a0a-bac7-5c84a87759f8&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2024-10-15T01%3A37%3A22Z&ske=2024-10-16T01%3A37%3A22Z&sks=b&skv=2024-08-04&sig=2myMsS5rCTwbZ9Beln/eg2XKR0Dvfo2yOojCw1L7isc%3D",
 ];
 
+function WordsToRemember({
+  words,
+  results,
+}: {
+  words: string[];
+  results: boolean[];
+}) {
+  return (
+    <ul>
+      {words.map((x, index) => (
+        <div key={index} className="flex">
+          <li className="flex gap-4 ">
+            <p>{x}</p>
+            <div>{results[index]?.toString()}</div>
+          </li>
+        </div>
+      ))}
+    </ul>
+  );
+}
+
+function WordsInput({
+  handleSubmit,
+}: {
+  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+}) {
+  return (
+    <form onSubmit={handleSubmit} className="flex flex-col w-28">
+      {initialWords.map((x, index) => (
+        <input
+          key={index}
+          type="text"
+          id="myInput"
+          className="border"
+          placeholder={"Word " + (index + 1)}
+          name={"input_" + index.toString()}
+        />
+      ))}
+      <button type="submit">Submit</button>
+    </form>
+  );
+}
+
 const Palace = () => {
   const [formValues, setFormValues] = useState<string[]>([]);
   const [results, setResults] = useState<boolean[]>([]);
+  const [step, setStep] = useState<
+    "start" | "fill1" | "results1" | "palace" | "fill2" | "results2"
+  >("start");
+
   const total = results.filter((x) => x === true).length;
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     const newArr = [];
     e.preventDefault();
-    for (let i = 0; i < data.length; i++) {
+    for (let i = 0; i < initialWords.length; i++) {
       newArr.push(e.target.elements["input_" + i].value);
     }
     setFormValues(newArr);
@@ -51,7 +99,7 @@ const Palace = () => {
     const isCorrectArr = [];
     for (let i = 0; i < newArr.length; i++) {
       const palabra = newArr[i];
-      if (palabra.toLowerCase() === data[i].toLowerCase()) {
+      if (palabra.toLowerCase() === initialWords[i].toLowerCase()) {
         isCorrectArr.push(true);
       } else {
         isCorrectArr.push(false);
@@ -62,31 +110,11 @@ const Palace = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        {data.map((x, index) => (
-          <input
-            key={index}
-            type="text"
-            id="myInput"
-            className="border"
-            placeholder={"Word " + (index + 1)}
-            name={"input_" + index.toString()}
-            value={formValues[index]}
-          />
-        ))}
-        <button type="submit">Submit</button>
-      </form>
+      <WordsInput handleSubmit={handleSubmit} />
       <div>Remember</div>
-      <ul>
-        {data.map((x, index) => (
-          <div key={index} className="flex">
-            <li className="flex gap-4 ">
-              <p>{x}</p>
-              <div>{results[index]?.toString()}</div>
-            </li>
-          </div>
-        ))}
-      </ul>
+
+      <WordsToRemember words={initialWords} results={results} />
+
       <div className="font-bold">Total: {total}</div>
     </>
   );
