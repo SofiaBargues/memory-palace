@@ -13,7 +13,8 @@ const data = [
 ];
 const Palace = () => {
   const [formValues, setFormValues] = useState<string[]>([]);
-
+  const [results, setResults] = useState<boolean[]>([]);
+  const total = results.filter((x) => x === true).length;
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     const newArr = [];
     e.preventDefault();
@@ -21,7 +22,17 @@ const Palace = () => {
       newArr.push(e.target.elements["input_" + i].value);
     }
     setFormValues(newArr);
-    console.log(formValues);
+
+    const isCorrectArr = [];
+    for (let i = 0; i < newArr.length; i++) {
+      const palabra = newArr[i];
+      if (palabra.toLowerCase() === data[i].toLowerCase()) {
+        isCorrectArr.push(true);
+      } else {
+        isCorrectArr.push(false);
+      }
+    }
+    setResults(isCorrectArr);
   };
 
   return (
@@ -46,6 +57,7 @@ const Palace = () => {
           <li key={index}>{x}</li>
         ))}
       </ul>
+      <div className="font-bold">Total: {total}</div>
     </>
   );
 };
