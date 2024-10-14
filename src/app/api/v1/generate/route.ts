@@ -6,7 +6,7 @@ const StoryPart = z.object({
   imageGeneratorPrompt: z.string(), // .min(100).max(150)
   narrative: z.string(), // .min(300).max(450)
 });
-const Story = z.object({
+export const Story = z.object({
   part1: StoryPart,
   part2: StoryPart,
   part3: StoryPart,
