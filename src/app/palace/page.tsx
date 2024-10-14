@@ -54,7 +54,12 @@ const Palace = () => {
       <div>Remember</div>
       <ul>
         {data.map((x, index) => (
-          <li key={index}>{x}</li>
+          <div key={index} className="flex">
+            <li className="flex gap-4 ">
+              <p>{x}</p>
+              <div>{results[index]?.toString()}</div>
+            </li>
+          </div>
         ))}
       </ul>
       <div className="font-bold">Total: {total}</div>
