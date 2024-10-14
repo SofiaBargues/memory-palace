@@ -1,24 +1,27 @@
 "use client";
 import React, { useState } from "react";
-
+const data = [
+  "Casa",
+  "Bufanda",
+  "Árbol",
+  "Teléfono",
+  "Libro",
+  "Silla",
+  "Computadora",
+  "Reloj",
+  "Bolso",
+];
 const Palace = () => {
-  let data = [
-    "Casa",
-    "Bufanda",
-    "Árbol",
-    "Teléfono",
-    "Libro",
-    "Silla",
-    "Computadora",
-    "Reloj",
-    "Bolso",
-  ];
-
   const [formValues, setFormValues] = useState<string[]>([]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const newArr = [];
     e.preventDefault();
-    console.log(e.target.elements["input_0"].value);
+    for (let i = 0; i < data.length; i++) {
+      newArr.push(e.target.elements["input_" + i].value);
+    }
+    setFormValues(newArr);
+    console.log(formValues);
   };
 
   return (
