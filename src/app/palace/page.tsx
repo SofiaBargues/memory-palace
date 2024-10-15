@@ -48,6 +48,8 @@ function PalaceStory() {
 
   return (
     <>
+      <h1 className="text-6xl">Palace</h1>
+
       <div className="flex gap-3">
         <StoryPart narrative={arrNarrative[0]} image={imagesData[0]} />
         <StoryPart narrative={arrNarrative[1]} image={imagesData[1]} />
@@ -66,6 +68,7 @@ function WordsToRemember({
 }) {
   return (
     <ul>
+      <h1 className="text-6xl">Remember</h1>
       {words.map((x, index) => (
         <div key={index} className="flex">
           <li className="flex gap-4 ">
@@ -86,6 +89,7 @@ function WordsInput({
 }) {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col w-28">
+      <h1 className="text-6xl">Fill</h1>
       {initialWords.map((x, index) => (
         <input
           key={index}
@@ -156,7 +160,6 @@ const Palace = () => {
       {step === "fill2" && (
         <WordsInput handleSubmit={handleSubmit} step={step} />
       )}
-      <div className="text-xl">Remember</div>
 
       {step === "start" && (
         <WordsToRemember words={initialWords} results={results} />
@@ -168,10 +171,12 @@ const Palace = () => {
         <WordsToRemember words={initialWords} results={results} />
       )}
 
-      <button className="border" onClick={handleClick}>
+      {step === "results2" || step === "results1" ? (
+        <div className="font-bold">Total: {total}</div>
+      ) : null}
+      <button className="border bg-green-400 p-4" onClick={handleClick}>
         next
       </button>
-      <div className="font-bold">Total: {total}</div>
     </>
   );
 };
