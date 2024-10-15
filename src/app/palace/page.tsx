@@ -60,45 +60,42 @@ function PalaceStory() {
 function WordsToRemember({
   words,
   results,
-  step,
 }: {
-  step: string;
   words: string[];
   results: boolean[];
 }) {
-  const mapedWords = words.map((x, index) => (
-    <div key={index} className="flex">
-      <li className="flex gap-4 ">
-        <p>{x}</p>
-        <div>{results[index]?.toString()}</div>
-      </li>
-    </div>
-  ));
-  return <ul>{step === "start" ? mapedWords : ""}</ul>;
+  return (
+    <ul>
+      {words.map((x, index) => (
+        <div key={index} className="flex">
+          <li className="flex gap-4 ">
+            <p>{x}</p>
+            <div>{results[index]?.toString()}</div>
+          </li>
+        </div>
+      ))}
+    </ul>
+  );
 }
 
 function WordsInput({
-  step,
   handleSubmit,
 }: {
   step: string;
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }) {
-  function wordsToInputEmpty() {
-    return initialWords.map((x, index) => (
-      <input
-        key={index}
-        type="text"
-        id="myInput"
-        className="border"
-        placeholder={"Word " + (index + 1)}
-        name={"input_" + index.toString()}
-      />
-    ));
-  }
   return (
     <form onSubmit={handleSubmit} className="flex flex-col w-28">
-      {step === "fill1" ? wordsToInputEmpty() : " "}
+      {initialWords.map((x, index) => (
+        <input
+          key={index}
+          type="text"
+          id="myInput"
+          className="border"
+          placeholder={"Word " + (index + 1)}
+          name={"input_" + index.toString()}
+        />
+      ))}
       <button type="submit">Submit</button>
     </form>
   );
@@ -144,23 +141,37 @@ const Palace = () => {
       setStep("fill2");
     } else if (step === "fill2") {
       setStep("results2");
-    } else {
+    } else if (step === "results2") {
+      setResults([]);
       setStep("start");
     }
   }
   console.log(step);
   return (
     <>
-      <PalaceStory />
-      <WordsInput handleSubmit={handleSubmit} step={step} />
+      {step === "palace" && <PalaceStory />}
+      {step === "fill1" && (
+        <WordsInput handleSubmit={handleSubmit} step={step} />
+      )}
+      {step === "fill2" && (
+        <WordsInput handleSubmit={handleSubmit} step={step} />
+      )}
       <div className="text-xl">Remember</div>
 
-      <WordsToRemember words={initialWords} results={results} step={step} />
+      {step === "start" && (
+        <WordsToRemember words={initialWords} results={results} />
+      )}
+      {step === "results1" && (
+        <WordsToRemember words={initialWords} results={results} />
+      )}
+      {step === "results2" && (
+        <WordsToRemember words={initialWords} results={results} />
+      )}
 
-      <div className="font-bold">Total: {total}</div>
       <button className="border" onClick={handleClick}>
         next
       </button>
+      <div className="font-bold">Total: {total}</div>
     </>
   );
 };
