@@ -100,7 +100,9 @@ function WordsInput({
           name={"input_" + index.toString()}
         />
       ))}
-      <button type="submit">Submit</button>
+      <button className="border bg-green-400 p-4" type="submit">
+        Submit
+      </button>
     </form>
   );
 }
@@ -132,9 +134,10 @@ const Palace = () => {
       }
     }
     setResults(isCorrectArr);
+    goToNextStep();
   };
 
-  function handleClick() {
+  function goToNextStep() {
     if (step === "start") {
       setStep("fill1");
     } else if (step === "fill1") {
@@ -174,9 +177,11 @@ const Palace = () => {
       {step === "results2" || step === "results1" ? (
         <div className="font-bold">Total: {total}</div>
       ) : null}
-      <button className="border bg-green-400 p-4" onClick={handleClick}>
-        next
-      </button>
+      {step != "fill1" && step != "fill2" ? (
+        <button className="border bg-green-400 p-4" onClick={goToNextStep}>
+          next
+        </button>
+      ) : null}
     </>
   );
 };
