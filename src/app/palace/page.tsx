@@ -15,9 +15,9 @@ const initialWords = [
 ];
 
 const generateDataResponse = `{
-    "part1": {
-      "imageGeneratorPrompt": "A cozy house surrounded by tall trees, with a brightly colored scarf hanging from a branch, and a book lying on a chair in front of the house.",
-      "narrative": "In a quaint little house nestled among towering trees, a vibrant scarf fluttered in the wind, hanging from a low branch, as the afternoon sun bathed everything in golden light. Nearby, an open book lay forgotten on a comfortable chair, the pages softly turning with each gentle breeze."
+  "part1": {
+    "imageGeneratorPrompt": "A cozy house surrounded by tall trees, with a brightly colored scarf hanging from a branch, and a book lying on a chair in front of the house.",
+    "narrative": "In a quaint little house nestled among towering trees, a vibrant scarf fluttered in the wind, hanging from a low branch, as the afternoon sun bathed everything in golden light. Nearby, an open book lay forgotten on a comfortable chair, the pages softly turning with each gentle breeze."
     },
     "part2": {
       "imageGeneratorPrompt": "A modern living room featuring a computer on a desk, a classic watch on a shelf, and a stylish bag resting on the floor.",
@@ -26,53 +26,30 @@ const generateDataResponse = `{
     "part3": {
       "imageGeneratorPrompt": "A person holding a phone, looking at the time on their watch, with the house and tree visible in the background.",
       "narrative": "Stepping outside, a person glanced at their phone, checking messages as they enjoyed the fresh air. The watch on their wrist gleamed in the sunlight, reminding them that time was fleeting. The peaceful house and tree stood proud in the background, a testament to a life well-lived."
-    }
-  }`;
+      }
+      }`;
 
 const generateData = JSON.parse(generateDataResponse);
 const storyData = Story.parse(generateData);
 const imagesData = ["/Arbol.png", "/Lentes.png", "/Taza.png"];
-function StoryPart({
-  storyPart,
-  storyData,
-  imagesData,
-}: {
-  storyPart: number;
-  storyData: object;
-  imagesData: string[];
-}) {
-  const arrNarrative = Object.values(storyData).map((part) => part.narrative);
 
+function StoryPart({ narrative, image }: { narrative: string; image: string }) {
   return (
-    <p key={storyPart}>
-      <img
-        className="w-56"
-        src={imagesData[storyPart]}
-        key={storyPart}
-        alt={imagesData[storyPart]}
-      />
-      {arrNarrative[storyPart]}
+    <p>
+      <img className="w-56" src={image} alt={image} />
+      {narrative}
     </p>
   );
 }
-function PalaceStory({
-  storyData,
-  imagesData,
-}: {
-  storyData: object;
-  imagesData: string[];
-}) {
+function PalaceStory() {
   const arrNarrative = Object.values(storyData).map((part) => part.narrative);
-  console.log(arrNarrative);
+
   return (
     <>
       <div className="flex gap-3">
-        {imagesData.map((x, i) => (
-          <p key={i}>
-            <img className="w-56" src={x} key={i} alt={x} />
-            {arrNarrative[i]}
-          </p>
-        ))}
+        <StoryPart narrative={arrNarrative[0]} image={imagesData[0]} />
+        <StoryPart narrative={arrNarrative[1]} image={imagesData[1]} />
+        <StoryPart narrative={arrNarrative[2]} image={imagesData[2]} />
       </div>
     </>
   );
@@ -152,7 +129,6 @@ const Palace = () => {
 
   return (
     <>
-      <StoryPart storyData={storyData} imagesData={imagesData} storyPart={1} />
       <PalaceStory storyData={storyData} imagesData={imagesData} />
       <WordsInput handleSubmit={handleSubmit} />
       <div className="text-xl">Remember</div>
