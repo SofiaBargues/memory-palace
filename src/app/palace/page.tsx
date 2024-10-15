@@ -1,6 +1,7 @@
 "use client";
 import React, { use, useState } from "react";
 import { Story } from "../api/v1/generate/route";
+import { map } from "zod";
 const initialWords = [
   "Casa",
   "Bufanda",
@@ -30,11 +31,52 @@ const generateDataResponse = `{
 
 const generateData = JSON.parse(generateDataResponse);
 const storyData = Story.parse(generateData);
-const imagesData = [
-  "https://oaidalleapiprodscus.blob.core.windows.net/private/org-XTBnmOzM1EDto3GC2mdnRzHK/user-ZxWc0pZk4yZd44RFsTL1d6IA/img-pM3zIDengGWojMDxNQTKf3y9.png?st=2024-10-15T07%3A27%3A58Z&se=2024-10-15T09%3A27%3A58Z&sp=r&sv=2024-08-04&sr=b&rscd=inline&rsct=image/png&skoid=d505667d-d6c1-4a0a-bac7-5c84a87759f8&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2024-10-15T00%3A13%3A08Z&ske=2024-10-16T00%3A13%3A08Z&sks=b&skv=2024-08-04&sig=86AvDX2X/1JLDmdjGgmh8prYZRIEKIMHjj5WMj4WOW0%3D",
-  "https://oaidalleapiprodscus.blob.core.windows.net/private/org-XTBnmOzM1EDto3GC2mdnRzHK/user-ZxWc0pZk4yZd44RFsTL1d6IA/img-hB3C4Fo57mgicFOS3R5pN3Od.png?st=2024-10-15T07%3A28%3A46Z&se=2024-10-15T09%3A28%3A46Z&sp=r&sv=2024-08-04&sr=b&rscd=inline&rsct=image/png&skoid=d505667d-d6c1-4a0a-bac7-5c84a87759f8&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2024-10-14T23%3A24%3A57Z&ske=2024-10-15T23%3A24%3A57Z&sks=b&skv=2024-08-04&sig=VmlCimJ4QrX0igXtO2V7NfOx6Dxrj3hfgMQE2rVgOgU%3D",
-  "https://oaidalleapiprodscus.blob.core.windows.net/private/org-XTBnmOzM1EDto3GC2mdnRzHK/user-ZxWc0pZk4yZd44RFsTL1d6IA/img-3pVcyy5jlcW0910nS1LOG65E.png?st=2024-10-15T07%3A30%3A34Z&se=2024-10-15T09%3A30%3A34Z&sp=r&sv=2024-08-04&sr=b&rscd=inline&rsct=image/png&skoid=d505667d-d6c1-4a0a-bac7-5c84a87759f8&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2024-10-15T01%3A37%3A22Z&ske=2024-10-16T01%3A37%3A22Z&sks=b&skv=2024-08-04&sig=2myMsS5rCTwbZ9Beln/eg2XKR0Dvfo2yOojCw1L7isc%3D",
-];
+const imagesData = ["/Arbol.png", "/Lentes.png", "/Taza.png"];
+function StoryPart({
+  storyPart,
+  storyData,
+  imagesData,
+}: {
+  storyPart: number;
+  storyData: object;
+  imagesData: string[];
+}) {
+  const arrNarrative = Object.values(storyData).map((part) => part.narrative);
+
+  return (
+    <p key={storyPart}>
+      <img
+        className="w-56"
+        src={imagesData[storyPart]}
+        key={storyPart}
+        alt={imagesData[storyPart]}
+      />
+      {arrNarrative[storyPart]}
+    </p>
+  );
+}
+function PalaceStory({
+  storyData,
+  imagesData,
+}: {
+  storyData: object;
+  imagesData: string[];
+}) {
+  const arrNarrative = Object.values(storyData).map((part) => part.narrative);
+  console.log(arrNarrative);
+  return (
+    <>
+      <div className="flex gap-3">
+        {imagesData.map((x, i) => (
+          <p key={i}>
+            <img className="w-56" src={x} key={i} alt={x} />
+            {arrNarrative[i]}
+          </p>
+        ))}
+      </div>
+    </>
+  );
+}
 
 function WordsToRemember({
   words,
@@ -110,8 +152,10 @@ const Palace = () => {
 
   return (
     <>
+      <StoryPart storyData={storyData} imagesData={imagesData} storyPart={1} />
+      <PalaceStory storyData={storyData} imagesData={imagesData} />
       <WordsInput handleSubmit={handleSubmit} />
-      <div>Remember</div>
+      <div className="text-xl">Remember</div>
 
       <WordsToRemember words={initialWords} results={results} />
 
