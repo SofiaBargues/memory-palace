@@ -2,6 +2,8 @@
 import React, { use, useState } from "react";
 import { Story } from "../api/v1/generate/route";
 import { map } from "zod";
+import { Console } from "console";
+import { start } from "repl";
 const initialWords = [
   "Casa",
   "Bufanda",
@@ -58,41 +60,45 @@ function PalaceStory() {
 function WordsToRemember({
   words,
   results,
+  step,
 }: {
+  step: string;
   words: string[];
   results: boolean[];
 }) {
-  return (
-    <ul>
-      {words.map((x, index) => (
-        <div key={index} className="flex">
-          <li className="flex gap-4 ">
-            <p>{x}</p>
-            <div>{results[index]?.toString()}</div>
-          </li>
-        </div>
-      ))}
-    </ul>
-  );
+  const mapedWords = words.map((x, index) => (
+    <div key={index} className="flex">
+      <li className="flex gap-4 ">
+        <p>{x}</p>
+        <div>{results[index]?.toString()}</div>
+      </li>
+    </div>
+  ));
+  return <ul>{step === "start" ? mapedWords : ""}</ul>;
 }
 
 function WordsInput({
+  step,
   handleSubmit,
 }: {
+  step: string;
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }) {
+  function wordsToInputEmpty() {
+    return initialWords.map((x, index) => (
+      <input
+        key={index}
+        type="text"
+        id="myInput"
+        className="border"
+        placeholder={"Word " + (index + 1)}
+        name={"input_" + index.toString()}
+      />
+    ));
+  }
   return (
     <form onSubmit={handleSubmit} className="flex flex-col w-28">
-      {initialWords.map((x, index) => (
-        <input
-          key={index}
-          type="text"
-          id="myInput"
-          className="border"
-          placeholder={"Word " + (index + 1)}
-          name={"input_" + index.toString()}
-        />
-      ))}
+      {step === "fill1" ? wordsToInputEmpty() : " "}
       <button type="submit">Submit</button>
     </form>
   );
@@ -127,15 +133,34 @@ const Palace = () => {
     setResults(isCorrectArr);
   };
 
+  function handleClick() {
+    if (step === "start") {
+      setStep("fill1");
+    } else if (step === "fill1") {
+      setStep("results1");
+    } else if (step === "results1") {
+      setStep("palace");
+    } else if (step === "palace") {
+      setStep("fill2");
+    } else if (step === "fill2") {
+      setStep("results2");
+    } else {
+      setStep("start");
+    }
+  }
+  console.log(step);
   return (
     <>
-      <PalaceStory storyData={storyData} imagesData={imagesData} />
-      <WordsInput handleSubmit={handleSubmit} />
+      <PalaceStory />
+      <WordsInput handleSubmit={handleSubmit} step={step} />
       <div className="text-xl">Remember</div>
 
-      <WordsToRemember words={initialWords} results={results} />
+      <WordsToRemember words={initialWords} results={results} step={step} />
 
       <div className="font-bold">Total: {total}</div>
+      <button className="border" onClick={handleClick}>
+        next
+      </button>
     </>
   );
 };
