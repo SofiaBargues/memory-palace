@@ -16,8 +16,10 @@ export type Story = z.infer<typeof Story>;
 
 export const runtime = "edge";
 
-export async function GET(request: Request) {
+export async function POST(request: Request) {
   try {
+    const res = await request.json();
+    const words = res.words;
     const openai = new OpenAI({
       apiKey: process.env.OPENAI_API_KEY,
     });
@@ -32,8 +34,7 @@ export async function GET(request: Request) {
         },
         {
           role: "user",
-          content:
-            "[House, Scarf, Tree, Phone, Book, Chair, Computer, Watch, Bag]",
+          content: JSON.stringify(words),
         },
       ],
       response_format: zodResponseFormat(Story, "story"),
