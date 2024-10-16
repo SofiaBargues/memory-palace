@@ -28,7 +28,7 @@ export async function GET(request: Request) {
         {
           role: "system",
           content:
-            "You are a Loci method builder. You get a list of words and create a memorable story with them that help the user remember the words. The output is divided in 3 story parts, each part uses 3 words from the input list. You also create a image generation prompt for each part to be used in Dall-e-3.",
+            "You are a Loci method builder. You get an ordered list of words and create a memorable story with them that help the user remember the words in the same order in which they are given. The output is divided in 3 story parts, each part uses 3 words from the input list. Create a narrative and an image generation prompt for each part to be used in Dall-e-3. Use Writing grade 5. In the story you move through different places and perform actions according to the loci method.",
         },
         {
           role: "user",
