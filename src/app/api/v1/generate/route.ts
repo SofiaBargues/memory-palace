@@ -41,25 +41,30 @@ export async function POST(request: Request) {
     });
 
     const story = completion.choices[0].message.parsed;
-    return Response.json({ story });
+    if (story === null) {
+      return new Response(JSON.stringify({ message: "Story is Null" }), {
+        status: 500,
+      });
+    }
+
+    const imgPrompts = Object.values(story).map((x) => x.imageGeneratorPrompt);
 
     // DALLE PART 2
-    const { prompt } = await request.json();
-    const aiResponse = await openai.images.generate({
-      response_format: "b64_json",
-      model: "dall-e-3",
-      size: "1024x1024",
-
-      // model: "dall-e-2",
-      // size: "256x256",
-      prompt,
-      n: 1,
-      quality: "standard",
-    });
-    // console.log(aiResponse);
-    const image = aiResponse.data[0].b64_json;
-
-    return Response.json({ photo: image });
+    const promises = imgPrompts.map((imgPrompt) =>
+      openai.images.generate({
+        response_format: "url", // Can be `b64_json`
+        model: "dall-e-3",
+        size: "1024x1024",
+        // model: "dall-e-2",
+        // size: "256x256",
+        prompt: imgPrompt,
+        n: 1,
+        quality: "standard",
+      })
+    );
+    const responses = await Promise.all(promises);
+    const images = responses.map((res) => res.data[0].url); // Can be `b64_json`
+    return Response.json({ story, images });
   } catch (error) {
     console.error(error);
 

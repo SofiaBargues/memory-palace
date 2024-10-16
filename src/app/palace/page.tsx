@@ -5,35 +5,42 @@ import { map } from "zod";
 import { Console } from "console";
 import { start } from "repl";
 const initialWords = [
-  "Casa",
-  "Bufanda",
-  "Árbol",
-  "Teléfono",
-  "Libro",
-  "Silla",
-  "Computadora",
-  "Reloj",
-  "Bolso",
+  "Tree",
+  "Computer",
+  "Chair",
+  "Phone",
+  "House",
+  "Scarf",
+  "Book",
+  "Watch",
+  "Bag",
 ];
 
 const generateDataResponse = `{
-  "part1": {
-    "imageGeneratorPrompt": "A cozy house surrounded by tall trees, with a brightly colored scarf hanging from a branch, and a book lying on a chair in front of the house.",
-    "narrative": "In a quaint little house nestled among towering trees, a vibrant scarf fluttered in the wind, hanging from a low branch, as the afternoon sun bathed everything in golden light. Nearby, an open book lay forgotten on a comfortable chair, the pages softly turning with each gentle breeze."
+    "story": {
+        "part1": {
+            "imageGeneratorPrompt": "A sunny day in a park with a giant tree, a shiny computer on a picnic table, and a cozy chair sitting nearby with a playful puppy chewing it.",
+            "narrative": "Once upon a time, I was walking through a sunny park. I saw a huge tree with vibrant green leaves where I decided to sit down. Next to it was a shiny computer on a picnic table, and I thought about all the things I could learn. Nearby, a cozy chair was just waiting for someone to relax in."
+        },
+        "part2": {
+            "imageGeneratorPrompt": "A bright living room inside a house, with a colorful phone on a table, a lovely house with flowers in the garden, and a cozy scarf hanging on a chair.",
+            "narrative": "After enjoying the park, I headed to my house. Inside, the living room was bright and warm. On the table, there was a colorful phone that rang loudly, reminding me to stay connected. I noticed my favorite scarf hanging over the back of a chair, ready for the chilly evening."
+        },
+        "part3": {
+            "imageGeneratorPrompt": "A peaceful bedside scene featuring an opened book, a beautiful watch resting on a nightstand, and a stylish bag ready to go on a journey.",
+            "narrative": "Later that evening, I settled down in my bedroom. I grabbed an interesting book from the shelf and opened it to read a few pages. Next to it, my beautiful watch ticked softly, reminding me that it was getting late. I also saw my stylish bag by the door, ready for the next adventure."
+        }
     },
-    "part2": {
-      "imageGeneratorPrompt": "A modern living room featuring a computer on a desk, a classic watch on a shelf, and a stylish bag resting on the floor.",
-      "narrative": "Inside the house, the modern living room was the perfect blend of technology and comfort. A sleek computer gleamed on the desk, while a vintage watch ticked quietly on a shelf, its hands gracefully moving. In a corner, a stylish bag sat patiently on the floor, ready for an adventure."
-    },
-    "part3": {
-      "imageGeneratorPrompt": "A person holding a phone, looking at the time on their watch, with the house and tree visible in the background.",
-      "narrative": "Stepping outside, a person glanced at their phone, checking messages as they enjoyed the fresh air. The watch on their wrist gleamed in the sunlight, reminding them that time was fleeting. The peaceful house and tree stood proud in the background, a testament to a life well-lived."
-      }
-      }`;
+    "images": [
+        "https://oaidalleapiprodscus.blob.core.windows.net/private/org-XTBnmOzM1EDto3GC2mdnRzHK/user-ZxWc0pZk4yZd44RFsTL1d6IA/img-8zOWd45MPARIDy2k8E2fPt1G.png?st=2024-10-16T18%3A41%3A17Z&se=2024-10-16T20%3A41%3A17Z&sp=r&sv=2024-08-04&sr=b&rscd=inline&rsct=image/png&skoid=d505667d-d6c1-4a0a-bac7-5c84a87759f8&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2024-10-16T19%3A14%3A18Z&ske=2024-10-17T19%3A14%3A18Z&sks=b&skv=2024-08-04&sig=yLyDi4bE5kzEVPt6H//uvjGQYeCiUjDkM%2B5qx4vZABg%3D",
+        "https://oaidalleapiprodscus.blob.core.windows.net/private/org-XTBnmOzM1EDto3GC2mdnRzHK/user-ZxWc0pZk4yZd44RFsTL1d6IA/img-NYYmHWpYbweajutJpoW52IXA.png?st=2024-10-16T18%3A41%3A17Z&se=2024-10-16T20%3A41%3A17Z&sp=r&sv=2024-08-04&sr=b&rscd=inline&rsct=image/png&skoid=d505667d-d6c1-4a0a-bac7-5c84a87759f8&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2024-10-16T19%3A24%3A21Z&ske=2024-10-17T19%3A24%3A21Z&sks=b&skv=2024-08-04&sig=m%2BJQRVH8gBZA2vI3hSxUZ4FCqQhPb2cWb4D22Q3efLo%3D",
+        "https://oaidalleapiprodscus.blob.core.windows.net/private/org-XTBnmOzM1EDto3GC2mdnRzHK/user-ZxWc0pZk4yZd44RFsTL1d6IA/img-CcKymUbRhYBJRSwweVk1Mvcv.png?st=2024-10-16T18%3A41%3A18Z&se=2024-10-16T20%3A41%3A18Z&sp=r&sv=2024-08-04&sr=b&rscd=inline&rsct=image/png&skoid=d505667d-d6c1-4a0a-bac7-5c84a87759f8&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2024-10-16T19%3A18%3A31Z&ske=2024-10-17T19%3A18%3A31Z&sks=b&skv=2024-08-04&sig=yqTtUNLipqki62G2T48tVL2eVOF2MpxV328EubuUfyM%3D"
+    ]
+}`;
 
 const generateData = JSON.parse(generateDataResponse);
-const storyData = Story.parse(generateData);
-const imagesData = ["/Arbol.png", "/Lentes.png", "/Taza.png"];
+const storyData = Story.parse(generateData.story);
+const imagesData = ["/part1.png", "/part2.png", "/part3.png"];
 
 function StoryPart({ narrative, image }: { narrative: string; image: string }) {
   return (
@@ -157,10 +164,10 @@ const Palace = () => {
   return (
     <>
       {step === "palace" && <PalaceStory />}
-      {step === "fill1" && (
+      {(step === "fill1" || step === "results1") && (
         <WordsInput handleSubmit={handleSubmit} step={step} />
       )}
-      {step === "fill2" && (
+      {(step === "fill2" || step === "results2") && (
         <WordsInput handleSubmit={handleSubmit} step={step} />
       )}
 
