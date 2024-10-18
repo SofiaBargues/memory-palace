@@ -17,19 +17,23 @@ const initialWords = [
 ];
 
 const generateDataResponse = `{
-    "story": {
-        "part1": {
-            "imageGeneratorPrompt": "A sunny day in a park with a giant tree, a shiny computer on a picnic table, and a cozy chair sitting nearby with a playful puppy chewing it.",
-            "narrative": "Once upon a time, I was walking through a sunny park. I saw a huge tree with vibrant green leaves where I decided to sit down. Next to it was a shiny computer on a picnic table, and I thought about all the things I could learn. Nearby, a cozy chair was just waiting for someone to relax in."
-        },
-        "part2": {
-            "imageGeneratorPrompt": "A bright living room inside a house, with a colorful phone on a table, a lovely house with flowers in the garden, and a cozy scarf hanging on a chair.",
-            "narrative": "After enjoying the park, I headed to my house. Inside, the living room was bright and warm. On the table, there was a colorful phone that rang loudly, reminding me to stay connected. I noticed my favorite scarf hanging over the back of a chair, ready for the chilly evening."
-        },
-        "part3": {
-            "imageGeneratorPrompt": "A peaceful bedside scene featuring an opened book, a beautiful watch resting on a nightstand, and a stylish bag ready to go on a journey.",
-            "narrative": "Later that evening, I settled down in my bedroom. I grabbed an interesting book from the shelf and opened it to read a few pages. Next to it, my beautiful watch ticked softly, reminding me that it was getting late. I also saw my stylish bag by the door, ready for the next adventure."
-        }
+   "story": {
+        "sentences": [
+            "I took a morning walk to the big oak tree in the park, its leaves rustling in the gentle breeze.",
+            "Right at the base of the tree, I found a small, forgotten computer with a screen flickering on and off.",
+            "Next to it was an old, creaky chair, perfect for sitting as I tried to figure out the computer's secrets.",
+            "My phone buzzed in my pocket, reminding me of the time as I got lost in thought.",
+            "Feeling adventurous, I headed to a nearby house, its windows glowing warmly in the morning light.",
+            "I noticed a colorful scarf waving from one of the windows, as if beckoning me inside.",
+            "As I entered, I spotted a dusty book resting on the coffee table, full of stories from long ago.",
+            "On the table next to the book was a shiny, golden watch, ticking steadily.",
+            "I scooped up my bag, feeling the day's weight but also the joy of discovery the adventure had given me."
+        ],
+        "imagePrompts": [
+            "A serene park with a large oak tree and a flickering computer at the base, accompanied by an old, creaky chair.",
+            "A cozy house with glowing windows, a colorful scarf in the window and a vintage book on a coffee table inside.",
+            "An arrangement of a shiny golden watch and a bag, symbolizing the conclusion of an adventurous day."
+        ]
     },
     "images": [
         "https://oaidalleapiprodscus.blob.core.windows.net/private/org-XTBnmOzM1EDto3GC2mdnRzHK/user-ZxWc0pZk4yZd44RFsTL1d6IA/img-8zOWd45MPARIDy2k8E2fPt1G.png?st=2024-10-16T18%3A41%3A17Z&se=2024-10-16T20%3A41%3A17Z&sp=r&sv=2024-08-04&sr=b&rscd=inline&rsct=image/png&skoid=d505667d-d6c1-4a0a-bac7-5c84a87759f8&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2024-10-16T19%3A14%3A18Z&ske=2024-10-17T19%3A14%3A18Z&sks=b&skv=2024-08-04&sig=yLyDi4bE5kzEVPt6H//uvjGQYeCiUjDkM%2B5qx4vZABg%3D",
@@ -51,16 +55,25 @@ function StoryPart({ narrative, image }: { narrative: string; image: string }) {
   );
 }
 function PalaceStory() {
-  const arrNarrative = Object.values(storyData).map((part) => part.narrative);
+  const arrNarrative = storyData.sentences;
 
   return (
     <>
       <h1 className="text-6xl">Palace</h1>
 
       <div className="flex gap-3">
-        <StoryPart narrative={arrNarrative[0]} image={imagesData[0]} />
-        <StoryPart narrative={arrNarrative[1]} image={imagesData[1]} />
-        <StoryPart narrative={arrNarrative[2]} image={imagesData[2]} />
+        <StoryPart
+          narrative={arrNarrative.slice(0, 3).join(" ")}
+          image={imagesData[0]}
+        />
+        <StoryPart
+          narrative={arrNarrative.slice(3, 7).join(" ")}
+          image={imagesData[1]}
+        />
+        <StoryPart
+          narrative={arrNarrative.slice(7).join(" ")}
+          image={imagesData[2]}
+        />
       </div>
     </>
   );

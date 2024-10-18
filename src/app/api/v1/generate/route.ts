@@ -7,9 +7,8 @@ const StoryPart = z.object({
   narrative: z.string(), // .min(300).max(450)
 });
 export const Story = z.object({
-  part1: StoryPart,
-  part2: StoryPart,
-  part3: StoryPart,
+  sentences: z.string().array(),
+  imagePrompts: z.string().array(),
 });
 
 export type Story = z.infer<typeof Story>;
@@ -25,12 +24,20 @@ export async function POST(request: Request) {
     });
 
     const completion = await openai.beta.chat.completions.parse({
-      model: "gpt-4o-mini",
+      model: "gpt-4o",
       messages: [
         {
           role: "system",
           content:
-            "You are a Loci method builder. You get an ordered list of words and create a memorable story with them that help the user remember the words in the same order in which they are given. The output is divided in 3 story parts, each part uses 3 words from the input list. Create a narrative and an image generation prompt for each part to be used in Dall-e-3. Use Writing grade 5. In the story you move through different places and perform actions according to the loci method.",
+            // TODO: Asq the sistem to wrap word bold
+            // TODO: Improve prompt to ensure words are mentioned in order
+            `You are a Loci method builder. 
+- Create a memorable story using all the words in the list, keeping them **in the exact order of the input**.
+- For each word write a sentence in the output sentences array. This array has 9 sentences.
+- The story is narrated in **first person**, where the reader moves through different places and interacts with the words.
+- For each group for 3 sentences generate a DALL-E 3 prompt based on the scene described. This array has 3 prompts.
+- Keep the writing at a **5th grade level**, using clear, simple imagery.
+`,
         },
         {
           role: "user",
@@ -46,7 +53,6 @@ export async function POST(request: Request) {
         status: 500,
       });
     }
-
     const imgPrompts = Object.values(story).map((x) => x.imageGeneratorPrompt);
 
     // DALLE PART 2
