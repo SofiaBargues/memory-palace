@@ -4,6 +4,7 @@ import { Story } from "../api/v1/generate/route";
 import { map } from "zod";
 import { Console } from "console";
 import { start } from "repl";
+import { disconnect } from "process";
 const initialWords = [
   "Tree",
   "Computer",
@@ -89,19 +90,34 @@ function WordsList({
   results: boolean[];
 }) {
   return (
-    <ul>
+    <>
       <h1 className="text-6xl">Remember</h1>
       {originalWords.map((x, index) => (
-        <div key={index} className="flex  border-2 ">
-          <WordRow
-            index={index}
-            isCorrect={results[index]}
-            originalWord={x}
-            inputWord={inputWords[index]}
-          />
-        </div>
+        <WordRow
+          key={index}
+          index={index}
+          isCorrect={results[index]}
+          originalWord={x}
+          inputWord={inputWords[index]}
+        />
       ))}
-    </ul>
+    </>
+  );
+}
+
+function Card({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <div
+      className={"border-2 w-52 p-1 m-1 bg-white rounded-lg h-8 " + className}
+    >
+      {children}
+    </div>
   );
 }
 
@@ -117,17 +133,22 @@ function WordRow({
   originalWord: string;
 }) {
   return (
-    <li className="flex gap-4 ">
-      <p>{index}</p>
-      <p
+    <li className="flex gap-3 items-center">
+      <p className="w-3">{index + 1}</p>
+      {inputWord != undefined ? (
+        <Card className={isCorrect ? " border-green-400 " : " border-red-400"}>
+          {inputWord}
+        </Card>
+      ) : (
+        <></>
+      )}
+      <Card
         className={
-          isCorrect != undefined ? "w-52" : isCorrect ? "bg-green-400" : ""
+          isCorrect ? "text-gray-400 " : " border border-gray-600 text-gray-600"
         }
       >
-        {inputWord}
-      </p>
-      <p className="w-52">{originalWord}</p>
-      <p className="w-52">{isCorrect?.toString()}</p>
+        {originalWord}
+      </Card>
     </li>
   );
 }
@@ -142,14 +163,16 @@ function WordsInput({
     <form onSubmit={handleSubmit} className="flex flex-col w-28">
       <h1 className="text-6xl ">Fill</h1>
       {initialWords.map((x, index) => (
-        <input
-          key={index}
-          type="text"
-          id="myInput"
-          className="border"
-          placeholder={"Word " + (index + 1)}
-          name={"input_" + index.toString()}
-        />
+        <div key={index} className="flex gap-3">
+          <p>{index + 1}</p>
+          <input
+            type="text"
+            id="myInput"
+            className="border-2 w-52 p-1 m-1 bg-white rounded-lg h-8 "
+            placeholder={"Word"}
+            name={"input_" + index.toString()}
+          />
+        </div>
       ))}
       <button className="border bg-green-400 p-4" type="submit">
         Submit
@@ -208,10 +231,10 @@ const Palace = () => {
   return (
     <>
       {step === "palace" && <PalaceStory />}
-      {(step === "fill1" || step === "results1") && (
+      {step === "fill1" && (
         <WordsInput handleSubmit={handleSubmit} step={step} />
       )}
-      {(step === "fill2" || step === "results2") && (
+      {step === "fill2" && (
         <WordsInput handleSubmit={handleSubmit} step={step} />
       )}
 
