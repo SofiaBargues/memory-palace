@@ -79,25 +79,50 @@ function PalaceStory() {
   );
 }
 
-function WordsToRemember({
-  words,
+function WordsList({
+  inputWords,
+  originalWords,
   results,
 }: {
-  words: string[];
+  inputWords: string[];
+  originalWords: string[];
   results: boolean[];
 }) {
   return (
     <ul>
       <h1 className="text-6xl">Remember</h1>
-      {words.map((x, index) => (
-        <div key={index} className="flex">
-          <li className="flex gap-4 ">
-            <p>{x}</p>
-            <div>{results[index]?.toString()}</div>
-          </li>
+      {originalWords.map((x, index) => (
+        <div key={index} className="flex  border-2 ">
+          <WordRow
+            index={index}
+            isCorrect={results[index]}
+            originalWord={x}
+            inputWord={inputWords[index]}
+          />
         </div>
       ))}
     </ul>
+  );
+}
+
+function WordRow({
+  index,
+  isCorrect,
+  originalWord,
+  inputWord,
+}: {
+  inputWord: string;
+  index: number;
+  isCorrect: boolean;
+  originalWord: string;
+}) {
+  return (
+    <li className="flex gap-4 ">
+      <p>{index}</p>
+      <p>{originalWord}</p>
+      <p>{inputWord}</p>
+      <div>{isCorrect?.toString()}</div>
+    </li>
   );
 }
 
@@ -109,7 +134,7 @@ function WordsInput({
 }) {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col w-28">
-      <h1 className="text-6xl">Fill</h1>
+      <h1 className="text-6xl ">Fill</h1>
       {initialWords.map((x, index) => (
         <input
           key={index}
@@ -185,13 +210,25 @@ const Palace = () => {
       )}
 
       {step === "start" && (
-        <WordsToRemember words={initialWords} results={results} />
+        <WordsList
+          originalWords={initialWords}
+          results={results}
+          inputWords={new Array(9)}
+        />
       )}
       {step === "results1" && (
-        <WordsToRemember words={initialWords} results={results} />
+        <WordsList
+          inputWords={new Array(9)}
+          originalWords={initialWords}
+          results={results}
+        />
       )}
       {step === "results2" && (
-        <WordsToRemember words={initialWords} results={results} />
+        <WordsList
+          inputWords={new Array(9)}
+          originalWords={initialWords}
+          results={results}
+        />
       )}
 
       {step === "results2" || step === "results1" ? (
