@@ -153,7 +153,7 @@ function WordsInput({
 }
 
 const Palace = () => {
-  const [formValues, setFormValues] = useState<string[]>([]);
+  const [inputWords, setInputWords] = useState<string[]>([]);
   const [results, setResults] = useState<boolean[]>([]);
   const [step, setStep] = useState<
     "start" | "fill1" | "results1" | "palace" | "fill2" | "results2"
@@ -167,7 +167,7 @@ const Palace = () => {
     for (let i = 0; i < initialWords.length; i++) {
       newArr.push(e.target.elements["input_" + i].value);
     }
-    setFormValues(newArr);
+    setInputWords(newArr);
 
     const isCorrectArr = [];
     for (let i = 0; i < newArr.length; i++) {
@@ -213,19 +213,19 @@ const Palace = () => {
         <WordsList
           originalWords={initialWords}
           results={results}
-          inputWords={new Array(9)}
+          inputWords={inputWords}
         />
       )}
       {step === "results1" && (
         <WordsList
-          inputWords={new Array(9)}
+          inputWords={inputWords}
           originalWords={initialWords}
           results={results}
         />
       )}
       {step === "results2" && (
         <WordsList
-          inputWords={new Array(9)}
+          inputWords={inputWords}
           originalWords={initialWords}
           results={results}
         />
