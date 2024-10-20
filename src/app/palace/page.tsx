@@ -119,9 +119,15 @@ function WordRow({
   return (
     <li className="flex gap-4 ">
       <p>{index}</p>
-      <p>{originalWord}</p>
-      <p>{inputWord}</p>
-      <div>{isCorrect?.toString()}</div>
+      <p
+        className={
+          isCorrect != undefined ? "w-52" : isCorrect ? "bg-green-400" : ""
+        }
+      >
+        {inputWord}
+      </p>
+      <p className="w-52">{originalWord}</p>
+      <p className="w-52">{isCorrect?.toString()}</p>
     </li>
   );
 }
