@@ -5,6 +5,9 @@ import { map } from "zod";
 import { Console } from "console";
 import { start } from "repl";
 import { disconnect } from "process";
+import { Result } from "postcss";
+import { BlobLike } from "openai/uploads.mjs";
+import { text } from "stream/consumers";
 const initialWords = [
   "Tree",
   "Computer",
@@ -49,37 +52,72 @@ const imagesData = ["/part1.png", "/part2.png", "/part3.png"];
 
 function StoryPart({ narrative, image }: { narrative: string; image: string }) {
   return (
-    <p>
-      <img className="w-56" src={image} alt={image} />
-      {narrative}
-    </p>
+    <div className="flex flex-col m-auto gap-3">
+      <img className="w-96 h-96 rounded-lg" src={image} alt={image} />
+      <p className="w-96">{narrative}</p>
+    </div>
   );
 }
 function PalaceStory() {
+  const [part, setPart] = useState<number>(1);
   const arrNarrative = storyData.sentences;
-
+  console.log(part);
+  const handleNextPart = () => {
+    setPart((prevPart) => ((prevPart % 3) + 1) as 1 | 2 | 3);
+  };
   return (
     <>
-      <h1 className="text-6xl">Palace</h1>
-
+      <Title title="Palace" />
+      <p className="text-lg ">
+        Welcome to the palace of memory, immerse yourself in this story. There,
+        you will find the highlighted words in the order you must remember.
+      </p>
       <div className="flex gap-3">
-        <StoryPart
-          narrative={arrNarrative.slice(0, 3).join(" ")}
-          image={imagesData[0]}
-        />
-        <StoryPart
-          narrative={arrNarrative.slice(3, 7).join(" ")}
-          image={imagesData[1]}
-        />
-        <StoryPart
-          narrative={arrNarrative.slice(7).join(" ")}
-          image={imagesData[2]}
-        />
+        {part === 1 ? (
+          <StoryPart
+            narrative={arrNarrative.slice(0, 3).join(" ")}
+            image={imagesData[0]}
+          />
+        ) : part === 2 ? (
+          <StoryPart
+            narrative={arrNarrative.slice(3, 7).join(" ")}
+            image={imagesData[1]}
+          />
+        ) : part === 3 ? (
+          <StoryPart
+            narrative={arrNarrative.slice(7).join(" ")}
+            image={imagesData[2]}
+          />
+        ) : null}
+        <button onClick={handleNextPart}>👉</button>
       </div>
     </>
   );
 }
-
+function Button({
+  className,
+  type,
+  onClick,
+  children,
+}: {
+  children?: React.ReactNode;
+  onClick?: () => void;
+  className?: string;
+  type?: "submit" | "reset" | "button" | undefined;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      type={type}
+      className={"border bg-green-400 rounded-lg w-48 p-4 my-9 " + className}
+    >
+      {children}
+    </button>
+  );
+}
+function Title({ title }: { title: string }) {
+  return <h1 className="text-3xl pb-7">{title}</h1>;
+}
 function WordsList({
   inputWords,
   originalWords,
@@ -91,7 +129,11 @@ function WordsList({
 }) {
   return (
     <>
-      <h1 className="text-6xl">Remember</h1>
+      {results?.length != 0 ? (
+        <Title title="Results" />
+      ) : (
+        <Title title="Remember" />
+      )}
       {originalWords.map((x, index) => (
         <WordRow
           key={index}
@@ -160,8 +202,8 @@ function WordsInput({
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }) {
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col w-28">
-      <h1 className="text-6xl ">Fill</h1>
+    <form onSubmit={handleSubmit} className="flex flex-col w-28 ">
+      <Title title="Fill" />
       {initialWords.map((x, index) => (
         <div key={index} className="flex gap-3">
           <p>{index + 1}</p>
@@ -174,9 +216,7 @@ function WordsInput({
           />
         </div>
       ))}
-      <button className="border bg-green-400 p-4" type="submit">
-        Submit
-      </button>
+      <Button type="submit">Submit</Button>
     </form>
   );
 }
@@ -224,12 +264,13 @@ const Palace = () => {
       setStep("results2");
     } else if (step === "results2") {
       setResults([]);
+      setInputWords([]);
       setStep("start");
     }
   }
   console.log(step);
   return (
-    <>
+    <div className="w-full container m-auto p-10 flex flex-col">
       {step === "palace" && <PalaceStory />}
       {step === "fill1" && (
         <WordsInput handleSubmit={handleSubmit} step={step} />
@@ -261,14 +302,12 @@ const Palace = () => {
       )}
 
       {step === "results2" || step === "results1" ? (
-        <div className="font-bold">Total: {total}</div>
+        <div className="font-medium text-xl my-5">Total {total}</div>
       ) : null}
       {step != "fill1" && step != "fill2" ? (
-        <button className="border bg-green-400 p-4" onClick={goToNextStep}>
-          next
-        </button>
+        <Button onClick={goToNextStep}>Next</Button>
       ) : null}
-    </>
+    </div>
   );
 };
 
