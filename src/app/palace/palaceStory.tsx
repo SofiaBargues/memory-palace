@@ -13,7 +13,6 @@ export function PalaceStory() {
   };
   return (
     <>
-      <Title title="Palace" />
       <p className="text-lg ">
         Welcome to the palace of memory, immerse yourself in this story. There,
         you will find the highlighted words in the order you must remember.

@@ -1,4 +1,5 @@
 "use client";
+import { Button } from "@/components/ui/button";
 import React, { use, useState } from "react";
 import { Story } from "../api/v1/generate/route";
 import { map } from "zod";
@@ -8,7 +9,6 @@ import { disconnect } from "process";
 import { Result } from "postcss";
 import { BlobLike } from "openai/uploads.mjs";
 import { text } from "stream/consumers";
-import { Button } from "./button";
 import { Title } from "./title";
 import { WordsInput } from "./wordsInput";
 import { Card } from "./card";
@@ -17,6 +17,7 @@ import { WordsList } from "./wordList";
 import { StoryPart } from "./placePort";
 import { PalaceStory } from "./palaceStory";
 import { generateDataResponse, initialWords } from "./DATA";
+import { ButtonIcon } from "@radix-ui/react-icons";
 
 const generateData = JSON.parse(generateDataResponse);
 export const storyData = Story.parse(generateData.story);
@@ -32,7 +33,6 @@ const Palace = () => {
   >("start");
 
   const total = results.filter((x) => x === true).length;
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     const newArr = [];
     e.preventDefault();
@@ -73,23 +73,33 @@ const Palace = () => {
   }
   console.log(step);
   return (
-    <div className="w-full container m-auto p-10 flex flex-col">
-      {step === "palace" && <PalaceStory />}
+    <div className="w-full container m-auto p-10 flex flex-col ">
+      {step === "palace" && (
+        <>
+          <Title title="Palace" />
+          <PalaceStory />
+        </>
+      )}
       {step === "fill1" && (
-        <WordsInput
-          initialWords={initialWords}
-          handleSubmit={handleSubmit}
-          step={step}
-        />
+        <>
+          <Title title="Fill" />
+          <WordsInput
+            initialWords={initialWords}
+            handleSubmit={handleSubmit}
+            step={step}
+          />
+        </>
       )}
       {step === "fill2" && (
-        <WordsInput
-          initialWords={initialWords}
-          handleSubmit={handleSubmit}
-          step={step}
-        />
+        <>
+          <Title title="Fill" />
+          <WordsInput
+            initialWords={initialWords}
+            handleSubmit={handleSubmit}
+            step={step}
+          />
+        </>
       )}
-
       {step === "start" && (
         <>
           <Title title="Remember" />
@@ -111,18 +121,22 @@ const Palace = () => {
         </>
       )}
       {step === "results2" && (
-        <WordsList
-          inputWords={inputWords}
-          originalWords={initialWords}
-          results={results}
-        />
+        <>
+          <Title title="Remember" />
+          <WordsList
+            inputWords={inputWords}
+            originalWords={initialWords}
+            results={results}
+          />
+        </>
       )}
-
       {step === "results2" || step === "results1" ? (
         <div className="font-medium text-xl my-5">Total {total}</div>
       ) : null}
       {step != "fill1" && step != "fill2" ? (
-        <Button onClick={goToNextStep}>Next</Button>
+        <Button className="w-28" onClick={goToNextStep}>
+          Next
+        </Button>
       ) : null}
     </div>
   );

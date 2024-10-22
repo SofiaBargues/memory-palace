@@ -1,5 +1,6 @@
-import { Button } from "./button";
+import { Button } from "@/components/ui/button";
 import { Title } from "./title";
+import { Input } from "@/components/ui/input";
 
 export function WordsInput({
   handleSubmit,
@@ -11,11 +12,10 @@ export function WordsInput({
 }) {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col w-28 ">
-      <Title title="Fill" />
       {initialWords.map((x, index) => (
         <div key={index} className="flex gap-3">
           <p>{index + 1}</p>
-          <input
+          <Input
             type="text"
             id="myInput"
             className="border-2 w-52 p-1 m-1 bg-white rounded-lg h-8 "
