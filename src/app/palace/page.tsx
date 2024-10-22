@@ -8,6 +8,15 @@ import { disconnect } from "process";
 import { Result } from "postcss";
 import { BlobLike } from "openai/uploads.mjs";
 import { text } from "stream/consumers";
+import { Button } from "./button";
+import { Title } from "./title";
+import { WordsInput } from "./wordsInput";
+import { Card } from "./card";
+import { WordRow } from "./wordRow";
+import { WordsList } from "./wordList";
+import { StoryPart } from "./placePort";
+import { PalaceStory } from "./palaceStory";
+
 const initialWords = [
   "Tree",
   "Computer",
@@ -19,7 +28,6 @@ const initialWords = [
   "Watch",
   "Bag",
 ];
-
 const generateDataResponse = `{
    "story": {
         "sentences": [
@@ -47,179 +55,10 @@ const generateDataResponse = `{
 }`;
 
 const generateData = JSON.parse(generateDataResponse);
-const storyData = Story.parse(generateData.story);
-const imagesData = ["/part1.png", "/part2.png", "/part3.png"];
+export const storyData = Story.parse(generateData.story);
+export const imagesData = ["/part1.png", "/part2.png", "/part3.png"];
 
-function StoryPart({ narrative, image }: { narrative: string; image: string }) {
-  return (
-    <div className="flex flex-col m-auto gap-3">
-      <img className="w-96 h-96 rounded-lg" src={image} alt={image} />
-      <p className="w-96">{narrative}</p>
-    </div>
-  );
-}
-function PalaceStory() {
-  const [part, setPart] = useState<number>(1);
-  const arrNarrative = storyData.sentences;
-  console.log(part);
-  const handleNextPart = () => {
-    setPart((prevPart) => ((prevPart % 3) + 1) as 1 | 2 | 3);
-  };
-  return (
-    <>
-      <Title title="Palace" />
-      <p className="text-lg ">
-        Welcome to the palace of memory, immerse yourself in this story. There,
-        you will find the highlighted words in the order you must remember.
-      </p>
-      <div className="flex gap-3">
-        {part === 1 ? (
-          <StoryPart
-            narrative={arrNarrative.slice(0, 3).join(" ")}
-            image={imagesData[0]}
-          />
-        ) : part === 2 ? (
-          <StoryPart
-            narrative={arrNarrative.slice(3, 7).join(" ")}
-            image={imagesData[1]}
-          />
-        ) : part === 3 ? (
-          <StoryPart
-            narrative={arrNarrative.slice(7).join(" ")}
-            image={imagesData[2]}
-          />
-        ) : null}
-        <button onClick={handleNextPart}>👉</button>
-      </div>
-    </>
-  );
-}
-function Button({
-  className,
-  type,
-  onClick,
-  children,
-}: {
-  children?: React.ReactNode;
-  onClick?: () => void;
-  className?: string;
-  type?: "submit" | "reset" | "button" | undefined;
-}) {
-  return (
-    <button
-      onClick={onClick}
-      type={type}
-      className={"border bg-green-400 rounded-lg w-48 p-4 my-9 " + className}
-    >
-      {children}
-    </button>
-  );
-}
-function Title({ title }: { title: string }) {
-  return <h1 className="text-3xl pb-7">{title}</h1>;
-}
-function WordsList({
-  inputWords,
-  originalWords,
-  results,
-}: {
-  inputWords: string[];
-  originalWords: string[];
-  results: boolean[];
-}) {
-  return (
-    <>
-      {results?.length != 0 ? (
-        <Title title="Results" />
-      ) : (
-        <Title title="Remember" />
-      )}
-      {originalWords.map((x, index) => (
-        <WordRow
-          key={index}
-          index={index}
-          isCorrect={results[index]}
-          originalWord={x}
-          inputWord={inputWords[index]}
-        />
-      ))}
-    </>
-  );
-}
-
-function Card({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
-  return (
-    <div
-      className={"border-2 w-52 p-1 m-1 bg-white rounded-lg h-8 " + className}
-    >
-      {children}
-    </div>
-  );
-}
-
-function WordRow({
-  index,
-  isCorrect,
-  originalWord,
-  inputWord,
-}: {
-  inputWord: string;
-  index: number;
-  isCorrect: boolean;
-  originalWord: string;
-}) {
-  return (
-    <li className="flex gap-3 items-center">
-      <p className="w-3">{index + 1}</p>
-      {inputWord != undefined ? (
-        <Card className={isCorrect ? " border-green-400 " : " border-red-400"}>
-          {inputWord}
-        </Card>
-      ) : (
-        <></>
-      )}
-      <Card
-        className={
-          isCorrect ? "text-gray-400 " : " border border-gray-600 text-gray-600"
-        }
-      >
-        {originalWord}
-      </Card>
-    </li>
-  );
-}
-
-function WordsInput({
-  handleSubmit,
-}: {
-  step: string;
-  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-}) {
-  return (
-    <form onSubmit={handleSubmit} className="flex flex-col w-28 ">
-      <Title title="Fill" />
-      {initialWords.map((x, index) => (
-        <div key={index} className="flex gap-3">
-          <p>{index + 1}</p>
-          <input
-            type="text"
-            id="myInput"
-            className="border-2 w-52 p-1 m-1 bg-white rounded-lg h-8 "
-            placeholder={"Word"}
-            name={"input_" + index.toString()}
-          />
-        </div>
-      ))}
-      <Button type="submit">Submit</Button>
-    </form>
-  );
-}
+//todo description
 
 const Palace = () => {
   const [inputWords, setInputWords] = useState<string[]>([]);
@@ -271,27 +110,43 @@ const Palace = () => {
   console.log(step);
   return (
     <div className="w-full container m-auto p-10 flex flex-col">
-      {step === "palace" && <PalaceStory />}
+      {step === "palace" && (
+        <PalaceStory storyData={storyData.sentences} imagesData={imagesData} />
+      )}
       {step === "fill1" && (
-        <WordsInput handleSubmit={handleSubmit} step={step} />
+        <WordsInput
+          initialWords={initialWords}
+          handleSubmit={handleSubmit}
+          step={step}
+        />
       )}
       {step === "fill2" && (
-        <WordsInput handleSubmit={handleSubmit} step={step} />
+        <WordsInput
+          initialWords={initialWords}
+          handleSubmit={handleSubmit}
+          step={step}
+        />
       )}
 
       {step === "start" && (
-        <WordsList
-          originalWords={initialWords}
-          results={results}
-          inputWords={inputWords}
-        />
+        <>
+          <Title title="Remember" />
+          <WordsList
+            originalWords={initialWords}
+            results={results}
+            inputWords={inputWords}
+          />
+        </>
       )}
       {step === "results1" && (
-        <WordsList
-          inputWords={inputWords}
-          originalWords={initialWords}
-          results={results}
-        />
+        <>
+          <Title title="Results" />
+          <WordsList
+            inputWords={inputWords}
+            originalWords={initialWords}
+            results={results}
+          />
+        </>
       )}
       {step === "results2" && (
         <WordsList
