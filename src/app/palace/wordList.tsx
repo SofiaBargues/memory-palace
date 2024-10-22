@@ -11,7 +11,7 @@ export function WordsList({
   results: boolean[];
 }) {
   return (
-    <Card className="p-6">
+    <Card className="p-6 flex flex-col w-96 gap-3">
       {originalWords.map((x, index) => (
         <WordRow
           key={index}
@@ -21,6 +21,7 @@ export function WordsList({
           inputWord={inputWords[index]}
         />
       ))}
+      
     </Card>
   );
 }

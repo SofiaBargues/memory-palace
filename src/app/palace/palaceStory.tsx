@@ -13,12 +13,8 @@ export function PalaceStory() {
     setPart((prevPart) => ((prevPart % 3) + 1) as 1 | 2 | 3);
   };
   return (
-    <Card className="p-6">
-      <p className="text-lg ">
-        Welcome to the palace of memory, immerse yourself in this story. There,
-        you will find the highlighted words in the order you must remember.
-      </p>
-      <div className="flex gap-3">
+    <Card className="p-6 w-[600px] ">
+      <div className="flex ">
         {part === 1 ? (
           <StoryPart
             narrative={arrNarrative.slice(0, 3).join(" ")}

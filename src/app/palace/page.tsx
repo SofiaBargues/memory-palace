@@ -18,12 +18,11 @@ import { StoryPart } from "./placePort";
 import { PalaceStory } from "./palaceStory";
 import { generateDataResponse, initialWords } from "./DATA";
 import { ButtonIcon } from "@radix-ui/react-icons";
+import { Description } from "./description";
 
 const generateData = JSON.parse(generateDataResponse);
 export const storyData = Story.parse(generateData.story);
 export const imagesData = ["/part1.png", "/part2.png", "/part3.png"];
-
-//todo description
 
 const Palace = () => {
   const [inputWords, setInputWords] = useState<string[]>([]);
@@ -73,16 +72,24 @@ const Palace = () => {
   }
   console.log(step);
   return (
-    <div className="w-full container m-auto p-10 flex flex-col ">
+    <div className="w-full container m-auto p-10 flex flex-col gap-4">
       {step === "palace" && (
         <>
           <Title title="Palace" />
+          <Description>
+            Welcome to the palace of memory, immerse yourself in this story.
+            There, you will find the highlighted words in the order you must
+            remember.
+          </Description>
           <PalaceStory />
         </>
       )}
       {step === "fill1" && (
         <>
           <Title title="Fill" />
+          <Description>
+            Complete the blanks with the previous words in the correct order.
+          </Description>
           <WordsInput
             initialWords={initialWords}
             handleSubmit={handleSubmit}
@@ -93,6 +100,11 @@ const Palace = () => {
       {step === "fill2" && (
         <>
           <Title title="Fill" />
+          <Description>
+            It's time to put your journey through the palace of memory to the
+            test. Remember each scene from the story, visualizing the details.
+            Fill in the blanks as you mentally progress through the narrative.
+          </Description>
           <WordsInput
             initialWords={initialWords}
             handleSubmit={handleSubmit}
@@ -103,6 +115,10 @@ const Palace = () => {
       {step === "start" && (
         <>
           <Title title="Remember" />
+          <Description>
+            First attempt, now try to remember the following words and their
+            order.
+          </Description>
           <WordsList
             originalWords={initialWords}
             results={results}
@@ -113,6 +129,9 @@ const Palace = () => {
       {step === "results1" && (
         <>
           <Title title="Results" />
+          <Description>
+            These are the results of your first attempt.
+          </Description>
           <WordsList
             inputWords={inputWords}
             originalWords={initialWords}
@@ -122,7 +141,10 @@ const Palace = () => {
       )}
       {step === "results2" && (
         <>
-          <Title title="Remember" />
+          <Title title="Result" />
+          <Description>
+            These are the results of your memory palace journey
+          </Description>
           <WordsList
             inputWords={inputWords}
             originalWords={initialWords}
@@ -131,7 +153,7 @@ const Palace = () => {
         </>
       )}
       {step === "results2" || step === "results1" ? (
-        <div className="font-medium text-xl my-5">Total {total}</div>
+        <div className="font-medium text-xl my-1">Total {total}</div>
       ) : null}
       {step != "fill1" && step != "fill2" ? (
         <Button className="w-28" onClick={goToNextStep}>

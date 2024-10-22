@@ -12,7 +12,7 @@ export function WordRow({
   originalWord: string;
 }) {
   return (
-    <li className="flex gap-3 items-center">
+    <li className="flex gap-3 items-center  ">
       <p className="w-3">{index + 1}</p>
       {inputWord != undefined ? (
         <Card className={isCorrect ? " border-green-400 " : " border-red-400"}>
