@@ -3,6 +3,7 @@ import { StoryPart } from "./placePort";
 import { storyData } from "./page";
 import { Title } from "./title";
 import { imagesData } from "./page";
+import { Card } from "@/components/ui/card";
 
 export function PalaceStory() {
   const [part, setPart] = useState<number>(1);
@@ -12,7 +13,7 @@ export function PalaceStory() {
     setPart((prevPart) => ((prevPart % 3) + 1) as 1 | 2 | 3);
   };
   return (
-    <>
+    <Card className="p-6">
       <p className="text-lg ">
         Welcome to the palace of memory, immerse yourself in this story. There,
         you will find the highlighted words in the order you must remember.
@@ -34,8 +35,10 @@ export function PalaceStory() {
             image={imagesData[2]}
           />
         ) : null}
-        <button onClick={handleNextPart}>👉</button>
+        <button className="text-7xl" onClick={handleNextPart}>
+          ›
+        </button>
       </div>
-    </>
+    </Card>
   );
 }
