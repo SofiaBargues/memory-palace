@@ -31,7 +31,6 @@ const Palace = () => {
     "start" | "fill1" | "results1" | "palace" | "fill2" | "results2"
   >("start");
 
-  const total = results.filter((x) => x === true).length;
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     const newArr = [];
     e.preventDefault();
@@ -152,9 +151,6 @@ const Palace = () => {
           />
         </>
       )}
-      {step === "results2" || step === "results1" ? (
-        <div className="font-medium text-xl my-1">Total {total}</div>
-      ) : null}
       {step != "fill1" && step != "fill2" ? (
         <Button className="w-28" onClick={goToNextStep}>
           Next

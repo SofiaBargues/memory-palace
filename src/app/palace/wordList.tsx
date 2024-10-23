@@ -21,7 +21,7 @@ export function WordsList({
           inputWord={inputWords[index]}
         />
       ))}
-      
+      <div className="font-medium text-xl my-1">Total {results.filter((x) => x === true).length}</div>
     </Card>
   );
 }
