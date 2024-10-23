@@ -4,6 +4,7 @@ import { storyData } from "./page";
 import { Title } from "./title";
 import { imagesData } from "./page";
 import { Card } from "@/components/ui/card";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 export function PalaceStory() {
   const [part, setPart] = useState<number>(1);
@@ -13,28 +14,37 @@ export function PalaceStory() {
     setPart((prevPart) => ((prevPart % 3) + 1) as 1 | 2 | 3);
   };
   return (
-    <Card className="p-6 w-[600px] ">
-      <div className="flex ">
-        {part === 1 ? (
-          <StoryPart
-            narrative={arrNarrative.slice(0, 3).join(" ")}
-            image={imagesData[0]}
-          />
-        ) : part === 2 ? (
-          <StoryPart
-            narrative={arrNarrative.slice(3, 7).join(" ")}
-            image={imagesData[1]}
-          />
-        ) : part === 3 ? (
-          <StoryPart
-            narrative={arrNarrative.slice(7).join(" ")}
-            image={imagesData[2]}
-          />
-        ) : null}
-        <button className="text-7xl" onClick={handleNextPart}>
-          ›
-        </button>
+    <ScrollArea className=" whitespace-nowrap rounded-md border ">
+      <div
+        className="flex w-max 
+      space-x-4 p-4"
+      >
+        <figure className="shrink-0">
+          <div className="overflow-hidden rounded-md ">
+            <StoryPart
+              narrative={arrNarrative.slice(0, 3).join(" ")}
+              image={imagesData[0]}
+            />
+          </div>
+        </figure>
+        <figure className="shrink-0">
+          <div className="overflow-hidden rounded-md">
+            <StoryPart
+              narrative={arrNarrative.slice(3, 7).join(" ")}
+              image={imagesData[1]}
+            />
+          </div>
+        </figure>
+        <figure className="shrink-0">
+          <div className="overflow-hidden rounded-md">
+            <StoryPart
+              narrative={arrNarrative.slice(7).join(" ")}
+              image={imagesData[2]}
+            />
+          </div>
+        </figure>
       </div>
-    </Card>
+      <ScrollBar orientation="horizontal" />
+    </ScrollArea>
   );
 }
