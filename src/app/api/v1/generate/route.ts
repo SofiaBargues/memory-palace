@@ -2,6 +2,8 @@ import palace from "@/mongodb/models/palace";
 import { OpenAI } from "openai";
 import { zodResponseFormat } from "openai/helpers/zod.mjs";
 import { z } from "zod";
+import { uploadToCloudinary } from "./uploadToCloudinary";
+// import { v2 as cloudinary } from "cloudinary";
 
 export const Story = z.object({
   sentences: z.string().array(),
@@ -75,13 +77,23 @@ export async function POST(request: Request) {
       })
     );
     const responses = await Promise.all(promises);
-    const images = responses.map((res) => res.data[0].url); // Can be `b64_json`
+    const images = responses.map((res) => res.data[0].url!); // Can be `b64_json`
+    // cloudinary.config({
+    //   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    //   api_key: process.env.CLOUDINARY_API_KEY,
+    //   api_secret: process.env.CLOUDINARY_API_SECRET,
+    // });
+
     // guardar en cloudinary las imagenes
 
+    const photoUrls = [];
+    for (const image of images) {
+      photoUrls.push(await uploadToCloudinary(image));
+    }
     // guardar en mongo la lista de palabras, el prompt, las historias y las url
 
     const { imagePrompts, sentences } = story;
-    const palace = { words, imagePrompts, sentences, images };
+    const palace = { words, imagePrompts, sentences, images: photoUrls };
 
     return Response.json(palace);
   } catch (error) {
