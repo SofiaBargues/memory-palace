@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import React, { use, useState } from "react";
-import { Story } from "../api/v1/generate/route";
+import { Palace, Story } from "../api/v1/generate/route";
 import { map } from "zod";
 import { Console } from "console";
 import { start } from "repl";
@@ -21,10 +21,10 @@ import { ButtonIcon } from "@radix-ui/react-icons";
 import { Description } from "./description";
 
 const generateData = JSON.parse(generateDataResponse);
-export const storyData = Story.parse(generateData.story);
+export const storyData = Palace.parse(generateData);
 export const imagesData = ["/part1.png", "/part2.png", "/part3.png"];
 
-const Palace = () => {
+const PalaceView = () => {
   const [inputWords, setInputWords] = useState<string[]>([]);
   const [results, setResults] = useState<boolean[]>([]);
   const [step, setStep] = useState<
@@ -159,4 +159,4 @@ const Palace = () => {
   );
 };
 
-export default Palace;
+export default PalaceView;
