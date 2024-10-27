@@ -4,11 +4,18 @@ import { useEffect, useState } from "react";
 import React from "react";
 
 import { Loader, Card, FormField } from "@/components/index";
-import { Post } from "@/components/Card";
 import { Palace } from "./api/v1/generate/route";
-const RenderCards = ({ data, title }: { data: Palace[]; title: string }) => {
+import { MongoPalace } from "@/mongodb/models/palace";
+
+const RenderCards = ({
+  data,
+  title,
+}: {
+  data: MongoPalace[];
+  title: string;
+}) => {
   if (data?.length > 0) {
-    return data.map((palace) => <Card key={palace.words[0]} {...palace} />);
+    return data.map((palace) => <Card key={palace._id} palace={palace} />);
   }
   return (
     <h2 className="mt-5 font-bold text-[#6449ff] text-xl uppercase">{title}</h2>
@@ -17,10 +24,10 @@ const RenderCards = ({ data, title }: { data: Palace[]; title: string }) => {
 
 const Home = () => {
   const [loading, setLoading] = useState(true);
-  const [allPalaces, setAllPalaces] = useState<Palace[]>([]);
+  const [allPalaces, setAllPalaces] = useState<MongoPalace[]>([]);
 
   const [searchText, setSearchText] = useState("");
-  const [searchedResults, setSearchedResults] = useState<Palace[]>([]);
+  const [searchedResults, setSearchedResults] = useState<MongoPalace[]>([]);
   const [searchTimeout, setSearchTimeout] = useState<ReturnType<
     typeof setTimeout
   > | null>(null);

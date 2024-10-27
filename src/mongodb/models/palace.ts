@@ -1,6 +1,15 @@
-import mongoose from "mongoose";
+import mongoose, { Document } from "mongoose";
 
-const palaceSchema = new mongoose.Schema({
+// Define la interfaz para los documentos de Palace
+export interface MongoPalace extends Document {
+  _id: string; // Especificar que siempre estará presente
+  words: string[];
+  images: string[];
+  sentences: string[];
+  imagePrompts: string[];
+}
+
+const palaceSchema = new mongoose.Schema<MongoPalace>({
   words: {
     type: [String],
     required: true,

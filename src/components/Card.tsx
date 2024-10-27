@@ -1,20 +1,13 @@
 import React from "react";
 import { downloadImage } from "@/utils";
 import { Palace, Story } from "@/app/api/v1/generate/route";
-import { storyData } from "@/app/palace/page";
+import { MongoPalace } from "@/mongodb/models/palace";
 
-export type Post = {
-  _id: string;
-  name: string;
-  prompt: string;
-  photo: string;
-};
-
-const Card = ({ sentences, words, imagePrompts, images }: Palace) => {
-  const _id = words[0];
-  const name = sentences[0];
-  const prompt = imagePrompts;
-  const photo = images[0];
+const Card = ({ palace }: { palace: MongoPalace }) => {
+  const name = palace.sentences[0];
+  const prompt = palace.imagePrompts;
+  const photo = palace.images[0];
+  const _id = palace._id;
 
   return (
     <div
