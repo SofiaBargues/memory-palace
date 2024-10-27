@@ -1,5 +1,5 @@
-import Card from "./Card";
+import PalaceCard from "./PalaceCard";
 import FormField from "./FormField";
 import Loader from "./Loader";
 
-export { Card, FormField, Loader };
+export { PalaceCard as Card, FormField, Loader };
