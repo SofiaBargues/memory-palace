@@ -1,5 +1,7 @@
 import React from "react";
 import { downloadImage } from "@/utils";
+import { Palace, Story } from "@/app/api/v1/generate/route";
+import { storyData } from "@/app/palace/page";
 
 export type Post = {
   _id: string;
@@ -8,7 +10,12 @@ export type Post = {
   photo: string;
 };
 
-const Card = ({ _id, name, prompt, photo }: Post) => {
+const Card = ({ sentences, words, imagePrompts, images }: Palace) => {
+  const _id = words[0];
+  const name = sentences[0];
+  const prompt = imagePrompts;
+  const photo = images[0];
+
   return (
     <div
       className="rounded-xl group relative shadow-card

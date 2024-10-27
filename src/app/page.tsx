@@ -5,10 +5,10 @@ import React from "react";
 
 import { Loader, Card, FormField } from "@/components/index";
 import { Post } from "@/components/Card";
-
-const RenderCards = ({ data, title }: { data: Post[]; title: string }) => {
+import { Palace } from "./api/v1/generate/route";
+const RenderCards = ({ data, title }: { data: Palace[]; title: string }) => {
   if (data?.length > 0) {
-    return data.map((post) => <Card key={post._id} {...post} />);
+    return data.map((palace) => <Card key={palace.words[0]} {...palace} />);
   }
   return (
     <h2 className="mt-5 font-bold text-[#6449ff] text-xl uppercase">{title}</h2>
@@ -17,10 +17,10 @@ const RenderCards = ({ data, title }: { data: Post[]; title: string }) => {
 
 const Home = () => {
   const [loading, setLoading] = useState(true);
-  const [allPosts, setAllPosts] = useState<Post[]>([]);
+  const [allPalaces, setAllPalaces] = useState<Palace[]>([]);
 
   const [searchText, setSearchText] = useState("");
-  const [searchedResults, setSearchedResults] = useState<Post[]>([]);
+  const [searchedResults, setSearchedResults] = useState<Palace[]>([]);
   const [searchTimeout, setSearchTimeout] = useState<ReturnType<
     typeof setTimeout
   > | null>(null);
@@ -29,7 +29,7 @@ const Home = () => {
     const fetchPosts = async () => {
       setLoading(true);
       try {
-        const response = await fetch("/api/v1/post", {
+        const response = await fetch("/api/v1/palace", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -40,7 +40,7 @@ const Home = () => {
           console.log(response);
           const result = await response.json();
           console.log(result);
-          setAllPosts(result.data.reverse());
+          setAllPalaces(result.data.reverse());
         } else {
           const errorData = await response.json();
           console.log(errorData);
@@ -67,14 +67,10 @@ const Home = () => {
 
     setSearchTimeout(
       setTimeout(() => {
-        const searchResults = allPosts.filter(
-          (item) =>
-            item.name
-              .toLocaleLowerCase()
-              .includes(searchText.toLocaleLowerCase()) ||
-            item.prompt
-              .toLocaleLowerCase()
-              .includes(searchText.toLocaleLowerCase())
+        const searchResults = allPalaces.filter((item) =>
+          item.words[0]
+            .toLocaleLowerCase()
+            .includes(searchText.toLocaleLowerCase())
         );
 
         setSearchedResults(searchResults);
@@ -123,7 +119,7 @@ const Home = () => {
                 title="No search results found"
               />
             ) : (
-              <RenderCards data={allPosts} title="No posts found" />
+              <RenderCards data={allPalaces} title="No posts found" />
             )}
           </>
         )}
