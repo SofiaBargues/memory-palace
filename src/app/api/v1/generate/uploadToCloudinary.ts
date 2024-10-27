@@ -1,3 +1,5 @@
+// Generated with ChatGPT. Cloudinary SDK doesn't work on edge runtime
+
 export async function uploadToCloudinary(imageUrl: string): Promise<string> {
   const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
   const apiKey = process.env.CLOUDINARY_API_KEY;

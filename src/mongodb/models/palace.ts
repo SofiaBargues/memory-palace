@@ -1,22 +1,23 @@
 import mongoose from "mongoose";
 
-const Palace = new mongoose.Schema({
+const palaceSchema = new mongoose.Schema({
   words: {
-    type: [String], // Array de strings para 'words'
+    type: [String],
     required: true,
   },
   images: {
-    type: [String], // Array de strings para 'images'
+    type: [String],
     required: true,
   },
   sentences: {
-    type: [String], // Array de strings para 'sentences'
+    type: [String],
     required: true,
   },
   imagePrompts: {
-    type: [String], // Array de strings para 'imagePrompts'
+    type: [String],
     required: true,
   },
 });
 
-export default mongoose.models.Post || mongoose.model("Palace", Palace);
+// Exporta el modelo
+export default mongoose.models.Palace || mongoose.model("Palace", palaceSchema);

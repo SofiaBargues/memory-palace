@@ -3,8 +3,10 @@ import PostSchema from "@/mongodb/models/post";
 import { v2 as cloudinary } from "cloudinary";
 
 export async function GET() {
+  //conecta la base de datos
   await dbConnect();
   try {
+    //trae todos los posts
     const posts = await PostSchema.find({});
     return Response.json({ success: true, data: posts });
   } catch (error) {
@@ -25,6 +27,8 @@ export async function POST(request: Request) {
     });
     const { name, prompt, photo } = await request.json();
     const photoUrl = await cloudinary.uploader.upload(photo);
+
+    
     await dbConnect();
 
     const newPost = await PostSchema.create({
