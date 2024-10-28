@@ -1,10 +1,13 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { PalaceView } from "../page";
+import { Palace } from "@/app/api/v1/generate/route";
 
 const PalaceIdPage = ({ params }: { params: { id: string } }) => {
   const [loading, setLoading] = useState(true);
-  const [allPalaces, setAllPalaces] = useState<MongoPalace[]>([]);
+  const [allPalaces, setAllPalaces] = useState<(Palace & { _id: string })[]>(
+    []
+  );
   useEffect(() => {
     const fetchPosts = async () => {
       setLoading(true);
@@ -47,10 +50,7 @@ const PalaceIdPage = ({ params }: { params: { id: string } }) => {
   return (
     <>
       <div className="flex">
-        <PalaceView
-          initialPalace={selectedPalace.images}
-          initialStep="palace"
-        />
+        <PalaceView initialPalace={selectedPalace} initialStep="palace" />
       </div>
     </>
   );
