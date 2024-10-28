@@ -6,7 +6,7 @@ import { imagesData } from "./page";
 import { Card } from "@/components/ui/card";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
-export function PalaceStory() {
+export function PalaceStory({ imagesData }: { imagesData: string[] }) {
   const [part, setPart] = useState<number>(1);
   const arrNarrative = storyData.sentences;
   console.log(part);

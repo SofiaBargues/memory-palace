@@ -16,7 +16,7 @@ import { WordRow } from "./wordRow";
 import { WordsList } from "./wordList";
 import { StoryPart } from "./placePort";
 import { PalaceStory } from "./palaceStory";
-import { generateDataResponse, initialWords } from "./DATA";
+import { generateDataResponse } from "./DATA";
 import { ButtonIcon } from "@radix-ui/react-icons";
 import { Description } from "./description";
 
@@ -25,7 +25,13 @@ export const storyData = Palace.parse(generateData);
 export const imagesData = ["/part1.png", "/part2.png", "/part3.png"];
 
 function PalacePage() {
-  return <PalaceView initialInputWords={[]} initialState="start" />;
+  return (
+    <PalaceView
+      imagesData={imagesData}
+      initialInputWords={[]}
+      initialState="start"
+    />
+  );
 }
 type PalaceStep =
   | "start"
@@ -36,13 +42,17 @@ type PalaceStep =
   | "results2";
 
 export function PalaceView({
+  imagesData,
   initialState,
-  initialInputWords,
+  initialOriginalWords,
 }: {
+  imagesData: string[];
   initialState: PalaceStep;
-  initialInputWords: string[];
+  initialOriginalWords: string[];
 }) {
-  const [inputWords, setInputWords] = useState<string[]>(initialInputWords);
+  const [originalWords, setOriginalWords] =
+    useState<string[]>(initialOriginalWords);
+  const [inputWords, setInputWords] = useState<string[]>([]);
   const [results, setResults] = useState<boolean[]>([]);
 
   const [step, setStep] = useState<PalaceStep>(initialState);
@@ -50,7 +60,7 @@ export function PalaceView({
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     const newArr = [];
     e.preventDefault();
-    for (let i = 0; i < initialWords.length; i++) {
+    for (let i = 0; i < originalWords.length; i++) {
       newArr.push(e.target.elements["input_" + i].value);
     }
     setInputWords(newArr);
@@ -58,7 +68,7 @@ export function PalaceView({
     const isCorrectArr = [];
     for (let i = 0; i < newArr.length; i++) {
       const palabra = newArr[i];
-      if (palabra.toLowerCase() === initialWords[i].toLowerCase()) {
+      if (palabra.toLowerCase() === originalWords[i].toLowerCase()) {
         isCorrectArr.push(true);
       } else {
         isCorrectArr.push(false);
@@ -95,7 +105,7 @@ export function PalaceView({
             There, you will find the highlighted words in the order you must
             remember.
           </Description>
-          <PalaceStory />
+          <PalaceStory imagesData={imagesData} />
         </>
       )}
       {step === "fill1" && (
@@ -105,7 +115,7 @@ export function PalaceView({
             Complete the blanks with the previous words in the correct order.
           </Description>
           <WordsInput
-            initialWords={initialWords}
+            initialWords={originalWords}
             handleSubmit={handleSubmit}
             step={step}
           />
@@ -120,7 +130,7 @@ export function PalaceView({
             Fill in the blanks as you mentally progress through the narrative.
           </Description>
           <WordsInput
-            initialWords={initialWords}
+            initialWords={originalWords}
             handleSubmit={handleSubmit}
             step={step}
           />
@@ -134,7 +144,7 @@ export function PalaceView({
             order.
           </Description>
           <WordsList
-            originalWords={initialWords}
+            originalWords={originalWords}
             results={results}
             inputWords={inputWords}
           />
@@ -148,7 +158,7 @@ export function PalaceView({
           </Description>
           <WordsList
             inputWords={inputWords}
-            originalWords={initialWords}
+            originalWords={originalWords}
             results={results}
           />
         </>
@@ -161,7 +171,7 @@ export function PalaceView({
           </Description>
           <WordsList
             inputWords={inputWords}
-            originalWords={initialWords}
+            originalWords={originalWords}
             results={results}
           />
         </>

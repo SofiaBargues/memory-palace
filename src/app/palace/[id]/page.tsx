@@ -2,7 +2,7 @@
 import PalaceCard from "@/components/PalaceCard";
 import palace, { MongoPalace } from "@/mongodb/models/palace";
 import React, { useEffect, useState } from "react";
-import { PalaceView } from "../page";
+import { imagesData, PalaceView } from "../page";
 
 const PalaceIdPage = ({ params }: { params: { id: string } }) => {
   const [loading, setLoading] = useState(true);
@@ -50,7 +50,8 @@ const PalaceIdPage = ({ params }: { params: { id: string } }) => {
     <>
       <div className="flex">
         <PalaceView
-          initialInputWords={selectedPalace.words}
+          imagesData={selectedPalace.images}
+          initialOriginalWords={selectedPalace.words}
           initialState="palace"
         />
       </div>
