@@ -24,12 +24,28 @@ const generateData = JSON.parse(generateDataResponse);
 export const storyData = Palace.parse(generateData);
 export const imagesData = ["/part1.png", "/part2.png", "/part3.png"];
 
-const PalaceView = () => {
-  const [inputWords, setInputWords] = useState<string[]>([]);
+function PalacePage() {
+  return <PalaceView initialInputWords={[]} initialState="start" />;
+}
+type PalaceStep =
+  | "start"
+  | "fill1"
+  | "results1"
+  | "palace"
+  | "fill2"
+  | "results2";
+
+function PalaceView({
+  initialState,
+  initialInputWords,
+}: {
+  initialState: PalaceStep;
+  initialInputWords: string[];
+}) {
+  const [inputWords, setInputWords] = useState<string[]>(initialInputWords);
   const [results, setResults] = useState<boolean[]>([]);
-  const [step, setStep] = useState<
-    "start" | "fill1" | "results1" | "palace" | "fill2" | "results2"
-  >("start");
+
+  const [step, setStep] = useState<PalaceStep>(initialState);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     const newArr = [];
@@ -157,6 +173,6 @@ const PalaceView = () => {
       ) : null}
     </div>
   );
-};
+}
 
-export default PalaceView;
+export default PalacePage;

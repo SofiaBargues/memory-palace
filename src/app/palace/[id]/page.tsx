@@ -2,7 +2,8 @@
 import PalaceCard from "@/components/PalaceCard";
 import palace, { MongoPalace } from "@/mongodb/models/palace";
 import React, { useEffect, useState } from "react";
-const Palace1 = ({ params }: { params: { id: string } }) => {
+
+const PalaceIdPage = ({ params }: { params: { id: string } }) => {
   const [loading, setLoading] = useState(true);
   const [allPalaces, setAllPalaces] = useState<MongoPalace[]>([]);
   useEffect(() => {
@@ -54,4 +55,4 @@ const Palace1 = ({ params }: { params: { id: string } }) => {
   );
 };
 
-export default Palace1;
+export default PalaceIdPage;
