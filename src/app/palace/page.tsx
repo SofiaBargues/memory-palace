@@ -14,8 +14,15 @@ export const storyData = Palace.parse(generateData);
 export const imagesData = ["/part1.png", "/part2.png", "/part3.png"];
 
 function PalacePage() {
+  const palace: Palace = {
+    words: initialWords,
+    images: imagesData,
+    imagePrompts: [],
+    sentences: [],
+  };
   return (
     <PalaceView
+      initialPalace={palace}
       imagesData={imagesData}
       initialOriginalWords={initialWords}
       initialState="start"
@@ -31,20 +38,23 @@ type PalaceStep =
   | "results2";
 
 export function PalaceView({
+  initialPalace,
   imagesData,
-  initialState,
   initialOriginalWords,
+  initialState,
 }: {
+  initialPalace: Palace;
   imagesData: string[];
-  initialState: PalaceStep;
   initialOriginalWords: string[];
+  initialState: PalaceStep;
 }) {
+  const [palace, setPalace] = useState(initialPalace);
   const [originalWords, setOriginalWords] =
     useState<string[]>(initialOriginalWords);
+  const [step, setStep] = useState<PalaceStep>(initialState);
+
   const [inputWords, setInputWords] = useState<string[]>([]);
   const [results, setResults] = useState<boolean[]>([]);
-
-  const [step, setStep] = useState<PalaceStep>(initialState);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     const newArr = [];
