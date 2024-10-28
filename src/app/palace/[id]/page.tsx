@@ -1,8 +1,6 @@
 "use client";
-import PalaceCard from "@/components/PalaceCard";
-import palace, { MongoPalace } from "@/mongodb/models/palace";
 import React, { useEffect, useState } from "react";
-import { imagesData, PalaceView } from "../page";
+import { PalaceView } from "../page";
 
 const PalaceIdPage = ({ params }: { params: { id: string } }) => {
   const [loading, setLoading] = useState(true);
@@ -50,8 +48,7 @@ const PalaceIdPage = ({ params }: { params: { id: string } }) => {
     <>
       <div className="flex">
         <PalaceView
-          imagesData={selectedPalace.images}
-          initialOriginalWords={selectedPalace.words}
+          initialPalace={selectedPalace.images}
           initialStep="palace"
         />
       </div>

@@ -8,6 +8,7 @@ import { WordsList } from "./wordList";
 import { PalaceStory } from "./palaceStory";
 import { generateDataResponse, initialWords } from "./DATA";
 import { Description } from "./description";
+import palace from "@/mongodb/models/palace";
 
 const generateData = JSON.parse(generateDataResponse);
 export const storyData = Palace.parse(generateData);
@@ -17,7 +18,7 @@ function PalacePage() {
   const palace: Palace = {
     words: initialWords,
     images: imagesData,
-    imagePrompts: [],
+    imagePrompts: storyData.imagePrompts,
     sentences: storyData.sentences,
   };
   return <PalaceView initialPalace={palace} initialStep="start" />;
