@@ -1,23 +1,12 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import React, { use, useState } from "react";
-import { Palace, Story } from "../api/v1/generate/route";
-import { map } from "zod";
-import { Console } from "console";
-import { start } from "repl";
-import { disconnect } from "process";
-import { Result } from "postcss";
-import { BlobLike } from "openai/uploads.mjs";
-import { text } from "stream/consumers";
+import React, { useState } from "react";
+import { Palace } from "../api/v1/generate/route";
 import { Title } from "./title";
 import { WordsInput } from "./wordsInput";
-import { Card } from "./card";
-import { WordRow } from "./wordRow";
 import { WordsList } from "./wordList";
-import { StoryPart } from "./placePort";
 import { PalaceStory } from "./palaceStory";
-import { generateDataResponse } from "./DATA";
-import { ButtonIcon } from "@radix-ui/react-icons";
+import { generateDataResponse, initialWords } from "./DATA";
 import { Description } from "./description";
 
 const generateData = JSON.parse(generateDataResponse);
@@ -28,7 +17,7 @@ function PalacePage() {
   return (
     <PalaceView
       imagesData={imagesData}
-      initialInputWords={[]}
+      initialOriginalWords={initialWords}
       initialState="start"
     />
   );
