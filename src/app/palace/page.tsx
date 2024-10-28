@@ -83,7 +83,7 @@ export function PalaceView({
     }
   }
   return (
-    <div className="w-full container m-auto p-10 flex flex-col gap-4">
+    <div className="w-full container m-auto p-10 flex flex-col items-center gap-4">
       {step === "palace" && (
         <>
           <Title title="Palace" />

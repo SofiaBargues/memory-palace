@@ -33,7 +33,7 @@ export function WordsInput({
           ))}
         </form>
       </Card>
-      <Button form="submit" type="submit">
+      <Button className="w-28" form="submit" type="submit">
         Submit
       </Button>
     </>

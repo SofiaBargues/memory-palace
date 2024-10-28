@@ -19,7 +19,7 @@ export function PalaceStory({ palace }: { palace: Palace }) {
   };
   console.log(palace);
   return (
-    <Carousel className=" whitespace-nowrap rounded-md border ">
+    <Carousel className=" whitespace-nowrap rounded-md border-none w-[430px]">
       <CarouselPrevious />
       <CarouselNext />
       <CarouselContent>
