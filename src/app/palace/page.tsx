@@ -35,7 +35,7 @@ type PalaceStep =
   | "fill2"
   | "results2";
 
-function PalaceView({
+export function PalaceView({
   initialState,
   initialInputWords,
 }: {

@@ -2,6 +2,7 @@
 import PalaceCard from "@/components/PalaceCard";
 import palace, { MongoPalace } from "@/mongodb/models/palace";
 import React, { useEffect, useState } from "react";
+import { PalaceView } from "../page";
 
 const PalaceIdPage = ({ params }: { params: { id: string } }) => {
   const [loading, setLoading] = useState(true);
@@ -48,8 +49,10 @@ const PalaceIdPage = ({ params }: { params: { id: string } }) => {
   return (
     <>
       <div className="flex">
-        hello{params.id}
-        {selectedPalace._id}
+        <PalaceView
+          initialInputWords={selectedPalace.words}
+          initialState="palace"
+        />
       </div>
     </>
   );
