@@ -1,18 +1,15 @@
 import { useState } from "react";
 import { StoryPart } from "./placePort";
-import { storyData } from "./page";
-import { Title } from "./title";
-import { imagesData } from "./page";
-import { Card } from "@/components/ui/card";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { Palace } from "../api/v1/generate/route";
 
-export function PalaceStory({ imagesData }: { imagesData: string[] }) {
+export function PalaceStory({ palace }: { palace: Palace }) {
   const [part, setPart] = useState<number>(1);
-  const arrNarrative = storyData.sentences;
   console.log(part);
   const handleNextPart = () => {
     setPart((prevPart) => ((prevPart % 3) + 1) as 1 | 2 | 3);
   };
+  console.log(palace);
   return (
     <ScrollArea className=" whitespace-nowrap rounded-md border ">
       <div
@@ -22,24 +19,24 @@ export function PalaceStory({ imagesData }: { imagesData: string[] }) {
         <figure className="shrink-0">
           <div className="overflow-hidden rounded-md ">
             <StoryPart
-              narrative={arrNarrative.slice(0, 3).join(" ")}
-              image={imagesData[0]}
+              narrative={palace.sentences.slice(0, 3).join(" ")}
+              image={palace.images[0]}
             />
           </div>
         </figure>
         <figure className="shrink-0">
           <div className="overflow-hidden rounded-md">
             <StoryPart
-              narrative={arrNarrative.slice(3, 7).join(" ")}
-              image={imagesData[1]}
+              narrative={palace.sentences.slice(3, 7).join(" ")}
+              image={palace.images[1]}
             />
           </div>
         </figure>
         <figure className="shrink-0">
           <div className="overflow-hidden rounded-md">
             <StoryPart
-              narrative={arrNarrative.slice(7).join(" ")}
-              image={imagesData[2]}
+              narrative={palace.sentences.slice(7).join(" ")}
+              image={palace.images[2]}
             />
           </div>
         </figure>

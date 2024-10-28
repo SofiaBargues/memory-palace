@@ -18,16 +18,9 @@ function PalacePage() {
     words: initialWords,
     images: imagesData,
     imagePrompts: [],
-    sentences: [],
+    sentences: storyData.sentences,
   };
-  return (
-    <PalaceView
-      initialPalace={palace}
-      imagesData={imagesData}
-      initialOriginalWords={initialWords}
-      initialState="start"
-    />
-  );
+  return <PalaceView initialPalace={palace} initialStep="start" />;
 }
 type PalaceStep =
   | "start"
@@ -39,19 +32,13 @@ type PalaceStep =
 
 export function PalaceView({
   initialPalace,
-  imagesData,
-  initialOriginalWords,
-  initialState,
+  initialStep,
 }: {
   initialPalace: Palace;
-  imagesData: string[];
-  initialOriginalWords: string[];
-  initialState: PalaceStep;
+  initialStep: PalaceStep;
 }) {
   const [palace, setPalace] = useState(initialPalace);
-  const [originalWords, setOriginalWords] =
-    useState<string[]>(initialOriginalWords);
-  const [step, setStep] = useState<PalaceStep>(initialState);
+  const [step, setStep] = useState<PalaceStep>(initialStep);
 
   const [inputWords, setInputWords] = useState<string[]>([]);
   const [results, setResults] = useState<boolean[]>([]);
@@ -59,7 +46,7 @@ export function PalaceView({
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     const newArr = [];
     e.preventDefault();
-    for (let i = 0; i < originalWords.length; i++) {
+    for (let i = 0; i < palace.words.length; i++) {
       newArr.push(e.target.elements["input_" + i].value);
     }
     setInputWords(newArr);
@@ -67,7 +54,7 @@ export function PalaceView({
     const isCorrectArr = [];
     for (let i = 0; i < newArr.length; i++) {
       const palabra = newArr[i];
-      if (palabra.toLowerCase() === originalWords[i].toLowerCase()) {
+      if (palabra.toLowerCase() === palace.words[i].toLowerCase()) {
         isCorrectArr.push(true);
       } else {
         isCorrectArr.push(false);
@@ -104,7 +91,7 @@ export function PalaceView({
             There, you will find the highlighted words in the order you must
             remember.
           </Description>
-          <PalaceStory imagesData={imagesData} />
+          <PalaceStory palace={palace} />
         </>
       )}
       {step === "fill1" && (
@@ -114,7 +101,7 @@ export function PalaceView({
             Complete the blanks with the previous words in the correct order.
           </Description>
           <WordsInput
-            initialWords={originalWords}
+            initialWords={palace.words}
             handleSubmit={handleSubmit}
             step={step}
           />
@@ -129,7 +116,7 @@ export function PalaceView({
             Fill in the blanks as you mentally progress through the narrative.
           </Description>
           <WordsInput
-            initialWords={originalWords}
+            initialWords={palace.words}
             handleSubmit={handleSubmit}
             step={step}
           />
@@ -143,7 +130,7 @@ export function PalaceView({
             order.
           </Description>
           <WordsList
-            originalWords={originalWords}
+            originalWords={palace.words}
             results={results}
             inputWords={inputWords}
           />
@@ -157,7 +144,7 @@ export function PalaceView({
           </Description>
           <WordsList
             inputWords={inputWords}
-            originalWords={originalWords}
+            originalWords={palace.words}
             results={results}
           />
         </>
@@ -170,7 +157,7 @@ export function PalaceView({
           </Description>
           <WordsList
             inputWords={inputWords}
-            originalWords={originalWords}
+            originalWords={palace.words}
             results={results}
           />
         </>

@@ -52,7 +52,7 @@ const PalaceIdPage = ({ params }: { params: { id: string } }) => {
         <PalaceView
           imagesData={selectedPalace.images}
           initialOriginalWords={selectedPalace.words}
-          initialState="palace"
+          initialStep="palace"
         />
       </div>
     </>
