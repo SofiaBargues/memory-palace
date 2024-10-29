@@ -1,14 +1,15 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Palace } from "../api/v1/generate/route";
 import { Title } from "./title";
 import { WordsInput } from "./wordsInput";
 import { WordsList } from "./wordList";
 import { PalaceStory } from "./palaceStory";
-import { generateDataResponse, initialWords } from "./DATA";
+import { generateDataResponse, initialWords, wordsArray } from "./DATA";
 import { Description } from "./description";
 import palace from "@/mongodb/models/palace";
+import { selectRandomWords } from "./selectRandomWords";
 
 const generateData = JSON.parse(generateDataResponse);
 export const storyData = Palace.parse(generateData);
@@ -16,7 +17,7 @@ export const imagesData = ["/part1.png", "/part2.png", "/part3.png"];
 
 function PalacePage() {
   const palace: Palace = {
-    words: initialWords,
+    words: selectRandomWords(),
     images: imagesData,
     imagePrompts: storyData.imagePrompts,
     sentences: storyData.sentences,
@@ -83,7 +84,7 @@ export function PalaceView({
     }
   }
   return (
-    <div className="w-full container m-auto p-10 flex flex-col items-center gap-4">
+    <div className="w-full container m-auto p-10 flex flex-col  gap-4">
       {step === "palace" && (
         <>
           <Title title="Palace" />
