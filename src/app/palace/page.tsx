@@ -6,7 +6,7 @@ import { Title } from "./title";
 import { WordsInput } from "./wordsInput";
 import { WordsList } from "./wordList";
 import { PalaceStory } from "./palaceStory";
-import { generateDataResponse, initialWords, wordsArray } from "./DATA";
+import { generateDataResponse, } from "./DATA";
 import { Description } from "./description";
 import palace from "@/mongodb/models/palace";
 import { selectRandomWords } from "./selectRandomWords";
@@ -148,6 +148,7 @@ export function PalaceView({
         </>
       )}
       {step === "results1" && (
+        //paso previo a ver el palace
         <>
           <Title title="Results" />
           <Description>

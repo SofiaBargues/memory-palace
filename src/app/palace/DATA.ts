@@ -160,18 +160,6 @@ export const wordsArray = [
   "hoodie",
 ];
 
-export const initialWords = [
-  "Tree",
-  "Computer",
-  "Chair",
-  "Phone",
-  "House",
-  "Scarf",
-  "Book",
-  "Watch",
-  "Bag",
-];
-
 export const generateDataResponse = `{
         "words":[
                 "Tree",
