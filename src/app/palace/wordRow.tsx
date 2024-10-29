@@ -16,7 +16,7 @@ export function WordRow({
       <p className="w-3">{index + 1}</p>
       {inputWord != undefined ? (
         <Card className={isCorrect ? " border-green-400 " : " border-red-400"}>
-          {inputWord}
+          <p>{inputWord}</p>
         </Card>
       ) : (
         <></>
@@ -26,7 +26,7 @@ export function WordRow({
           isCorrect ? "text-gray-400 " : " border border-gray-600 text-gray-600"
         }
       >
-        {originalWord}
+        <p>{originalWord}</p>
       </Card>
     </li>
   );
