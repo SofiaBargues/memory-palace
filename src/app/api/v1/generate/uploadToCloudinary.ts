@@ -34,7 +34,7 @@ export async function uploadToCloudinary(imageUrl: string): Promise<string> {
 
   if (!response.ok) {
     const body = await response.json();
-    throw new Error(`Error al subir la imagen: ${body.message}`);
+    throw new Error(`Error al subir la imagen: ${body.error}`);
   }
 
   // Extraer y devolver la URL de la imagen subida

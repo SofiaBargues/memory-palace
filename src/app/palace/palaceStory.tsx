@@ -11,6 +11,8 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 
+
+
 export function PalaceStory({ palace }: { palace: Palace }) {
   const [part, setPart] = useState<number>(1);
   console.log(part);

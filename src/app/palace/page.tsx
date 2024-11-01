@@ -6,7 +6,7 @@ import { Title } from "./title";
 import { WordsInput } from "./wordsInput";
 import { WordsList } from "./wordList";
 import { PalaceStory } from "./palaceStory";
-import { generateDataResponse, } from "./DATA";
+import { generateDataResponse } from "./DATA";
 import { Description } from "./description";
 import palace from "@/mongodb/models/palace";
 import { selectRandomWords } from "./selectRandomWords";
@@ -54,7 +54,25 @@ export function PalaceView({
   const [inputWords, setInputWords] = useState<string[]>([]);
   const [results, setResults] = useState<boolean[]>([]);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  async function generatePalace(): Promise<Palace | undefined> {
+    try {
+      const response = await fetch("/api/v1/generate", {
+        method: "POST",
+        body: JSON.stringify({ words: palace.words }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok " + response.statusText);
+      }
+      const generatedPalace = await response.json(); // Convierte la respuesta a JSON
+      console.log(generatedPalace); // Imprime cada nombre de usuario
+      return generatedPalace as Palace;
+    } catch (error) {
+      console.error("Fetch error:", error);
+    }
+  }
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     const newArr = [];
     e.preventDefault();
     for (let i = 0; i < palace.words.length; i++) {
@@ -72,15 +90,23 @@ export function PalaceView({
       }
     }
     setResults(isCorrectArr);
-    goToNextStep();
+    await goToNextStep();
   };
 
-  function goToNextStep() {
+  async function goToNextStep() {
     if (step === "start") {
       setStep("fill1");
     } else if (step === "fill1") {
       setStep("results1");
     } else if (step === "results1") {
+      console.log("Creating New Palace");
+      console.log("Loading");
+      const generatedPalace = await generatePalace();
+      if (!generatedPalace) {
+        console.log("Palace is undefined");
+        return;
+      }
+      setPalace(generatedPalace);
       setStep("palace");
     } else if (step === "palace") {
       setStep("fill2");
