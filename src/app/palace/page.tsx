@@ -10,6 +10,7 @@ import { generateDataResponse } from "./DATA";
 import { Description } from "./description";
 import palace from "@/mongodb/models/palace";
 import { selectRandomWords } from "./selectRandomWords";
+import { Loader } from "@/components";
 
 const generateData = JSON.parse(generateDataResponse);
 export const storyData = Palace.parse(generateData);
@@ -33,6 +34,7 @@ function PalacePage() {
   };
   return <PalaceView initialPalace={palace} initialStep="start" />;
 }
+
 type PalaceStep =
   | "start"
   | "fill1"
@@ -50,11 +52,13 @@ export function PalaceView({
 }) {
   const [palace, setPalace] = useState(initialPalace);
   const [step, setStep] = useState<PalaceStep>(initialStep);
+  const [loading, setLoading] = useState(false);
 
   const [inputWords, setInputWords] = useState<string[]>([]);
   const [results, setResults] = useState<boolean[]>([]);
 
   async function generatePalace(): Promise<Palace | undefined> {
+    setLoading(true);
     try {
       const response = await fetch("/api/v1/generate", {
         method: "POST",
@@ -69,6 +73,8 @@ export function PalaceView({
       return generatedPalace as Palace;
     } catch (error) {
       console.error("Fetch error:", error);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -120,17 +126,20 @@ export function PalaceView({
   }
   return (
     <div className="w-full container m-auto p-10 flex flex-col  gap-4">
-      {step === "palace" && (
-        <>
-          <Title title="Palace" />
-          <Description>
-            Welcome to the palace of memory, immerse yourself in this story.
-            There, you will find the highlighted words in the order you must
-            remember.
-          </Description>
-          <PalaceStory palace={palace} />
-        </>
-      )}
+      <>
+        {step === "palace" && (
+          <>
+            <Title title="Palace" />
+            <Description>
+              Welcome to the palace of memory, immerse yourself in this story.
+              There, you will find the highlighted words in the order you must
+              remember.
+            </Description>
+            <PalaceStory palace={palace} />
+          </>
+        )}
+      </>
+
       {step === "fill1" && (
         <>
           <Title title="Fill" />
@@ -173,19 +182,25 @@ export function PalaceView({
           />
         </>
       )}
-      {step === "results1" && (
-        //paso previo a ver el palace
-        <>
-          <Title title="Results" />
-          <Description>
-            These are the results of your first attempt.
-          </Description>
-          <WordsList
-            inputWords={inputWords}
-            originalWords={palace.words}
-            results={results}
-          />
-        </>
+      {loading ? (
+        <div className="flex justify-center items-center">
+          <Loader />
+        </div>
+      ) : (
+        step === "results1" && (
+          //paso previo a ver el palace
+          <>
+            <Title title="Results" />
+            <Description>
+              These are the results of your first attempt.
+            </Description>
+            <WordsList
+              inputWords={inputWords}
+              originalWords={palace.words}
+              results={results}
+            />
+          </>
+        )
       )}
       {step === "results2" && (
         <>
@@ -200,7 +215,7 @@ export function PalaceView({
           />
         </>
       )}
-      {step != "fill1" && step != "fill2" ? (
+      {step != "fill1" && step != "fill2" && !loading ? (
         <Button className="w-28" onClick={goToNextStep}>
           Next
         </Button>

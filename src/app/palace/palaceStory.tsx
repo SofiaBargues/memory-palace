@@ -11,8 +11,6 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 
-
-
 export function PalaceStory({ palace }: { palace: Palace }) {
   const [part, setPart] = useState<number>(1);
   console.log(part);
@@ -39,7 +37,7 @@ export function PalaceStory({ palace }: { palace: Palace }) {
           <Card className="shrink-0">
             <CardContent className="overflow-hidden rounded-md">
               <StoryPart
-                narrative={palace.sentences.slice(3, 7).join(" ")}
+                narrative={palace.sentences.slice(3, 6).join(" ")}
                 image={palace.images[1]}
               />
             </CardContent>
@@ -50,7 +48,7 @@ export function PalaceStory({ palace }: { palace: Palace }) {
             <Card className="shrink-0">
               <CardContent className="overflow-hidden rounded-md">
                 <StoryPart
-                  narrative={palace.sentences.slice(7).join(" ")}
+                  narrative={palace.sentences.slice(6, 9).join(" ")}
                   image={palace.images[2]}
                 />
               </CardContent>
