@@ -35,19 +35,12 @@ export async function POST(request: Request) {
     // 3. crea senteces y img Promt
     const completion = await openai.beta.chat.completions.parse({
       model: "gpt-4o",
+      temperature: 1.14,
       messages: [
         {
           role: "system",
           content:
-            // TODO: Asq the sistem to wrap word bold
-            // TODO: Improve prompt to ensure words are mentioned in order
-            `You are a Loci method builder. 
-            - Create a memorable story using all the words in the list, keeping them **in the exact order of the input**.
-            - For each word write a sentence in the output sentences array. This array has 9 sentences.
-            - The story is narrated in **first person**, where the reader moves through different places and interacts with the words.
-            - For each group for 3 sentences generate a DALL-E 3 prompt based on the scene described. This array has 3 prompts.
-            - Keep the writing at a **5th grade level**, using clear, simple imagery.
-            `,
+            "You are a Loci method builder. \n- Create a memorable story using all the words in the list, keeping them **in the exact order of the input**.\n\nStyle:\n - Keep the writing at a **5th grade level**, using clear, simple imagery.\n- The story is narrated in **first person**, where the reader moves through different places and interacts with the words.\n- The word from the input is wrapped in a bold HTML tag in the `sentences` array E.g.  alice -> <b>alice</b\n\nSteps:\n1. For each word in the user input write a sentence in the output sentences array. The `sentences` array has 9 elements.\n2. For each group of 3 consecutive sentences generate a DALL-E 3 prompt based on the scene described that contains the 3 words from the input related to those 3 sentences. The `imagePrompts` array has 3 elements.\n  ",
         },
         {
           role: "user",
@@ -94,7 +87,8 @@ export async function POST(request: Request) {
     // 6. construyo Palace
     const { imagePrompts, sentences } = story;
     const palace = { words, imagePrompts, sentences, images: persistentImages };
-
+    console.log(sentences);
+    console.log(story);
     // 7. guardo palace en mongo
     const palaceResponse = await fetch(
       process.env.NEXT_PUBLIC_URL + "/api/v1/palace",
