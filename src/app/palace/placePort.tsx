@@ -6,10 +6,10 @@ export function StoryPart({
   image: string;
 }) {
   return (
-    <div className="flex flex-col  gap-3">
-      <img className="w-96 h-96 rounded-lg" src={image} alt={image} />
+    <div className="flex flex-col gap-3">
+      <img className="w-96 h-96 rounded-lg " src={image} alt={image} />
       <div
-        className="text-wrap w-96"
+        className="text-wrap w-auto"
         dangerouslySetInnerHTML={{ __html: narrative }}
       ></div>
     </div>
