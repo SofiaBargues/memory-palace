@@ -95,7 +95,7 @@ const Home = () => {
           The Community Showcase
         </h1>
         <p className="mt-2 text-[#666e75] text-[16px] max-w-[500px]">
-          Go through other Memory Palaces
+          Browse through other Memory Palaces
         </p>
       </div>
 

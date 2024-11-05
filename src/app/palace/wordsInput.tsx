@@ -25,7 +25,7 @@ export function WordsInput({
               <Input
                 type="text"
                 id="myInput"
-                className="border-2 w-52 p-1 m-2 bg-white rounded-lg h-8 "
+                className="border-1 w-52 p-1 m-2 bg-white rounded-lg h-8 "
                 placeholder={"Word"}
                 name={"input_" + index.toString()}
               />
