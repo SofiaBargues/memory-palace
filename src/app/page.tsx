@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import React from "react";
 
-import { Loader, Card, FormField } from "@/components/index";
+import { Loader } from "@/components/index";
 import { Palace } from "./api/v1/generate/route";
 import palace, { MongoPalace } from "@/mongodb/models/palace";
 import PalaceCard from "@/components/PalaceCard";

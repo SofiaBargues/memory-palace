@@ -1,5 +1,5 @@
-import { Card } from "./card";
-
+import { Input } from "@/components/ui/input";
+import { CheckCircle2, XCircle } from "lucide-react";
 export function WordRow({
   index,
   isCorrect,
@@ -12,22 +12,24 @@ export function WordRow({
   originalWord: string;
 }) {
   return (
-    <li className="flex gap-3 items-center  ">
-      <p className="w-3">{index + 1}</p>
+    <div className="flex items-center space-x-2 ">
+      <span className="text-gray-500 w-6">{index + 1}.</span>
       {inputWord != undefined ? (
-        <Card className={isCorrect ? " border-green-400 " : " border-red-400"}>
-          <p>{inputWord}</p>
-        </Card>
+        <Input
+          value={inputWord}
+          className={`flex-1 ${
+            isCorrect ? " border-green-400 " : " border-red-400"
+          }`}
+        ></Input>
       ) : (
         <></>
       )}
-      <Card
-        className={
-          isCorrect ? "text-gray-400 " : " border border-gray-600 text-gray-600"
-        }
-      >
-        <p>{originalWord}</p>
-      </Card>
-    </li>
+      <Input value={originalWord} className={"flex-1 text-gray-400 "}></Input>
+      {isCorrect ? (
+        <CheckCircle2 className="text-green-500 w-6 h-6" />
+      ) : (
+        <XCircle className="text-red-500 w-6 h-6" />
+      )}
+    </div>
   );
 }

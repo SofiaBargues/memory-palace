@@ -25,6 +25,8 @@ export type Palace = z.infer<typeof Palace>;
 export const runtime = "edge";
 
 export async function POST(request: Request) {
+  return;
+  //todo: frene la generacion de imagenes saca rertutn para que funcione
   try {
     // 1. obtengo words del request
     const res = await request.json();

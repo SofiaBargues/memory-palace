@@ -19,22 +19,16 @@ export function WordsList({
   const progressPercentage = (totalCorrect / results.length) * 100;
 
   return (
-    <Card className="p-6 flex flex-col w-full max-w-2xl gap-3 ">
-      <CardContent>
-        <h2 className="text-xl font-semibold mb-4">Results</h2>
-        <p className="text-gray-600 mb-6">
-          These are the results of your first attempt.
-        </p>
-        {originalWords.map((x, index) => (
-          <WordRow
-            key={index}
-            index={index}
-            isCorrect={results[index]}
-            originalWord={x}
-            inputWord={inputWords[index]}
-          />
-        ))}
-      </CardContent>
+    <>
+      {originalWords.map((x, index) => (
+        <WordRow
+          key={index}
+          index={index}
+          isCorrect={results[index]}
+          originalWord={x}
+          inputWord={inputWords[index]}
+        />
+      ))}
       <div className="font-medium text-xl my-1">
         Total Correct: {results.filter((x) => x === true).length}
       </div>
@@ -45,7 +39,7 @@ export function WordsList({
           {progressPercentage.toFixed(0)}% Correct
         </p>
       </div>
-    </Card>
+    </>
   );
 }
 
