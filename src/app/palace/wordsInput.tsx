@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Title } from "./title";
 import { Input } from "@/components/ui/input";
+
 import { Card } from "@/components/ui/card";
 
 export function WordsInput({
@@ -13,27 +14,25 @@ export function WordsInput({
 }) {
   return (
     <>
-      <Card className="p-6 flex flex-col  gap-3 w-72">
-        <form
-          id="submit"
-          onSubmit={handleSubmit}
-          className="flex flex-col w-28"
-        >
-          {initialWords.map((x, index) => (
-            <div key={index} className="flex gap-3 items-center">
-              <p>{index + 1}</p>
-              <Input
-                type="text"
-                id="myInput"
-                className="border-1 w-52 p-1 m-2 bg-white rounded-lg h-8 "
-                placeholder={"Word"}
-                name={"input_" + index.toString()}
-              />
-            </div>
-          ))}
-        </form>
-      </Card>
-      <Button className="w-28" form="submit" type="submit">
+      <form
+        id="submit"
+        onSubmit={handleSubmit}
+        className="space-y-4 flex w-full flex-col"
+      >
+        {initialWords.map((x, index) => (
+          <div key={index} className="flex items-center space-x-2">
+            <span className="text-gray-500 w-6">{index + 1}.</span>
+            <Input
+              type="text"
+              id="myInput"
+              className="flex-1 text-gray-400 "
+              placeholder={"Word"}
+              name={"input_" + index.toString()}
+            />
+          </div>
+        ))}
+      </form>
+      <Button className="w-full" form="submit" type="submit">
         Submit
       </Button>
     </>

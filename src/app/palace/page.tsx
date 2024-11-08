@@ -59,30 +59,30 @@ export function PalaceView({
 }) {
   const [palace, setPalace] = useState(initialPalace);
   // const [step, setStep] = useState<PalaceStep>(initialStep);
-  const [step, setStep] = useState<PalaceStep>("results2");
+  const [step, setStep] = useState<PalaceStep>("fill1");
   const [loading, setLoading] = useState(false);
 
   const [inputWords, setInputWords] = useState<string[]>([
-    "hammock",
-    "raccoon",
-    "kite",
-    "cinnamon",
-    "fox",
-    "ring",
-    "mountain",
-    "flute",
-    "glasses",
+    // "hammock",
+    // "raccoon",
+    // "kite",
+    // "cinnamon",
+    // "fox",
+    // "ring",
+    // "mountain",
+    // "flute",
+    // "glasses",
   ]);
   const [results, setResults] = useState<boolean[]>([
-    true,
-    false,
-    false,
-    false,
-    true,
-    true,
-    true,
-    true,
-    false,
+    // true,
+    // false,
+    // false,
+    // false,
+    // true,
+    // true,
+    // true,
+    // true,
+    // false,
   ]);
 
   async function generatePalace(): Promise<Palace | undefined> {
@@ -158,57 +158,82 @@ export function PalaceView({
         <>
           {step === "palace" && (
             <>
-              <Title title="Palace" />
-              <Description>
-                Welcome to the palace of memory, immerse yourself in this story.
-                There, you will find the highlighted words in the order you must
-                remember.
-              </Description>
-              <PalaceStory palace={palace} />
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-2xl font-bold">
+                  Memory Place
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <h2 className="text-xl font-semibold mb-4">Palace</h2>
+                <p className="text-gray-600 mb-6">
+                  Welcome to the palace of memory, immerse yourself in this
+                  story. There, you will find the highlighted words in the order
+                  you must remember.
+                </p>
+
+                <PalaceStory palace={palace} />
+              </CardContent>
             </>
           )}
         </>
 
         {step === "fill1" && (
           <>
-            <Title title="Fill" />
-            <Description>
-              Complete the blanks with the previous words in the correct order.
-            </Description>
-            <WordsInput
-              initialWords={palace.words}
-              handleSubmit={handleSubmit}
-              step={step}
-            />
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-2xl font-bold">Memory Place</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <h2 className="text-xl font-semibold mb-4">Fill</h2>
+              <p className="text-gray-600 mb-6">
+                Complete the blanks with the previous words in the correct
+                order.
+              </p>
+              <WordsInput
+                initialWords={palace.words}
+                handleSubmit={handleSubmit}
+                step={step}
+              />
+            </CardContent>
           </>
         )}
         {step === "fill2" && (
           <>
-            <Title title="Fill" />
-            <Description>
-              It's time to put your journey through the palace of memory to the
-              test. Remember each scene from the story, visualizing the details.
-              Fill in the blanks as you mentally progress through the narrative.
-            </Description>
-            <WordsInput
-              initialWords={palace.words}
-              handleSubmit={handleSubmit}
-              step={step}
-            />
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-2xl font-bold">Memory Place</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <h2 className="text-xl font-semibold mb-4">Fill</h2>
+              <p className="text-gray-600 mb-6">
+                It's time to put your journey through the palace of memory to
+                the test. Remember each scene from the story, visualizing the
+                details. Fill in the blanks as you mentally progress through the
+                narrative.
+              </p>
+              <WordsInput
+                initialWords={palace.words}
+                handleSubmit={handleSubmit}
+                step={step}
+              />
+            </CardContent>
           </>
         )}
         {step === "start" && (
           <>
-            <Title title="Remember" />
-            <Description>
-              First attempt, now try to remember the following words and their
-              order.
-            </Description>
-            <WordsList
-              originalWords={palace.words}
-              results={results}
-              inputWords={inputWords}
-            />
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-2xl font-bold">Memory Place</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <h2 className="text-xl font-semibold mb-4">Remember</h2>
+              <p className="text-gray-600 mb-6">
+                First attempt, now try to remember the following words and their
+                order.
+              </p>
+              <WordsList
+                originalWords={palace.words}
+                results={results}
+                inputWords={inputWords}
+              />
+            </CardContent>
           </>
         )}
         {loading ? (
@@ -219,16 +244,23 @@ export function PalaceView({
           step === "results1" && (
             //paso previo a ver el palace
             <>
-              <Title title="Results" />
-              <Description>
-                These are the results of your first attempt.
-              </Description>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-2xl font-bold">
+                  Memory Place
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Title title="Results" />
+                <Description>
+                  These are the results of your first attempt.
+                </Description>
 
-              <WordsList
-                inputWords={inputWords}
-                originalWords={palace.words}
-                results={results}
-              />
+                <WordsList
+                  inputWords={inputWords}
+                  originalWords={palace.words}
+                  results={results}
+                />
+              </CardContent>
             </>
           )
         )}

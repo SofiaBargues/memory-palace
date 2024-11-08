@@ -11,10 +11,11 @@ export function WordRow({
   isCorrect: boolean;
   originalWord: string;
 }) {
+  const isSingleCol = inputWord === undefined;
   return (
     <div className="flex items-center space-x-2 ">
       <span className="text-gray-500 w-6">{index + 1}.</span>
-      {inputWord != undefined ? (
+      {!isSingleCol ? (
         <Input
           value={inputWord}
           className={`flex-1 ${
@@ -23,12 +24,18 @@ export function WordRow({
         ></Input>
       ) : (
         <></>
-      )}
+      )}{" "}
       <Input value={originalWord} className={"flex-1 text-gray-400 "}></Input>
-      {isCorrect ? (
-        <CheckCircle2 className="text-green-500 w-6 h-6" />
+      {!isSingleCol ? (
+        <>
+          {!isCorrect ? (
+            <CheckCircle2 className="text-green-500 w-6 h-6" />
+          ) : (
+            <XCircle className="text-red-500 w-6 h-6" />
+          )}
+        </>
       ) : (
-        <XCircle className="text-red-500 w-6 h-6" />
+        <></>
       )}
     </div>
   );

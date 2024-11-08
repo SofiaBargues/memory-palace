@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import React from "react";
 
-import { Loader } from "@/components/index";
+import { FormField, Loader } from "@/components/index";
 import { Palace } from "./api/v1/generate/route";
 import palace, { MongoPalace } from "@/mongodb/models/palace";
 import PalaceCard from "@/components/PalaceCard";
@@ -99,7 +99,7 @@ const Home = () => {
         </p>
       </div>
 
-      {/* <div className="mt-16">
+      <div className="mt-16">
         <FormField
           labelName="Seach posts"
           type="text"
@@ -108,7 +108,7 @@ const Home = () => {
           value={searchText}
           handleChange={handleSearchChange}
         />
-      </div> */}
+      </div>
       <div className="mt-10">
         {loading ? (
           <div className="flex justify-center items-center">
