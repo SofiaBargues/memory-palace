@@ -7,7 +7,10 @@ import { FormField, Loader } from "@/components/index";
 import { Palace } from "./api/v1/generate/route";
 import palace, { MongoPalace } from "@/mongodb/models/palace";
 import PalaceCard from "@/components/PalaceCard";
-
+import ExperienceCard from "@/components/ui/experienceCards";
+import { Building, ChevronRight, Footprints, PenTool } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import CallToAction from "@/components/ui/cta";
 const RenderCards = ({
   data,
   title,
@@ -102,16 +105,28 @@ const Home = () => {
           Browse through other Memory Palaces
         </p>
       </div>
-
-      <div className="mt-16">
-        <FormField
-          labelName="Seach posts"
-          type="text"
-          name="text"
-          placeholder="Search posts"
-          value={searchText}
-          handleChange={handleSearchChange}
-        />
+      <div className="container py-12">
+        <h2 className="text-3xl  font-bold mb-8 text-center">
+          Experience the Power of Memory Palaces
+        </h2>
+        <div className="grid gap-8 sm:grid-cols-3  w-full ">
+          {/* <div className="flex gap-8 flex-col sm:flex-row"> */}
+          <ExperienceCard
+            title="1. Initial Memory Test"
+            description="Try to memorize a set of words and recall them in order without any memory techniques"
+            Icon={PenTool}
+          />
+          <ExperienceCard
+            title="2. Enter the Palace"
+            description="Explore a guided story with vivid imagery that helps you remember the same words"
+            Icon={Building}
+          />
+          <ExperienceCard
+            title="3. Mental Journey"
+            description="Test your recall again using the memory palace technique and see the improvement"
+            Icon={Footprints}
+          />
+        </div>
       </div>
       <div className="mt-10">
         {loading ? (
@@ -120,25 +135,25 @@ const Home = () => {
           </div>
         ) : (
           <>
-            {searchText && (
-              <h2 className="font-medium text-[#666e75] text-xl mb-3">
-                Showing results for
-                <span className="text-[#222328] ">{searchText}</span>
+            <section className="container py-12 bg-white ">
+              <h2 className="text-3xl font-bold mb-8 text-center">
+                Community Showcase
               </h2>
-            )}
-            <div className="grid lg:grid-cold-4 sm:grid-cols-3 xs:grid-cols-2 grid-cols-1 gap-3"></div>
-
-            {searchText ? (
               <RenderCards
-                data={searchedResults}
-                title="No search results found"
-              />
-            ) : (
-              <RenderCards data={allPalaces} title="No posts found" />
-            )}
+                data={allPalaces.slice(0, 6)}
+                title="No posts found"
+              />{" "}
+              <div className="text-center mt-8">
+                <Button>
+                  Explore More Palaces
+                  <ChevronRight className="ml-2 h-4 w-4" />
+                </Button>
+              </div>
+            </section>
           </>
         )}
       </div>
+      <CallToAction />
     </section>
   );
 };
