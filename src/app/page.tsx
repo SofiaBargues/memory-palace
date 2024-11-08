@@ -16,9 +16,13 @@ const RenderCards = ({
   title: string;
 }) => {
   if (data?.length > 0) {
-    return data.map((palace) => (
-      <PalaceCard key={palace._id} palace={palace} />
-    ));
+    return (
+      <div className="grid-cols-3 gap-3 grid">
+        {data.map((palace) => (
+          <PalaceCard key={palace._id} palace={palace} />
+        ))}
+      </div>
+    );
   }
   return (
     <h2 className="mt-5 font-bold text-[#6449ff] text-xl uppercase">{title}</h2>
@@ -123,6 +127,7 @@ const Home = () => {
               </h2>
             )}
             <div className="grid lg:grid-cold-4 sm:grid-cols-3 xs:grid-cols-2 grid-cols-1 gap-3"></div>
+
             {searchText ? (
               <RenderCards
                 data={searchedResults}
