@@ -1,15 +1,7 @@
 import { Button } from "@/components/ui/button";
 import * as React from "react";
 import { Card } from "@/components/ui/card";
-import {
-  Brain,
-  ArrowRight,
-  sparkles,
-  Building,
-  Image,
-  PenTool,
-  Sparkles,
-} from "lucide-react";
+import { Sparkles } from "lucide-react";
 const CallToAction = () => {
   return (
     <section className="mt-24 text-center">
