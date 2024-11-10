@@ -11,6 +11,7 @@ import ExperienceCard from "@/components/ui/experienceCards";
 import { Building, ChevronRight, Footprints, PenTool } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import CallToAction from "@/components/ui/cta";
+import Hero from "@/components/ui/hero";
 const RenderCards = ({
   data,
   title,
@@ -98,6 +99,7 @@ const Home = () => {
 
   return (
     <section className="max-w-7xl mx-auto">
+      <Hero />
       <div className="container py-12">
         <h2 className="text-3xl  font-bold mb-8 text-center">
           Experience the Power of Memory Palaces

@@ -1,4 +1,5 @@
 import mongoose, { Document } from "mongoose";
+import { title } from "process";
 
 // Define la interfaz para los documentos de Palace
 export interface MongoPalace extends Document {
@@ -7,6 +8,7 @@ export interface MongoPalace extends Document {
   images: string[];
   sentences: string[];
   imagePrompts: string[];
+  title: string;
 }
 
 const palaceSchema = new mongoose.Schema<MongoPalace>({
@@ -24,6 +26,10 @@ const palaceSchema = new mongoose.Schema<MongoPalace>({
   },
   imagePrompts: {
     type: [String],
+    required: true,
+  },
+  title: {
+    type: String,
     required: true,
   },
 });

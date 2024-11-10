@@ -7,6 +7,7 @@ export const Story = z.object({
   sentences: z.string().array(),
 });
 export const StoryImages = z.object({
+  title: z.string(),
   imagePrompts: z.string().array(),
 });
 
@@ -14,7 +15,7 @@ export type Story = z.infer<typeof Story>;
 export type StoryImages = z.infer<typeof StoryImages>;
 
 export const Palace = z.object({
-  
+  title: z.string().optional(),
   words: z.string().array(),
   images: z.string().array(),
   sentences: z.string().array(),
@@ -26,7 +27,8 @@ export type Palace = z.infer<typeof Palace>;
 export const runtime = "edge";
 
 export async function POST(request: Request) {
-  return;
+  // stop the img generator
+  // return;
   //todo: frene la generacion de imagenes saca rertutn para que funcione
   try {
     // 1. obtengo words del request
@@ -73,13 +75,14 @@ Steps:
       });
     }
     // 4. crea img Promt
-    const completionImagesPrompts = await openai.beta.chat.completions.parse({
+    const step2Completion = await openai.beta.chat.completions.parse({
       model: "gpt-4o",
       temperature: 1.2,
       messages: [
         {
           role: "system",
           content: `You are a Loci method builder. 
+          - Create a title for the story.
 - Create three DALL-E 3 prompts.
 Steps:
 1. For each sentence generate a DALL-E 3 prompt based on the scene described that contains.
@@ -97,9 +100,9 @@ Steps:
       response_format: zodResponseFormat(StoryImages, "story"),
     });
 
-    const storyImages = completionImagesPrompts.choices[0].message.parsed;
+    const step2response = step2Completion.choices[0].message.parsed;
 
-    if (storyImages === null) {
+    if (step2response === null) {
       return new Response(JSON.stringify({ message: "Story Images is Null" }), {
         status: 500,
       });
@@ -107,7 +110,7 @@ Steps:
 
     // 5. creo las imagenes con dalle 3
 
-    const imgPrompts = storyImages.imagePrompts;
+    const imgPrompts = step2response.imagePrompts;
 
     // DALLE
     const promises = imgPrompts.map((imgPrompt) =>
@@ -134,8 +137,14 @@ Steps:
 
     // 7. construyo Palace
     const { sentences } = storySentences;
-    const { imagePrompts } = storyImages;
-    const palace = { words, imagePrompts, sentences, images: persistentImages };
+    const { imagePrompts, title } = step2response;
+    const palace = {
+      title,
+      words,
+      imagePrompts,
+      sentences,
+      images: persistentImages,
+    };
     console.log(sentences);
     console.log(storySentences);
     // 8. guardo palace en mongo

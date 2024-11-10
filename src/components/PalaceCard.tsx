@@ -34,7 +34,7 @@ const PalaceCard = ({ palace }: { palace: MongoPalace }) => {
                 />
                 <div className="absolute inset-0 bg-black bg-opacity-50 transition-opacity opacity-0 hover:opacity-100 flex items-end">
                   <div className="p-4 text-white">
-                    <h3 className="font-bold text-2xl">Title</h3>
+                    <h3 className="font-bold text-2xl">{palace.title}</h3>
                     {/* <p className="text-sm">{palace.sentences.slice(0,3)}</p> */}
                   </div>
                 </div>

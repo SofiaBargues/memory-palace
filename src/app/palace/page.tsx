@@ -36,6 +36,7 @@ function PalacePage() {
   const palace: Palace = {
     words: words,
     images: imagesData,
+    title: storyData.title,
     imagePrompts: storyData.imagePrompts,
     sentences: storyData.sentences,
   };
@@ -258,11 +259,17 @@ export function PalaceView({
                 originalWords={palace.words}
                 results={results}
               />
+              <a href="http://localhost:3000/">
+                <Button className="w-full mt-4">Go home</Button>
+              </a>
             </CardContent>
           </>
         )}
         <CardFooter className="flex flex-col items-start space-y-4">
-          {step != "fill1" && step != "fill2" && !loading ? (
+          {step != "fill1" &&
+          step != "fill2" &&
+          step != "results2" &&
+          !loading ? (
             <Button className="w-full" onClick={goToNextStep}>
               Next
             </Button>
