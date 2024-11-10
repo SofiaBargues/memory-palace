@@ -58,32 +58,11 @@ export function PalaceView({
   initialStep: PalaceStep;
 }) {
   const [palace, setPalace] = useState(initialPalace);
-  // const [step, setStep] = useState<PalaceStep>(initialStep);
-  const [step, setStep] = useState<PalaceStep>("fill1");
+  const [step, setStep] = useState<PalaceStep>(initialStep);
   const [loading, setLoading] = useState(false);
 
-  const [inputWords, setInputWords] = useState<string[]>([
-    // "hammock",
-    // "raccoon",
-    // "kite",
-    // "cinnamon",
-    // "fox",
-    // "ring",
-    // "mountain",
-    // "flute",
-    // "glasses",
-  ]);
-  const [results, setResults] = useState<boolean[]>([
-    // true,
-    // false,
-    // false,
-    // false,
-    // true,
-    // true,
-    // true,
-    // true,
-    // false,
-  ]);
+  const [inputWords, setInputWords] = useState<string[]>([]);
+  const [results, setResults] = useState<boolean[]>([]);
 
   async function generatePalace(): Promise<Palace | undefined> {
     setLoading(true);

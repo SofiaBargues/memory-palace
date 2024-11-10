@@ -14,6 +14,7 @@ export type Story = z.infer<typeof Story>;
 export type StoryImages = z.infer<typeof StoryImages>;
 
 export const Palace = z.object({
+  
   words: z.string().array(),
   images: z.string().array(),
   sentences: z.string().array(),

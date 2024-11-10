@@ -35,6 +35,7 @@ const RenderCards = ({
 const Home = () => {
   const [loading, setLoading] = useState(true);
   const [allPalaces, setAllPalaces] = useState<MongoPalace[]>([]);
+  const [handleShow, setHandleShow] = useState<boolean>(false);
 
   const [searchText, setSearchText] = useState("");
   const [searchedResults, setSearchedResults] = useState<MongoPalace[]>([]);
@@ -97,14 +98,6 @@ const Home = () => {
 
   return (
     <section className="max-w-7xl mx-auto">
-      <div>
-        <h1 className="font-extrabold text-[#222328] text-[32px]">
-          The Community Showcase
-        </h1>
-        <p className="mt-2 text-[#666e75] text-[16px] max-w-[500px]">
-          Browse through other Memory Palaces
-        </p>
-      </div>
       <div className="container py-12">
         <h2 className="text-3xl  font-bold mb-8 text-center">
           Experience the Power of Memory Palaces
@@ -135,17 +128,28 @@ const Home = () => {
           </div>
         ) : (
           <>
-            <section className="container py-12 bg-white ">
-              <h2 className="text-3xl font-bold mb-8 text-center">
-                Community Showcase
-              </h2>
-              <RenderCards
-                data={allPalaces.slice(0, 6)}
-                title="No posts found"
-              />{" "}
+            <section className="container py-12">
+              <div className="text-center ">
+                <h2 className="text-3xl font-bold ">Community Showcase</h2>
+                <p className="mt-2 text-[#666e75] mb-3 text-[16px] ">
+                  Browse through other Memory Palaces
+                </p>
+              </div>
+              {handleShow === false ? (
+                <RenderCards
+                  data={allPalaces.slice(0, 6)}
+                  title="No posts found"
+                />
+              ) : (
+                <RenderCards data={allPalaces} title="No posts found" />
+              )}
               <div className="text-center mt-8">
-                <Button>
-                  Explore More Palaces
+                <Button
+                  onClick={() =>
+                    !handleShow ? setHandleShow(true) : setHandleShow(false)
+                  }
+                >
+                  {!handleShow ? "More" : "Less"} Palaces
                   <ChevronRight className="ml-2 h-4 w-4" />
                 </Button>
               </div>

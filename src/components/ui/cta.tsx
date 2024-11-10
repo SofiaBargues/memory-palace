@@ -9,7 +9,7 @@ const CallToAction = () => {
         <h2 className="text-3xl font-bold tracking-tighter mb-4">
           Ready to Enhance Your Memory?
         </h2>
-        <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+        <p className=" text-muted-foreground mb-8 max-w-2xl mx-auto">
           Start your journey with our guided memory palace experiences or create
           your own custom memory challenges.
         </p>
