@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 
 function MyControlledInput({
   index,
@@ -12,7 +12,9 @@ function MyControlledInput({
 }) {
   const [value, setValue] = useState(initialValue);
 
-  const onChange = (event) => {
+  const onChange = (event: {
+    target: { value: SetStateAction<string | undefined> };
+  }) => {
     setValue(event.target.value);
   };
 
