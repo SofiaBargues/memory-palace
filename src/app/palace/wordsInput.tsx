@@ -6,6 +6,7 @@ function MyControlledInput({
   index,
   initialValue,
 }: {
+  className: string;
   index: number;
   initialValue: string | undefined;
 }) {
@@ -46,9 +47,13 @@ export function WordsInput({
         className="space-y-4 flex w-full flex-col"
       >
         {initialWords.map((x, index) => (
-          <div key={index} className="flex items-center space-x-2">
-            <span className="text-gray-500 w-6">{index + 1}.</span>
-            <MyControlledInput index={index} initialValue={x} />
+          <div key={index} className="flex items-center space-x-2 ">
+            <span className="text-gray-500 w-6 ">{index + 1}.</span>
+            <MyControlledInput
+              index={index}
+              className="flex-1 text-black font-semibold // flex h-9 w-full rounded-md bg-secondary px-3 items-center text-sm shadow-md "
+              initialValue={x}
+            />
           </div>
         ))}
       </form>

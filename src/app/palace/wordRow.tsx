@@ -31,7 +31,13 @@ export function WordRow({
       ) : (
         <></>
       )}
-      <Input value={originalWord} className={"flex-1 text-gray-400 "}></Input>
+      <div
+        className={
+          "flex-1 text-black font-semibold // flex h-9 w-full rounded-md bg-secondary px-3 items-center text-sm shadow-md "
+        }
+      >
+        {originalWord}
+      </div>
       {!isSingleCol ? (
         <>
           {isCorrect && originalWord != "" ? (
