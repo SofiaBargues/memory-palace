@@ -13,10 +13,12 @@ const CallToAction = () => {
           Start your journey with our guided memory palace experiences or create
           your own custom memory challenges.
         </p>
-        <Button size="lg">
-          Get Started Now
-          <Sparkles className="ml-2 h-4 w-4" />
-        </Button>
+        <a href="/palace">
+          <Button size="lg">
+            Get Started Now
+            <Sparkles className="ml-2 h-4 w-4" />
+          </Button>
+        </a>
       </Card>
     </section>
   );

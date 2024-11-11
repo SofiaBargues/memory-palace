@@ -1,12 +1,15 @@
 import { WordRow } from "./wordRow";
 import { Progress } from "@/components/ui/progress";
 import { useEffect, useState } from "react";
+import { PalaceStep } from "./palaceView";
 
 export function WordsList({
   inputWords,
   originalWords,
   results,
+  step,
 }: {
+  step: PalaceStep;
   inputWords: string[];
   originalWords: string[];
   results: boolean[];
@@ -18,6 +21,7 @@ export function WordsList({
     <>
       {originalWords.map((x, index) => (
         <WordRow
+          step={step}
           key={index}
           index={index}
           isCorrect={results[index]}
@@ -25,7 +29,7 @@ export function WordsList({
           inputWord={inputWords[index]}
         />
       ))}
-      {results.length>0 ? (
+      {results.length > 0 ? (
         <>
           <div className="font-medium text-xl my-1">
             Total Correct: {results.filter((x) => x === true).length}

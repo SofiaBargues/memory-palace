@@ -9,6 +9,7 @@ import { Card } from "./card";
 
 const Hero = ({}) => {
   const [activeImage, setActiveImage] = useState(0);
+  const [showMore, setShowMore] = useState(false);
 
   const images = ["/img1 (1).png", "/img1 (3).png", "/img1 (2).png"];
 
@@ -29,19 +30,24 @@ const Hero = ({}) => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
               >
-                <h1 className="text-4xl font-bold tracking-tight sm:text-6xl md:text-7xl">
-                  Master the Art of Memory
+                <h1 className="text-4xl font-bold tracking-tight md:text-7xl lg:text-8xl xl:text-9xl">
+                  Memory Palace
                 </h1>
-                <p className="mt-6 text-lg text-muted-foreground md:text-xl">
-                  Unlock the power of your mind with the ancient technique of
-                  Memory Palace. Transform the way you learn and remember
-                  through the Method of Loci.
+                <h2 className="font-bold mt-3 md:mt-6 text-lg md:text-3xl">
+                  Unlock the Power of Your Mind
+                </h2>
+                <p className=" text-lg mt-2 md:mt-4 text-muted-foreground md:text-xl text-pretty">
+                  Step into a realm where memory becomes a journey. Using the
+                  ancient Method of Loci, our AI guides you through vivid mental
+                  landscapes, transforming information into unforgettable
+                  stories.
                 </p>
                 <div className="mt-8 flex flex-col gap-4 sm:flex-row">
                   <Button size="lg" className="w-full sm:w-auto">
                     Start Your Journey
                   </Button>
                   <Button
+                    onClick={() => setShowMore(!showMore)}
                     variant="outline"
                     size="lg"
                     className="w-full sm:w-auto"
@@ -85,18 +91,22 @@ const Hero = ({}) => {
           </div>
         </div>
       </section>
-      <Card className="text-center rounded-xl border text-card-foreground shadow py-12  mt-12">
-        <h2 className="text-3xl font-bold mb-8 ">
-          What is the Method of Loci?
-        </h2>
-        <p className="max-w-6xl text-lg mx-auto text-muted-foreground ">
-          The Method of Loci, also known as Memory Palace, is a powerful
-          memorization technique that uses visualization to organize and recall
-          information. By mentally placing items within a familiar location, you
-          create strong associations that significantly improve your ability to
-          remember and retrieve information.
-        </p>
-      </Card>
+      {showMore ? (
+        <Card className="text-center rounded-xl border text-card-foreground shadow py-12  mt-12">
+          <h2 className="text-3xl font-bold mb-8 ">
+            What is the Method of Loci?
+          </h2>
+          <p className="max-w-6xl text-lg mx-auto text-muted-foreground ">
+            The Method of Loci, also known as Memory Palace, is a powerful
+            memorization technique that uses visualization to organize and
+            recall information. By mentally placing items within a familiar
+            location, you create strong associations that significantly improve
+            your ability to remember and retrieve information.
+          </p>
+        </Card>
+      ) : (
+        <></>
+      )}
     </>
   );
 };

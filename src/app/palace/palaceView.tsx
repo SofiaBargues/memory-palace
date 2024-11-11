@@ -16,7 +16,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-type PalaceStep =
+export type PalaceStep =
   | "start"
   | "fill1"
   | "results1"
@@ -35,6 +35,7 @@ export function PalaceView({
   const [step, setStep] = useState<PalaceStep>(initialStep);
   const [loading, setLoading] = useState(false);
 
+  const [referenceWords, setReferenceWords] = useState<string[]>(palace.words);
   const [inputWords, setInputWords] = useState<string[]>([]);
   const [results, setResults] = useState<boolean[]>([]);
 
@@ -43,7 +44,7 @@ export function PalaceView({
     try {
       const response = await fetch("/api/v1/generate", {
         method: "POST",
-        body: JSON.stringify({ words: palace.words }),
+        body: JSON.stringify({ words: referenceWords }),
       });
 
       if (!response.ok) {
@@ -59,10 +60,24 @@ export function PalaceView({
     }
   }
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleWordsChoiceSubmit = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
     const newArr = [];
     e.preventDefault();
-    for (let i = 0; i < palace.words.length; i++) {
+    for (let i = 0; i < referenceWords.length; i++) {
+      // @ts-expect-error  form has elements attribute
+      newArr.push(e.target.elements["input_" + i].value);
+    }
+    setReferenceWords(newArr);
+    console.log(newArr);
+    await goToNextStep();
+  };
+
+  const handleFillSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const newArr = [];
+    e.preventDefault();
+    for (let i = 0; i < referenceWords.length; i++) {
       // @ts-expect-error  form has elements attribute
       newArr.push(e.target.elements["input_" + i].value);
     }
@@ -71,7 +86,7 @@ export function PalaceView({
     const isCorrectArr = [];
     for (let i = 0; i < newArr.length; i++) {
       const palabra = newArr[i];
-      if (palabra.toLowerCase() === palace.words[i].toLowerCase()) {
+      if (palabra.toLowerCase() === referenceWords[i].toLowerCase()) {
         isCorrectArr.push(true);
       } else {
         isCorrectArr.push(false);
@@ -143,8 +158,8 @@ export function PalaceView({
                 order.
               </p>
               <WordsInput
-                initialWords={palace.words}
-                handleSubmit={handleSubmit}
+                initialWords={new Array(9).fill(undefined)}
+                handleSubmit={handleFillSubmit}
                 step={step}
               />
             </CardContent>
@@ -164,8 +179,8 @@ export function PalaceView({
                 narrative.
               </p>
               <WordsInput
-                initialWords={palace.words}
-                handleSubmit={handleSubmit}
+                initialWords={new Array(9).fill(undefined)}
+                handleSubmit={handleFillSubmit}
                 step={step}
               />
             </CardContent>
@@ -182,10 +197,10 @@ export function PalaceView({
                 First attempt, now try to remember the following words and their
                 order.
               </p>
-              <WordsList
-                originalWords={palace.words}
-                results={results}
-                inputWords={inputWords}
+              <WordsInput
+                initialWords={referenceWords}
+                handleSubmit={handleWordsChoiceSubmit}
+                step={step}
               />
             </CardContent>
           </>
@@ -210,8 +225,9 @@ export function PalaceView({
                 </Description>
 
                 <WordsList
+                  step={step}
                   inputWords={inputWords}
-                  originalWords={palace.words}
+                  originalWords={referenceWords}
                   results={results}
                 />
               </CardContent>
@@ -226,11 +242,12 @@ export function PalaceView({
             <CardContent>
               <h2 className="text-xl font-semibold mb-4">Results</h2>
               <p className="text-gray-600 mb-6">
-                These are the results of your first attempt.
+                These are the results of your journey by the memory palace.
               </p>
               <WordsList
+                step={step}
                 inputWords={inputWords}
-                originalWords={palace.words}
+                originalWords={referenceWords}
                 results={results}
               />
               <a href="http://localhost:3000/">
@@ -243,6 +260,7 @@ export function PalaceView({
           {step != "fill1" &&
           step != "fill2" &&
           step != "results2" &&
+          step != "start" &&
           !loading ? (
             <Button className="w-full" onClick={goToNextStep}>
               Next
