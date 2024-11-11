@@ -15,6 +15,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { selectRandomWords } from "./selectRandomWords";
 
 export type PalaceStep =
   | "start"
@@ -197,7 +198,11 @@ export function PalaceView({
                 First attempt, now try to remember the following words and their
                 order.
               </p>
+              <Button onClick={() => setReferenceWords(selectRandomWords())}>
+                Random
+              </Button>
               <WordsInput
+                key={JSON.stringify(referenceWords)}
                 initialWords={referenceWords}
                 handleSubmit={handleWordsChoiceSubmit}
                 step={step}
