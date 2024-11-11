@@ -1,8 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { Title } from "./title";
 import { Input } from "@/components/ui/input";
 
-import { Card } from "@/components/ui/card";
 
 export function WordsInput({
   handleSubmit,

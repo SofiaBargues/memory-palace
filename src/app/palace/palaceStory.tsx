@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { StoryPart } from "./placePort";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { Palace } from "../api/v1/generate/route";
+import { Palace } from "../api/v1/generate/types";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Carousel,
@@ -12,11 +11,11 @@ import {
 } from "@/components/ui/carousel";
 
 export function PalaceStory({ palace }: { palace: Palace }) {
-  const [part, setPart] = useState<number>(1);
+  const [part] = useState<number>(1);
   console.log(part);
-  const handleNextPart = () => {
-    setPart((prevPart) => ((prevPart % 3) + 1) as 1 | 2 | 3);
-  };
+  // const handleNextPart = () => {
+  //   setPart((prevPart) => ((prevPart % 3) + 1) as 1 | 2 | 3);
+  // };
   console.log(palace);
   return (
     <Carousel className=" whitespace-nowrap rounded-md border-none w-[430px]">

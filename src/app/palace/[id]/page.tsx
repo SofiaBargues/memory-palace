@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { PalaceView } from "../page";
-import { Palace } from "@/app/api/v1/generate/route";
+import { PalaceView } from "../palaceView";
+import { Palace } from "@/app/api/v1/generate/types";
 
 const PalaceIdPage = ({ params }: { params: { id: string } }) => {
   const [loading, setLoading] = useState(true);
@@ -42,6 +42,9 @@ const PalaceIdPage = ({ params }: { params: { id: string } }) => {
   console.log(allPalaces);
   const selectedPalace = allPalaces.find((value) => value._id === params.id);
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
   if (!selectedPalace) {
     return <div>Not found</div>;
   }

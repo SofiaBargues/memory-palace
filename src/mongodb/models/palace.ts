@@ -1,5 +1,4 @@
 import mongoose, { Document } from "mongoose";
-import { title } from "process";
 
 // Define la interfaz para los documentos de Palace
 export interface MongoPalace extends Document {

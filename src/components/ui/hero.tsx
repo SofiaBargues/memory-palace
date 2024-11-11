@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import Link from "next/link";
 import Image from "next/image";
 import * as React from "react";
 import { Card } from "./card";

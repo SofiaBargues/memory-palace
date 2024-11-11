@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { wordsArray } from "./DATA";
 
 export const selectRandomWords = () => {

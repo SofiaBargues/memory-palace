@@ -1,6 +1,15 @@
+import { LucideIcon } from "lucide-react";
 import * as React from "react";
 
-const ExperienceCard = ({ title, description, Icon }) => {
+const ExperienceCard = ({
+  title,
+  description,
+  Icon,
+}: {
+  title: string;
+  description: string;
+  Icon: LucideIcon;
+}) => {
   return (
     <div className=" bg-white shadow-lg rounded-lg col-span-1 sm:col-span-1">
       <div className=" p-6">

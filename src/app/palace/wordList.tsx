@@ -1,10 +1,6 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { WordRow } from "./wordRow";
 import { Progress } from "@/components/ui/progress";
-import { use, useEffect, useState } from "react";
-import { Button } from "./button";
-import { Description } from "./description";
-import { Braces, CheckCircle2, XCircle } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export function WordsList({
   inputWords,

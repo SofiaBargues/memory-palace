@@ -1,11 +1,8 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { downloadImage } from "@/utils";
-import { Palace, Story } from "@/app/api/v1/generate/route";
 import { MongoPalace } from "@/mongodb/models/palace";
 import { Card, CardContent } from "./ui/card";
-import { PenTool, Building, Footprints } from "lucide-react"; // Importa los iconos de lucide-react
 
 import {
   Dialog,
@@ -14,9 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import ExperienceCard from "./ui/experienceCards";
 const PalaceCard = ({ palace }: { palace: MongoPalace }) => {
-  const prompt = palace.imagePrompts;
   const _id = palace._id;
 
   return (

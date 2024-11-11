@@ -1,10 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import React from "react";
 
-import { MongoPalace } from "@/mongodb/models/palace";
-import PalaceCard from "@/components/PalaceCard";
 import ExperienceCard from "@/components/ui/experienceCards";
 import { Building, Footprints, PenTool } from "lucide-react";
 import CallToAction from "@/components/ui/cta";
@@ -12,34 +9,26 @@ import Hero from "@/components/ui/hero";
 import PalacesGrid from "@/components/ui/palacesGrid";
 
 const Home = () => {
-  [];
+  // const [searchText, setSearchText] = useState("");
+  // const [searchTimeout, setSearchTimeout] = useState<ReturnType<
+  //   typeof setTimeout
+  // > | null>(null);
 
-  const [searchText, setSearchText] = useState("");
-  const [searchTimeout, setSearchTimeout] = useState<ReturnType<
-    typeof setTimeout
-  > | null>(null);
+  // setSearchText(e.target.value);
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (searchTimeout) {
-      clearTimeout(searchTimeout);
-    }
+  // setSearchText(e.target.value);
 
-    setSearchText(e.target.value);
+  // setSearchTimeout(
+  //   setTimeout(() => {
+  //     const searchResults = allPalaces.filter((item) =>
+  //       item.words[0]
+  //         .toLocaleLowerCase()
+  //         .includes(searchText.toLocaleLowerCase())
+  //     );
 
-    setSearchText(e.target.value);
-
-    setSearchTimeout(
-      setTimeout(() => {
-        const searchResults = allPalaces.filter((item) =>
-          item.words[0]
-            .toLocaleLowerCase()
-            .includes(searchText.toLocaleLowerCase())
-        );
-
-        setSearchedResults(searchResults);
-      }, 500)
-    );
-  };
+  //     setSearchedResults(searchResults);
+  //   }, 500)
+  // );
 
   return (
     <section className="max-w-7xl mx-auto">
