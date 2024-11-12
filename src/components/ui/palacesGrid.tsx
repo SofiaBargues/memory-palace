@@ -67,14 +67,14 @@ export default function PalacesGrid() {
   };
 
   return (
-    <div className="mt-10">
+    <div id="Grid" className="mt-10">
       {loading ? (
         <div className="flex justify-center items-center">
           <Loader />
         </div>
       ) : (
         <>
-          <section className="container py-12">
+          <section id="Community Showcase" className="container py-12">
             <div className="text-center ">
               <h2 className="text-3xl font-bold ">Community Showcase</h2>
               <p className="mt-2 text-[#666e75] mb-3 text-[16px] ">

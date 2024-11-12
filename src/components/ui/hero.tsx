@@ -9,7 +9,6 @@ import { Card } from "./card";
 
 const Hero = ({}) => {
   const [activeImage, setActiveImage] = useState(0);
-  const [showMore, setShowMore] = useState(false);
 
   const images = ["/img1 (1).png", "/img1 (3).png", "/img1 (2).png"];
 
@@ -43,17 +42,11 @@ const Hero = ({}) => {
                   stories.
                 </p>
                 <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-                  <Button size="lg" className="w-full sm:w-auto">
-                    Start Your Journey
-                  </Button>
-                  <Button
-                    onClick={() => setShowMore(!showMore)}
-                    variant="outline"
-                    size="lg"
-                    className="w-full sm:w-auto"
-                  >
-                    Learn More
-                  </Button>
+                  <a href="#Grid">
+                    <Button size="lg" className="w-full sm:w-auto">
+                      Test Your Memory
+                    </Button>
+                  </a>
                 </div>
               </motion.div>
             </div>
@@ -91,22 +84,19 @@ const Hero = ({}) => {
           </div>
         </div>
       </section>
-      {showMore ? (
-        <Card className="text-center rounded-xl border text-card-foreground shadow py-12  mt-12">
-          <h2 className="text-3xl font-bold mb-8 ">
-            What is the Method of Loci?
-          </h2>
-          <p className="max-w-6xl text-lg mx-auto text-muted-foreground ">
-            The Method of Loci, also known as Memory Palace, is a powerful
-            memorization technique that uses visualization to organize and
-            recall information. By mentally placing items within a familiar
-            location, you create strong associations that significantly improve
-            your ability to remember and retrieve information.
-          </p>
-        </Card>
-      ) : (
-        <></>
-      )}
+
+      <Card className="text-center rounded-xl border text-card-foreground shadow py-12  mt-12">
+        <h2 className="text-3xl font-bold mb-8 ">
+          What is the Method of Loci?
+        </h2>
+        <p className="max-w-6xl text-lg mx-auto text-muted-foreground ">
+          The Method of Loci, also known as Memory Palace, is a powerful
+          memorization technique that uses visualization to organize and recall
+          information. By mentally placing items within a familiar location, you
+          create strong associations that significantly improve your ability to
+          remember and retrieve information.
+        </p>
+      </Card>
     </>
   );
 };
