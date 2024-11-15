@@ -51,7 +51,7 @@ export default function PalacesGrid() {
   }) => {
     if (data?.length > 0) {
       return (
-        <div className="grid-cols-3 gap-3 grid">
+        <div className="grid-cols-1  md:grid-cols-2 lg:grid-cols-3 gap-3 grid">
           {data.map((palace) => (
             <PalaceCard key={palace._id} palace={palace} />
           ))}
@@ -67,18 +67,20 @@ export default function PalacesGrid() {
   };
 
   return (
-    <div id="Grid" className="mt-10">
+    <div id="Grid" className="mt-10 ">
       {loading ? (
         <div className="flex justify-center items-center">
           <Loader />
         </div>
       ) : (
         <>
-          <section id="Community Showcase" className="container py-12">
-            <div className="text-center ">
-              <h2 className="text-3xl font-bold ">Community Showcase</h2>
-              <p className="mt-2 text-[#666e75] mb-3 text-[16px] ">
-                Browse through other Memory Palaces
+          <section id="Community Showcase" className=" py-12">
+            <div className="text-center py-4">
+              <h2 className="text-3xl font-bold ">Choose a palace</h2>
+              <p className="mt-2 text-[#666e75] mb-3 text-[16px] text-balance px-32">
+                Explore a gallery of Memory Palaces created by the users. Each
+                scene is a unique journey, waiting for you to dive in and
+                uncover its story. Choose a palace to explore.
               </p>
             </div>
             {handleShow === false ? (

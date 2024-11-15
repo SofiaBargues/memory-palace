@@ -85,7 +85,7 @@ const Hero = ({}) => {
         </div>
       </section>
 
-      <Card className="text-center rounded-xl border text-card-foreground shadow py-12  mt-12">
+      <Card className="text-center rounded-xl border text-card-foreground shadow py-12  px-10 mt-12">
         <h2 className="text-3xl font-bold mb-8 ">
           What is the Method of Loci?
         </h2>

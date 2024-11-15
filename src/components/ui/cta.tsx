@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Sparkles } from "lucide-react";
 const CallToAction = () => {
   return (
-    <section className="mt-24 text-center ">
+    <section id="Create" className=" text-center ">
       <Card className="p-12 ">
         <h2 className="text-3xl font-bold tracking-tighter mb-4">
           Ready to Enhance Your Memory?

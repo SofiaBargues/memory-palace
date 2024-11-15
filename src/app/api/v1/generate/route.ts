@@ -3,7 +3,6 @@ import { zodResponseFormat } from "openai/helpers/zod.mjs";
 import { uploadToCloudinary } from "./uploadToCloudinary";
 import { Story, StoryImages } from "./types";
 
-
 export const runtime = "edge";
 
 export async function POST(request: Request) {
@@ -57,7 +56,7 @@ Steps:
     // 4. crea img Promt
     const step2Completion = await openai.beta.chat.completions.parse({
       model: "gpt-4o",
-      temperature: 1.2,
+      temperature: 0,
       messages: [
         {
           role: "system",

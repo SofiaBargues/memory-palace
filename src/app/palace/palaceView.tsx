@@ -11,11 +11,25 @@ import { Loader } from "@/components";
 import {
   Card,
   CardContent,
+  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { selectRandomWords } from "./selectRandomWords";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@radix-ui/react-alert-dialog";
+import {
+  AlertDialogFooter,
+  AlertDialogHeader,
+} from "@/components/ui/alert-dialog";
 
 export type PalaceStep =
   | "start"
@@ -124,23 +138,19 @@ export function PalaceView({
   }
   return (
     <div className="w-full container m-auto p-10 flex flex-col  gap-4">
-      <Card className="w-full max-w-2xl">
+      <Card className="w-full max-w-5xl">
         <>
           {step === "palace" && (
             <>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-2xl font-bold">
-                  Memory Place
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <h2 className="text-xl font-semibold mb-4">Palace</h2>
-                <p className="text-gray-600 mb-6">
+              <CardHeader className="">
+                <CardTitle className="text-2xl font-bold">Place</CardTitle>
+                <CardDescription className="text-gray-600 mb-6">
                   Welcome to the palace of memory, immerse yourself in this
                   story. There, you will find the highlighted words in the order
                   you must remember.
-                </p>
-
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
                 <PalaceStory palace={palace} />
               </CardContent>
             </>
@@ -198,9 +208,16 @@ export function PalaceView({
                 First attempt, now try to remember the following words and their
                 order.
               </p>
-              <Button onClick={() => setReferenceWords(selectRandomWords())}>
-                Random
-              </Button>
+              <p className="text-gray-600 mb-6">
+                You can customize the words! Keep in mind that each palace
+                generated will be part of the permanent public collection of our
+                website.
+              </p>
+              <div className="flex justify-end mt-0 pt-0">
+                <Button onClick={() => setReferenceWords(selectRandomWords())}>
+                  Random
+                </Button>
+              </div>
               <WordsInput
                 key={JSON.stringify(referenceWords)}
                 initialWords={referenceWords}

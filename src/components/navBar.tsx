@@ -9,12 +9,6 @@ export function NavBar() {
           Memory Place
         </div>
       </Link>
-      <Link
-        href="/palace"
-        className="font-inter  bg-black text-wite px-4 py-2 text-white rounded-md"
-      >
-        Create
-      </Link>
     </header>
   );
 }

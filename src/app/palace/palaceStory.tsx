@@ -18,40 +18,32 @@ export function PalaceStory({ palace }: { palace: Palace }) {
   // };
   console.log(palace);
   return (
-    <Carousel className=" whitespace-nowrap rounded-md border-none w-[430px]">
+    <Carousel className=" whitespace-nowrap rounded-md w-auto mx-11">
       <CarouselPrevious />
       <CarouselNext />
       <CarouselContent>
         <CarouselItem key="1">
-          <Card className="shrink-0">
-            <CardContent className="overflow-hidden rounded-md ">
-              <StoryPart
-                narrative={palace.sentences.slice(0, 3).join(" ")}
-                image={palace.images[0]}
-              />
-            </CardContent>
-          </Card>
+          <StoryPart
+            narrative={palace.sentences.slice(0, 3).join(" ")}
+            image={palace.images[0]}
+          />
         </CarouselItem>
         <CarouselItem key="2">
-          <Card className="shrink-0">
-            <CardContent className="overflow-hidden rounded-md">
-              <StoryPart
-                narrative={palace.sentences.slice(3, 6).join(" ")}
-                image={palace.images[1]}
-              />
-            </CardContent>
-          </Card>
+          <CardContent className="overflow-hidden rounded-md">
+            <StoryPart
+              narrative={palace.sentences.slice(3, 6).join(" ")}
+              image={palace.images[1]}
+            />
+          </CardContent>
         </CarouselItem>{" "}
         <CarouselItem key="3">
           <div className="p-1">
-            <Card className="shrink-0">
-              <CardContent className="overflow-hidden rounded-md">
-                <StoryPart
-                  narrative={palace.sentences.slice(6, 9).join(" ")}
-                  image={palace.images[2]}
-                />
-              </CardContent>
-            </Card>
+            <CardContent className="overflow-hidden rounded-md">
+              <StoryPart
+                narrative={palace.sentences.slice(6, 9).join(" ")}
+                image={palace.images[2]}
+              />
+            </CardContent>
           </div>
         </CarouselItem>
       </CarouselContent>

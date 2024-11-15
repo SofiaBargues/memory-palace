@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { MongoPalace } from "@/mongodb/models/palace";
@@ -12,15 +12,42 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 const PalaceCard = ({ palace }: { palace: MongoPalace }) => {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [progress, setProgress] = useState(0); // Progreso de la barra
   const _id = palace._id;
+  useEffect(() => {
+    // Cambiar la imagen cada 3 segundos (3000 milisegundos)
+    const intervalId = setInterval(() => {
+      setCurrentImageIndex(
+        (prevIndex) => (prevIndex + 1) % palace.images.length
+      );
+      setProgress(0);
+    }, 3000);
+
+    const progressInterval = setInterval(() => {
+      setProgress((prevProgress) => {
+        if (prevProgress < 100) {
+          return prevProgress + 100 / 30; // 30 pasos en 3 segundos
+        } else {
+          return 100;
+        }
+      });
+    }, 100); // Actualiza el progreso cada 100ms
+
+    // Limpiar el intervalo cuando el componente se desmonte
+    return () => {
+      clearInterval(progressInterval);
+      clearInterval(intervalId);
+    };
+  }, [palace.images.length]);
 
   return (
     <>
-      <Card className="overflow-hidden cursor-pointer transition-transform hover:scale-105">
+      <Card className="overflow-hidden  cursor-pointer transition-transform hover:scale-105">
         <CardContent className="p-0">
           <Dialog>
             <DialogTrigger asChild>
-              <div className="relative aspect-square">
+              <div className="relative aspect-square ">
                 <Image
                   src={palace.images[0]}
                   alt={"item.title"}
@@ -37,21 +64,47 @@ const PalaceCard = ({ palace }: { palace: MongoPalace }) => {
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>title</DialogTitle>
+                <DialogTitle className="text-xl">{palace.title}</DialogTitle>
               </DialogHeader>
-              <div className="mt-4">
+              <div className="my-4 ">
                 <Image
-                  src={palace.images[0]}
+                  src={palace.images[currentImageIndex]}
                   alt="{item.title}"
                   width={600}
                   height={600}
                   layout="responsive"
+                  className="rounded-2xl"
                 />
-                <p className="mt-4">{palace.sentences[0]}</p>
-                <a href={"/palace/" + _id}>
-                  <Button>Visit</Button>
-                </a>
+                {/* Barra de progreso debajo de la imagen */}
+                <div className="relative mt-2">
+                  <div className="absolute bottom-0 left-0 h-1 bg-white w-full rounded-full"></div>
+                  <div
+                    className="absolute bottom-0 left-0 h-1 bg-gray-200 rounded-full"
+                    style={{
+                      width: `${progress}%`,
+                      transition: "width 0.1s linear",
+                    }}
+                  ></div>
+                </div>
+                <div className=" max-w-10">
+                  {palace.words.map((word, index) => (
+                    <span
+                      key={index}
+                      className={`word-style max-w-40px word-${index % 9}`} // Asigna una clase para cada palabra
+                      style={{
+                        maxWidth: "40px",
+                        fontSize: "11px",
+                        margin: "0 2px",
+                      }}
+                    >
+                      {word},
+                    </span>
+                  ))}
+                </div>
               </div>
+              <a className="justify-end flex" href={"/palace/" + _id}>
+                <Button>Visit</Button>
+              </a>
             </DialogContent>
           </Dialog>
         </CardContent>
