@@ -86,20 +86,8 @@ const PalaceCard = ({ palace }: { palace: MongoPalace }) => {
                     }}
                   ></div>
                 </div>
-                <div className=" max-w-10">
-                  {palace.words.map((word, index) => (
-                    <span
-                      key={index}
-                      className={`word-style max-w-40px word-${index % 9}`} // Asigna una clase para cada palabra
-                      style={{
-                        maxWidth: "40px",
-                        fontSize: "11px",
-                        margin: "0 2px",
-                      }}
-                    >
-                      {word},
-                    </span>
-                  ))}
+                <div className="">
+                  <p>{palace.words.join(", ")}</p>
                 </div>
               </div>
               <a className="justify-end flex" href={"/palace/" + _id}>
