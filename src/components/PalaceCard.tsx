@@ -66,28 +66,35 @@ const PalaceCard = ({ palace }: { palace: MongoPalace }) => {
               <DialogHeader>
                 <DialogTitle className="text-xl">{palace.title}</DialogTitle>
               </DialogHeader>
-              <div className="my-4 ">
-                <Image
-                  src={palace.images[currentImageIndex]}
-                  alt="{item.title}"
-                  width={600}
-                  height={600}
-                  layout="responsive"
-                  className="rounded-2xl"
-                />
-                {/* Barra de progreso debajo de la imagen */}
-                <div className="relative mt-2">
-                  <div className="absolute bottom-0 left-0 h-1 bg-white w-full rounded-full"></div>
-                  <div
-                    className="absolute bottom-0 left-0 h-1 bg-gray-200 rounded-full"
-                    style={{
-                      width: `${progress}%`,
-                      transition: "width 0.1s linear",
-                    }}
-                  ></div>
+              <div className="flex flex-col gap-4">
+                <div>
+                  <Image
+                    src={palace.images[currentImageIndex]}
+                    alt="{item.title}"
+                    width={600}
+                    height={600}
+                    layout="responsive"
+                    className="rounded-2xl"
+                  />
+                  {/* Barra de progreso debajo de la imagen */}
+                  <div className="relative mt-2">
+                    <div className="absolute bottom-0 left-0 h-1 bg-white w-full rounded-full"></div>
+                    <div
+                      className="absolute bottom-0 left-0 h-1 bg-gray-200 rounded-full"
+                      style={{
+                        width: `${progress}%`,
+                        transition: "width 0.1s linear",
+                      }}
+                    ></div>
+                  </div>
                 </div>
-                <div className="">
-                  <p>{palace.words.join(", ")}</p>
+                <div>
+                  <div className="text-lg font-medium">
+                    You will remember these words:
+                  </div>
+                  <div className="">
+                    <p>{palace.words.join(", ")}</p>
+                  </div>
                 </div>
               </div>
               <a className="justify-end flex" href={"/palace/" + _id}>

@@ -42,6 +42,7 @@ export function PalaceView({
   const [referenceWords, setReferenceWords] = useState<string[]>(palace.words);
   const [inputWords, setInputWords] = useState<string[]>([]);
   const [results, setResults] = useState<boolean[]>([]);
+  const [slideSelected, setSlideSelected] = useState(0);
 
   async function generatePalace(): Promise<Palace | undefined> {
     setLoading(true);
@@ -125,6 +126,8 @@ export function PalaceView({
       setStep("start");
     }
   }
+
+  console.log(slideSelected);
   return (
     <div className="w-full container m-auto p-10 flex flex-col  gap-4">
       <Card className="w-full max-w-5xl">
@@ -132,15 +135,24 @@ export function PalaceView({
           {step === "palace" && (
             <>
               <CardHeader className="">
-                <CardTitle className="text-2xl font-bold">Place</CardTitle>
+                <CardTitle className="text-2xl font-bold">
+                  Read the story to remember
+                </CardTitle>
                 <CardDescription className="text-gray-600 mb-6">
-                  Welcome to the palace of memory, immerse yourself in this
-                  story. There, you will find the highlighted words in the order
-                  you must remember.
+                  Welcome to the Palace of Memory. Transform words into lasting
+                  memories through vivid images and immersive stories. Link each
+                  word to a location in your palace, making recall effortless
+                  and engaging.
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <PalaceStory palace={palace} />
+                <PalaceStory
+                  palace={palace}
+                  onSlideSelected={(num) => {
+                    console.log(" changed", num);
+                    setSlideSelected(num);
+                  }}
+                />
               </CardContent>
             </>
           )}
@@ -275,6 +287,7 @@ export function PalaceView({
           step != "fill2" &&
           step != "results2" &&
           step != "start" &&
+          slideSelected >= palace.images.length &&
           !loading ? (
             <Button className="w-full" onClick={goToNextStep}>
               Next
