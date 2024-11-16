@@ -17,19 +17,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { selectRandomWords } from "./selectRandomWords";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@radix-ui/react-alert-dialog";
-import {
-  AlertDialogFooter,
-  AlertDialogHeader,
-} from "@/components/ui/alert-dialog";
 
 export type PalaceStep =
   | "start"
@@ -48,7 +35,9 @@ export function PalaceView({
 }) {
   const [palace, setPalace] = useState(initialPalace);
   const [step, setStep] = useState<PalaceStep>(initialStep);
+  // const [step, setStep] = useState<PalaceStep>("results1");
   const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(true);
 
   const [referenceWords, setReferenceWords] = useState<string[]>(palace.words);
   const [inputWords, setInputWords] = useState<string[]>([]);
@@ -200,18 +189,22 @@ export function PalaceView({
         {step === "start" && (
           <>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-2xl font-bold">Memory Place</CardTitle>
+              <CardTitle className="text-2xl font-bold">
+                Choose words to remember
+              </CardTitle>
             </CardHeader>
             <CardContent>
-              <h2 className="text-xl font-semibold mb-4">Remember</h2>
               <p className="text-gray-600 mb-6">
-                First attempt, now try to remember the following words and their
-                order.
+                Select the words you want to remember.
               </p>
               <p className="text-gray-600 mb-6">
-                You can customize the words! Keep in mind that each palace
-                generated will be part of the permanent public collection of our
-                website.
+                You can generate random lists or customize the list of words to
+                your liking. With these, we'll create a memory palace that will
+                become part of the library on our home page, ready to be
+                revisited.{" "}
+              </p>
+              <p className="font-bold text-gray-600 mb-6">
+                Once you have memorized your words, go to the next step.
               </p>
               <div className="flex justify-end mt-0 pt-0">
                 <Button onClick={() => setReferenceWords(selectRandomWords())}>
@@ -228,9 +221,9 @@ export function PalaceView({
           </>
         )}
         {loading ? (
-          <div className="flex justify-center items-center">
+          <CardContent className="flex justify-center items-center h-[900px]">
             <Loader />
-          </div>
+          </CardContent>
         ) : (
           step === "results1" && (
             //paso previo a ver el palace
@@ -245,7 +238,6 @@ export function PalaceView({
                 <Description>
                   These are the results of your first attempt.
                 </Description>
-
                 <WordsList
                   step={step}
                   inputWords={inputWords}

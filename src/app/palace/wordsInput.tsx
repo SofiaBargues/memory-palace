@@ -59,8 +59,9 @@ export function WordsInput({
           </div>
         ))}
       </form>
-      <Button className="w-full" form="submit" type="submit">
-        Submit
+
+      <Button className="w-full " form="submit" type="submit">
+        Test Me
       </Button>
     </>
   );

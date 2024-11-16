@@ -75,9 +75,9 @@ export default function PalacesGrid() {
       ) : (
         <>
           <section id="Community Showcase" className=" py-12">
-            <div className="text-center py-4">
-              <h2 className="text-3xl font-bold ">Choose a palace</h2>
-              <p className="mt-2 text-[#666e75] mb-3 text-[16px] text-balance px-32">
+            <div className="text-center py-8">
+              <h2 className="text-3xl font-bold mb-4">Choose a palace</h2>
+              <p className="max-w-6xl text-lg mx-auto text-muted-foreground text-balance">
                 Explore a gallery of Memory Palaces created by the users. Each
                 scene is a unique journey, waiting for you to dive in and
                 uncover its story. Choose a palace to explore.
