@@ -3,14 +3,18 @@
 import React from "react";
 
 import ExperienceCard from "@/components/ui/experienceCards";
-import { Building, Footprints, PenTool } from "lucide-react";
+import {
+  Building,
+  Castle,
+  CastleIcon,
+  Footprints,
+  PenTool,
+} from "lucide-react";
 import CallToAction from "@/components/ui/cta";
 import Hero from "@/components/ui/hero";
 import PalacesGrid from "@/components/ui/palacesGrid";
 
 const Home = () => {
-
-
   return (
     <section className="max-w-7xl mx-auto">
       <Hero />
@@ -27,7 +31,7 @@ const Home = () => {
         <ExperienceCard
           title="2. Enter the Palace"
           description="Explore a guided story with vivid imagery that helps you remember the same words"
-          Icon={Building}
+          Icon={CastleIcon}
         />
         <ExperienceCard
           title="3. Mental Journey"
