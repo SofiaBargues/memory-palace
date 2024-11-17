@@ -5,7 +5,7 @@ import { Sparkles } from "lucide-react";
 const CallToAction = () => {
   return (
     <section id="Create" className=" text-center ">
-      <Card className="p-12 ">
+      <Card className="p-12 m-12 ">
         <h2 className="text-3xl font-bold tracking-tighter mb-4">
           Create Your Memory Palace
         </h2>

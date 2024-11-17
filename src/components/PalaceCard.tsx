@@ -92,7 +92,7 @@ const PalaceCard = ({ palace }: { palace: MongoPalace }) => {
                   <div className="text-lg font-medium">
                     You will remember these words:
                   </div>
-                  <div className="">
+                  <div className="text-muted-foreground">
                     <p>{palace.words.join(", ")}</p>
                   </div>
                 </div>

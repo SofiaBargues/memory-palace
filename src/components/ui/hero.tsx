@@ -44,7 +44,16 @@ const Hero = ({}) => {
                 <div className="mt-8 flex flex-col gap-4 sm:flex-row">
                   <a href="#Grid">
                     <Button size="lg" className="w-full sm:w-auto">
-                      Test Your Memory
+                      Quick Memory Journey
+                    </Button>
+                  </a>
+                  <a href="#Create">
+                    <Button
+                      size="lg"
+                      variant="outline"
+                      className="w-full sm:w-auto"
+                    >
+                      Create a Palace
                     </Button>
                   </a>
                 </div>
