@@ -130,7 +130,7 @@ export function PalaceView({
   console.log(slideSelected);
   return (
     <div className="w-full container m-auto md:p-10 flex flex-col  gap-4">
-      <Card className="w-full md:max-w-5xl rounded-none md:rounded-xl ">
+      <Card className="w-full md:max-w-5xl rounded-none md:rounded-xl m-auto ">
         <>
           {step === "palace" && (
             <>
