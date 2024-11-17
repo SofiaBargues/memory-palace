@@ -6,7 +6,7 @@ export function NavBar() {
       <Link href="/">
         <div className="flex items-center gap-2 text-lg font-medium">
           <img src={"/castle.svg"} alt="logo" className="w-6 object-contain " />
-          Memory Place
+          Memory Palace
         </div>
       </Link>
     </header>

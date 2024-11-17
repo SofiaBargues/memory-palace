@@ -31,15 +31,15 @@ export function WordsList({
       ))}
       {results.length > 0 ? (
         <>
-          <div className="font-medium text-xl my-1">
-            Total Correct: {results.filter((x) => x === true).length}
+          <div className="font-medium  font-semibold pt-9">
+            Total: {results.filter((x) => x === true).length}
           </div>
-          <div className="w-full">
+          <div className="w-full flex flex-col ">
             <ProgressFromZero
               value={progressPercentage}
               className="w-full h-2"
             />
-            <p className="text-center mt-2 text-sm text-gray-600">
+            <p className=" text-center mt-2 text-sm text-gray-600 ">
               {progressPercentage.toFixed(0)}% Correct
             </p>
           </div>

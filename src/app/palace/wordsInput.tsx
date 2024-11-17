@@ -61,7 +61,7 @@ export function WordsInput({
       </form>
 
       <Button className="w-full " form="submit" type="submit">
-        Test Me
+        See Results
       </Button>
     </>
   );

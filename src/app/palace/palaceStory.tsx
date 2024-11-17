@@ -44,11 +44,11 @@ export function PalaceStory({
     <div>
       <Carousel
         setApi={setApi}
-        className=" whitespace-nowrap rounded-md w-auto mx-11"
+        className=" whitespace-nowrap md:rounded-md md:w-full rounded-none"
       >
         <CarouselPrevious />
         <CarouselNext />
-        <CarouselContent>
+        <CarouselContent className="">
           <CarouselItem key="1">
             <StoryPart
               narrative={palace.sentences.slice(0, 3).join(" ")}
@@ -56,21 +56,17 @@ export function PalaceStory({
             />
           </CarouselItem>
           <CarouselItem key="2">
-            <CardContent className="overflow-hidden rounded-md">
-              <StoryPart
-                narrative={palace.sentences.slice(3, 6).join(" ")}
-                image={palace.images[1]}
-              />
-            </CardContent>
-          </CarouselItem>{" "}
+            <StoryPart
+              narrative={palace.sentences.slice(3, 6).join(" ")}
+              image={palace.images[1]}
+            />
+          </CarouselItem>
           <CarouselItem key="3">
             <div className="p-1">
-              <CardContent className="overflow-hidden rounded-md">
-                <StoryPart
-                  narrative={palace.sentences.slice(6, 9).join(" ")}
-                  image={palace.images[2]}
-                />
-              </CardContent>
+              <StoryPart
+                narrative={palace.sentences.slice(6, 9).join(" ")}
+                image={palace.images[2]}
+              />
             </div>
           </CarouselItem>
         </CarouselContent>

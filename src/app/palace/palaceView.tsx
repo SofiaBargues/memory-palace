@@ -129,16 +129,16 @@ export function PalaceView({
 
   console.log(slideSelected);
   return (
-    <div className="w-full container m-auto p-10 flex flex-col  gap-4">
-      <Card className="w-full max-w-5xl">
+    <div className="w-full container m-auto md:p-10 flex flex-col  gap-4">
+      <Card className="w-full md:max-w-5xl rounded-none md:rounded-xl ">
         <>
           {step === "palace" && (
             <>
-              <CardHeader className="">
-                <CardTitle className="text-2xl font-bold">
+              <CardHeader className="pb-0">
+                <CardTitle className="text-2xl font-bold ">
                   Read the story to remember
                 </CardTitle>
-                <CardDescription className="text-gray-600 mb-6">
+                <CardDescription className="text-gray-600">
                   Welcome to the Palace of Memory. Transform words into lasting
                   memories through vivid images and immersive stories. Link each
                   word to a location in your palace, making recall effortless
@@ -180,10 +180,11 @@ export function PalaceView({
         {step === "fill2" && (
           <>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-2xl font-bold">Memory Place</CardTitle>
+              <CardTitle className="text-2xl font-bold">
+                Remember the story and complete the words
+              </CardTitle>
             </CardHeader>
             <CardContent>
-              <h2 className="text-xl font-semibold mb-4">Fill</h2>
               <p className="text-gray-600 mb-6">
                 It is time to put your journey through the palace of memory to
                 the test. Remember each scene from the story, visualizing the
@@ -241,12 +242,9 @@ export function PalaceView({
             //paso previo a ver el palace
             <>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-2xl font-bold">
-                  Memory Place
-                </CardTitle>
+                <CardTitle className="text-2xl font-bold">Results</CardTitle>
               </CardHeader>
               <CardContent>
-                <Title title="Results" />
                 <Description>
                   These are the results of your first attempt.
                 </Description>
@@ -263,10 +261,9 @@ export function PalaceView({
         {step === "results2" && (
           <>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-2xl font-bold">Memory Place</CardTitle>
+              <CardTitle className="text-2xl font-bold">Results</CardTitle>
             </CardHeader>
             <CardContent>
-              <h2 className="text-xl font-semibold mb-4">Results</h2>
               <p className="text-gray-600 mb-6">
                 These are the results of your journey by the memory palace.
               </p>
@@ -276,9 +273,6 @@ export function PalaceView({
                 originalWords={referenceWords}
                 results={results}
               />
-              <a href="http://localhost:3000/">
-                <Button className="w-full mt-4">Go home</Button>
-              </a>
             </CardContent>
           </>
         )}
@@ -292,6 +286,10 @@ export function PalaceView({
             <Button className="w-full" onClick={goToNextStep}>
               Next
             </Button>
+          ) : step === "results2" ? (
+            <a className="w-full" href="/">
+              <Button className="w-full mt-4">Go home</Button>
+            </a>
           ) : null}
         </CardFooter>
       </Card>
