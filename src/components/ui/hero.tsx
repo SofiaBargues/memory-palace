@@ -42,18 +42,18 @@ const Hero = ({}) => {
                   stories.
                 </p>
                 <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-                  <a href="#Grid">
+                  <a href="#Create">
                     <Button size="lg" className="w-full sm:w-auto">
-                      Quick Memory Journey
+                      Create a Palace
                     </Button>
                   </a>
-                  <a href="#Create">
+                  <a href="#Grid">
                     <Button
                       size="lg"
                       variant="outline"
                       className="w-full sm:w-auto"
                     >
-                      Create a Palace
+                      Choose a palace
                     </Button>
                   </a>
                 </div>
