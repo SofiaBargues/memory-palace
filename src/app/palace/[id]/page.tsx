@@ -53,7 +53,11 @@ const PalaceIdPage = ({ params }: { params: { id: string } }) => {
   return (
     <>
       <div className="flex">
-        <PalaceView initialPalace={selectedPalace} initialStep="palace" />
+        <PalaceView
+          initialPalace={selectedPalace}
+          initialStep="palace"
+          initialPalaceId={params.id}
+        />
       </div>
     </>
   );

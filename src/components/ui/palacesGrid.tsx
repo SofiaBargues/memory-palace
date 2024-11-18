@@ -8,10 +8,22 @@ import Loader from "../Loader";
 import PalaceCard from "../PalaceCard";
 import { MongoPalace } from "@/mongodb/models/palace";
 
-export default function PalacesGrid() {
+const RenderCards = ({ data }: { data: MongoPalace[] }) => {
+  if (data?.length > 0) {
+    return (
+      <div className="grid-cols-1  md:grid-cols-2 lg:grid-cols-3 gap-3 grid">
+        {data.map((palace) => (
+          <PalaceCard key={palace._id} palace={palace} />
+        ))}
+      </div>
+    );
+  }
+  <div>No palaces found</div>;
+};
+
+export default function PalacesGrid({ maxNum }: { maxNum?: number }) {
   const [loading, setLoading] = useState(true);
   const [allPalaces, setAllPalaces] = useState<MongoPalace[]>([]);
-  const [handleShow, setHandleShow] = useState<boolean>(false);
   useEffect(() => {
     const fetchPosts = async () => {
       setLoading(true);
@@ -42,29 +54,6 @@ export default function PalacesGrid() {
 
     fetchPosts();
   }, []);
-  const RenderCards = ({
-    data,
-    title,
-  }: {
-    data: MongoPalace[];
-    title: string;
-  }) => {
-    if (data?.length > 0) {
-      return (
-        <div className="grid-cols-1  md:grid-cols-2 lg:grid-cols-3 gap-3 grid">
-          {data.map((palace) => (
-            <PalaceCard key={palace._id} palace={palace} />
-          ))}
-        </div>
-      );
-    }
-
-    return (
-      <h2 className="mt-5 font-bold text-[#6449ff] text-xl uppercase">
-        {title}
-      </h2>
-    );
-  };
 
   return (
     <div id="Grid" className="mt-10 ">
@@ -74,34 +63,11 @@ export default function PalacesGrid() {
         </div>
       ) : (
         <>
-          <section id="Community Showcase" className=" py-12">
-            <div className="text-center py-8">
-              <h2 className="text-3xl font-bold mb-4">Choose a palace</h2>
-              <p className="max-w-6xl text-lg mx-auto text-muted-foreground text-balance">
-                Explore a gallery of Memory Palaces created by the users. Each
-                scene is a unique journey, waiting for you to dive in and
-                uncover its story. Choose a palace to explore.
-              </p>
-            </div>
-            {handleShow === false ? (
-              <RenderCards
-                data={allPalaces.slice(0, 6)}
-                title="No posts found"
-              />
-            ) : (
-              <RenderCards data={allPalaces} title="No posts found" />
-            )}
-            <div className="text-center mt-8">
-              <Button
-                onClick={() =>
-                  !handleShow ? setHandleShow(true) : setHandleShow(false)
-                }
-              >
-                {!handleShow ? "More" : "Less"} Palaces
-                <ChevronRight className="ml-2 h-4 w-4" />
-              </Button>
-            </div>
-          </section>
+          {maxNum ? (
+            <RenderCards data={allPalaces.slice(0, maxNum)} />
+          ) : (
+            <RenderCards data={allPalaces} />
+          )}
         </>
       )}
     </div>

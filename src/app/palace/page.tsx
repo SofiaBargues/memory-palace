@@ -27,7 +27,13 @@ function PalacePage() {
     imagePrompts: storyData.imagePrompts,
     sentences: storyData.sentences,
   };
-  return <PalaceView initialPalace={palace} initialStep="start" />;
+  return (
+    <PalaceView
+      initialPalace={palace}
+      initialStep="start"
+      initialPalaceId={undefined}
+    />
+  );
 }
 
 export default PalacePage;

@@ -29,11 +29,14 @@ export type PalaceStep =
 export function PalaceView({
   initialPalace,
   initialStep,
+  initialPalaceId,
 }: {
+  initialPalaceId: string | undefined;
   initialPalace: Palace;
   initialStep: PalaceStep;
 }) {
   const [palace, setPalace] = useState(initialPalace);
+  const [palaceId, setPalaceId] = useState(initialPalaceId);
   const [step, setStep] = useState<PalaceStep>(initialStep);
   // const [step, setStep] = useState<PalaceStep>("results1");
   const [loading, setLoading] = useState(false);
@@ -115,6 +118,7 @@ export function PalaceView({
         return;
       }
       setPalace(generatedPalace);
+      setPalaceId(generatedPalace._id);
       setStep("palace");
     } else if (step === "palace") {
       setStep("fill2");
@@ -277,19 +281,23 @@ export function PalaceView({
           </>
         )}
         <CardFooter className="flex flex-col items-start space-y-4">
-          {step != "fill1" &&
-          step != "fill2" &&
-          step != "results2" &&
-          step != "start" &&
-          slideSelected >= palace.images.length &&
+          {(step === "results1" ||
+            (step === "palace" && slideSelected >= palace.images.length)) &&
           !loading ? (
             <Button className="w-full" onClick={goToNextStep}>
               Next
             </Button>
           ) : step === "results2" ? (
-            <a className="w-full" href="/">
-              <Button className="w-full mt-4">Go home</Button>
-            </a>
+            <div className="flex justify-end w-full gap-4 bg-none">
+              <a href={"/palace/" + palaceId}>
+                <Button size="lg" variant="outline">
+                  Play again
+                </Button>
+              </a>
+              <a href="#Grid">
+                <Button size="lg">More Palaces</Button>
+              </a>
+            </div>
           ) : null}
         </CardFooter>
       </Card>
