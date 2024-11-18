@@ -97,8 +97,8 @@ const PalaceCard = ({ palace }: { palace: MongoPalace }) => {
                   </div>
                 </div>
               </div>
-              <a className="justify-end flex" href={"/palace/" + _id}>
-                <Button>Visit</Button>
+              <a className="flex w-full" href={"/palace/" + _id}>
+                <Button className=" w-full">Visit</Button>
               </a>
             </DialogContent>
           </Dialog>

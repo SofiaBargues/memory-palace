@@ -294,7 +294,7 @@ export function PalaceView({
                   Play again
                 </Button>
               </a>
-              <a href="#Grid">
+              <a href="/palaces">
                 <Button size="lg">More Palaces</Button>
               </a>
             </div>
