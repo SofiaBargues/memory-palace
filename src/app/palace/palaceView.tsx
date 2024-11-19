@@ -17,6 +17,23 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { selectRandomWords } from "./selectRandomWords";
+import { selectRandomWord } from "./selectRandomWord";
+import { RefreshCcw, RefreshCw } from "lucide-react";
+
+function upDateArrayValue({
+  i,
+  newVal,
+  arr,
+}: {
+  i: number;
+  newVal: string;
+  arr: string[];
+}) {
+  const arrWork = [...arr];
+  arrWork[i] = newVal;
+
+  return arrWork;
+}
 
 export type PalaceStep =
   | "start"
@@ -42,7 +59,9 @@ export function PalaceView({
   const [loading, setLoading] = useState(false);
   // const [loading, setLoading] = useState(true);
 
-  const [referenceWords, setReferenceWords] = useState<string[]>(palace.words);
+  const [referenceWords, setReferenceWords] = useState<string[]>(
+    new Array(9).fill(undefined)
+  );
   const [inputWords, setInputWords] = useState<string[]>([]);
   const [results, setResults] = useState<boolean[]>([]);
   const [slideSelected, setSlideSelected] = useState(0);
@@ -223,17 +242,33 @@ export function PalaceView({
               <p className="font-bold text-gray-600 mb-6">
                 Once you have memorized your words, go to the next step.
               </p>
-              <div className="flex justify-end mt-0 pt-0">
-                <Button onClick={() => setReferenceWords(selectRandomWords())}>
-                  Random
-                </Button>
+              <div className="flex ">
+                <WordsInput
+                  key={JSON.stringify(referenceWords)}
+                  initialWords={referenceWords}
+                  handleSubmit={handleWordsChoiceSubmit}
+                  step={step}
+                />
+                <div className="flex flex-col  mt-0 pt-0">
+                  {referenceWords.map((v, i) => (
+                    <Button
+                      key={i}
+                      className="mb-4  ml-2"
+                      onClick={() =>
+                        setReferenceWords(
+                          upDateArrayValue({
+                            i: i,
+                            arr: referenceWords,
+                            newVal: selectRandomWord(),
+                          })
+                        )
+                      }
+                    >
+                      <RefreshCw />
+                    </Button>
+                  ))}
+                </div>
               </div>
-              <WordsInput
-                key={JSON.stringify(referenceWords)}
-                initialWords={referenceWords}
-                handleSubmit={handleWordsChoiceSubmit}
-                step={step}
-              />
             </CardContent>
           </>
         )}
