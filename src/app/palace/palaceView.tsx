@@ -59,9 +59,8 @@ export function PalaceView({
   const [loading, setLoading] = useState(false);
   // const [loading, setLoading] = useState(true);
 
-  const [referenceWords, setReferenceWords] = useState<string[]>(
-    new Array(9).fill(undefined)
-  );
+  const [referenceWords, setReferenceWords] = useState<string[]>(palace.words);
+
   const [inputWords, setInputWords] = useState<string[]>([]);
   const [results, setResults] = useState<boolean[]>([]);
   const [slideSelected, setSlideSelected] = useState(0);

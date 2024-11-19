@@ -11,17 +11,8 @@ const storyData = Palace.parse(generateData);
 const imagesData = ["/part1.png", "/part2.png", "/part3.png"];
 
 function PalacePage() {
-  const [words, setWords] = useState<string[]>([]);
-
-  useEffect(() => {
-    setWords(selectRandomWords());
-  }, []);
-
-  if (words.length === 0) {
-    return <div>Loading...</div>;
-  }
   const palace: Palace = {
-    words: words,
+    words: new Array(9).fill(undefined),
     images: imagesData,
     title: storyData.title,
     imagePrompts: storyData.imagePrompts,
