@@ -192,7 +192,7 @@ export function PalaceView({
                 order.
               </p>
               <WordsInput
-                initialWords={new Array(9).fill(undefined)}
+                words={new Array(9).fill(undefined)}
                 handleSubmit={handleFillSubmit}
                 step={step}
               />{" "}
@@ -219,7 +219,7 @@ export function PalaceView({
                 narrative.
               </p>
               <WordsInput
-                initialWords={new Array(9).fill(undefined)}
+                words={new Array(9).fill(undefined)}
                 handleSubmit={handleFillSubmit}
                 step={step}
               />{" "}
@@ -253,9 +253,17 @@ export function PalaceView({
               </p>
               <div className="flex ">
                 <WordsInput
-                  key={JSON.stringify(referenceWords)}
-                  initialWords={referenceWords}
+                  words={referenceWords}
                   handleSubmit={handleWordsChoiceSubmit}
+                  onFieldChange={(i, value) => {
+                    setReferenceWords(
+                      upDateArrayValue({
+                        i,
+                        newVal: value || "",
+                        arr: referenceWords,
+                      })
+                    );
+                  }}
                   step={step}
                 />
                 <div className="flex flex-col  mt-0 pt-0">
