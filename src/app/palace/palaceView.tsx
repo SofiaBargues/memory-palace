@@ -195,8 +195,13 @@ export function PalaceView({
                 initialWords={new Array(9).fill(undefined)}
                 handleSubmit={handleFillSubmit}
                 step={step}
-              />
+              />{" "}
             </CardContent>
+            <CardFooter>
+              <Button className="w-full " form="submit" type="submit">
+                Next
+              </Button>
+            </CardFooter>
           </>
         )}
         {step === "fill2" && (
@@ -217,8 +222,13 @@ export function PalaceView({
                 initialWords={new Array(9).fill(undefined)}
                 handleSubmit={handleFillSubmit}
                 step={step}
-              />
+              />{" "}
             </CardContent>
+            <CardFooter>
+              <Button className="w-full " form="submit" type="submit">
+                Next
+              </Button>
+            </CardFooter>
           </>
         )}
         {step === "start" && (
@@ -236,7 +246,7 @@ export function PalaceView({
                 You can generate random lists or customize the list of words to
                 your liking. With these, we'll create a memory palace that will
                 become part of the library on our home page, ready to be
-                revisited.{" "}
+                revisited.
               </p>
               <p className="font-bold text-gray-600 mb-6">
                 Once you have memorized your words, go to the next step.
@@ -252,7 +262,8 @@ export function PalaceView({
                   {referenceWords.map((v, i) => (
                     <Button
                       key={i}
-                      className="mb-4  ml-2"
+                      variant="ghost"
+                      className="mb-4 ml-2 border "
                       onClick={() =>
                         setReferenceWords(
                           upDateArrayValue({
@@ -269,6 +280,11 @@ export function PalaceView({
                 </div>
               </div>
             </CardContent>
+            <CardFooter>
+              <Button className="w-full " form="submit" type="submit">
+                Next
+              </Button>
+            </CardFooter>
           </>
         )}
         {loading ? (
