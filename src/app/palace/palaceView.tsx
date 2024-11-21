@@ -176,6 +176,17 @@ export function PalaceView({
                   }}
                 />
               </CardContent>
+              <CardFooter className="flex flex-col items-start space-y-4">
+                {slideSelected >= palace.images.length && !loading ? (
+                  <Button className="w-full" onClick={goToNextStep}>
+                    Next
+                  </Button>
+                ) : (
+                  <Button className="w-full" disabled onClick={goToNextStep}>
+                    Next
+                  </Button>
+                )}
+              </CardFooter>
             </>
           )}
         </>
@@ -317,6 +328,13 @@ export function PalaceView({
                   results={results}
                 />
               </CardContent>
+              <CardFooter className="flex flex-col items-start space-y-4">
+                {!loading ? (
+                  <Button className="w-full" onClick={goToNextStep}>
+                    Next
+                  </Button>
+                ) : null}
+              </CardFooter>
             </>
           )
         )}
@@ -336,28 +354,20 @@ export function PalaceView({
                 results={results}
               />
             </CardContent>
+            <CardFooter>
+              <div className="flex justify-end w-full gap-4 bg-none">
+                <a href={"/palace/" + palaceId}>
+                  <Button size="lg" variant="outline">
+                    Play again
+                  </Button>
+                </a>
+                <a href="/palaces">
+                  <Button size="lg">More Palaces</Button>
+                </a>
+              </div>
+            </CardFooter>
           </>
         )}
-        <CardFooter className="flex flex-col items-start space-y-4">
-          {(step === "results1" ||
-            (step === "palace" && slideSelected >= palace.images.length)) &&
-          !loading ? (
-            <Button className="w-full" onClick={goToNextStep}>
-              Next
-            </Button>
-          ) : step === "results2" ? (
-            <div className="flex justify-end w-full gap-4 bg-none">
-              <a href={"/palace/" + palaceId}>
-                <Button size="lg" variant="outline">
-                  Play again
-                </Button>
-              </a>
-              <a href="/palaces">
-                <Button size="lg">More Palaces</Button>
-              </a>
-            </div>
-          ) : null}
-        </CardFooter>
       </Card>
     </div>
   );
