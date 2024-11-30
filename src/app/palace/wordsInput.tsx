@@ -28,6 +28,10 @@ function MyControlledInput({
         className="flex-1 placeholder:text-gray-300 "
         placeholder={value}
         name={"input_" + index.toString()}
+        maxLength={25} // Máximo 10 caracteres
+        minLength={3} // Mínimo 3 caracteres
+        pattern="[A-Za-z]+" // Solo letras
+        required // Campo obligatorio
       />
     </>
   );
@@ -63,6 +67,7 @@ export function WordsInput({
                 }
                 onFieldChange(index, value);
               }}
+              
             />
           </div>
         ))}

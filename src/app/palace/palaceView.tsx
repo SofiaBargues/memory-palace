@@ -19,6 +19,7 @@ import {
 import { selectRandomWords } from "./selectRandomWords";
 import { selectRandomWord } from "./selectRandomWord";
 import { RefreshCcw, RefreshCw } from "lucide-react";
+import { error } from "console";
 
 function upDateArrayValue({
   i,
@@ -43,6 +44,11 @@ export type PalaceStep =
   | "fill2"
   | "results2";
 
+function hasDuplicated(listWords: string[]) {
+  const set = new Set(listWords);
+  return listWords.length !== set.size;
+}
+
 export function PalaceView({
   initialPalace,
   initialStep,
@@ -53,6 +59,7 @@ export function PalaceView({
   initialStep: PalaceStep;
 }) {
   const [palace, setPalace] = useState(initialPalace);
+  const [formErrorMessage, setFormErrorMessage] = useState(false);
   const [palaceId, setPalaceId] = useState(initialPalaceId);
   const [step, setStep] = useState<PalaceStep>(initialStep);
   // const [step, setStep] = useState<PalaceStep>("results1");
@@ -65,6 +72,7 @@ export function PalaceView({
   const [results, setResults] = useState<boolean[]>([]);
   const [slideSelected, setSlideSelected] = useState(0);
 
+  console.log(hasDuplicated(inputWords));
   async function generatePalace(): Promise<Palace | undefined> {
     setLoading(true);
     try {
@@ -95,9 +103,14 @@ export function PalaceView({
       // @ts-expect-error  form has elements attribute
       newArr.push(e.target.elements["input_" + i].value);
     }
-    setReferenceWords(newArr);
-    console.log(newArr);
-    await goToNextStep();
+    if (hasDuplicated(newArr)) {
+      setFormErrorMessage(true);
+    } else {
+      setFormErrorMessage(false);
+      setReferenceWords(newArr);
+      console.log(newArr);
+      await goToNextStep();
+    }
   };
 
   const handleFillSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -206,7 +219,7 @@ export function PalaceView({
                 words={new Array(9).fill(undefined)}
                 handleSubmit={handleFillSubmit}
                 step={step}
-              />{" "}
+              />
             </CardContent>
             <CardFooter>
               <Button className="w-full " form="submit" type="submit">
@@ -298,6 +311,11 @@ export function PalaceView({
                   ))}
                 </div>
               </div>
+              {formErrorMessage ? (
+                <p className=" text-red-600">* All words must be different.</p>
+              ) : (
+                ""
+              )}
             </CardContent>
             <CardFooter>
               <Button className="w-full " form="submit" type="submit">
