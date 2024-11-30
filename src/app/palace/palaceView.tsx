@@ -101,7 +101,10 @@ export function PalaceView({
     e.preventDefault();
     for (let i = 0; i < referenceWords.length; i++) {
       // @ts-expect-error  form has elements attribute
-      newArr.push(e.target.elements["input_" + i].value);
+      const value = e.target.elements["input_" + i].value;
+      const sanitized = value.trim();
+
+      newArr.push(sanitized);
     }
     if (hasDuplicated(newArr)) {
       setFormErrorMessage(true);
