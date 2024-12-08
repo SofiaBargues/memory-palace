@@ -62,9 +62,7 @@ export function PalaceView({
   const [formErrorMessage, setFormErrorMessage] = useState(false);
   const [palaceId, setPalaceId] = useState(initialPalaceId);
   const [step, setStep] = useState<PalaceStep>(initialStep);
-  // const [step, setStep] = useState<PalaceStep>("results1");
   const [loading, setLoading] = useState(false);
-  // const [loading, setLoading] = useState(true);
 
   const [referenceWords, setReferenceWords] = useState<string[]>(palace.words);
 
@@ -193,15 +191,13 @@ export function PalaceView({
                 />
               </CardContent>
               <CardFooter className="flex flex-col items-start space-y-4">
-                {slideSelected >= palace.images.length && !loading ? (
-                  <Button className="w-full" onClick={goToNextStep}>
-                    Next
-                  </Button>
-                ) : (
-                  <Button className="w-full" disabled onClick={goToNextStep}>
-                    Next
-                  </Button>
-                )}
+                <Button
+                  className="w-full"
+                  disabled={slideSelected >= palace.images.length}
+                  onClick={goToNextStep}
+                >
+                  Next
+                </Button>
               </CardFooter>
             </>
           )}
@@ -351,11 +347,9 @@ export function PalaceView({
                 />
               </CardContent>
               <CardFooter className="flex flex-col items-start space-y-4">
-                {!loading ? (
-                  <Button className="w-full" onClick={goToNextStep}>
-                    Next
-                  </Button>
-                ) : null}
+                <Button className="w-full" onClick={goToNextStep}>
+                  Next
+                </Button>
               </CardFooter>
             </>
           )
