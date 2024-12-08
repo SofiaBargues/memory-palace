@@ -56,9 +56,9 @@ export default function PalacesGrid({ maxNum }: { maxNum?: number }) {
   }, []);
 
   return (
-    <div id="Grid" className=" px-4 ">
+    <div id="Grid" className=" px-4  h-full">
       {loading ? (
-        <div className="flex justify-center items-center">
+        <div className="flex justify-center h-full items-center">
           <Loader />
         </div>
       ) : (

@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { PalaceView } from "../palaceView";
 import { Palace } from "@/app/api/v1/generate/types";
+import { Loader } from "@/components";
 
 const PalaceIdPage = ({ params }: { params: { id: string } }) => {
   const [loading, setLoading] = useState(true);
@@ -42,8 +43,12 @@ const PalaceIdPage = ({ params }: { params: { id: string } }) => {
   console.log(allPalaces);
   const selectedPalace = allPalaces.find((value) => value._id === params.id);
 
-  if (loading) {
-    return <div>Loading...</div>;
+  if (true || loading) {
+    return (
+      <div className="flex justify-center h-full items-center">
+        <Loader></Loader>
+      </div>
+    );
   }
   if (!selectedPalace) {
     return <div>Not found</div>;
