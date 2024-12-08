@@ -23,4 +23,5 @@
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/palace/button.tsx"],
   "exclude": ["node_modules"]
+  
 }

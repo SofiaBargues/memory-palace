@@ -31,7 +31,7 @@ const Hero = ({}) => {
     },
     {
       src: "https://res.cloudinary.com/sofiabargues/image/upload/v1730632553/palace/ibhah6qybg9gq8qn7mg9.png",
-      href: "/palace/6755d82ead2b664fb34ca40d",
+      href: "/palace/67275b6c25eadec2b359697e",
       alt: "The lemon dream",
       title: "The lemon dream",
     },
