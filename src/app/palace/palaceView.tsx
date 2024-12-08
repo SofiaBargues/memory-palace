@@ -2,7 +2,6 @@
 import { Button } from "@/components/ui/button";
 import React, { useState } from "react";
 import { Palace } from "../api/v1/generate/types";
-import { Title } from "./title";
 import { WordsInput } from "./wordsInput";
 import { WordsList } from "./wordList";
 import { PalaceStory } from "./palaceStory";
@@ -16,10 +15,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { selectRandomWords } from "./selectRandomWords";
 import { selectRandomWord } from "./selectRandomWord";
-import { RefreshCcw, RefreshCw } from "lucide-react";
-import { error } from "console";
+import { RefreshCw } from "lucide-react";
 
 function upDateArrayValue({
   i,
@@ -150,6 +147,7 @@ export function PalaceView({
         return;
       }
       setPalace(generatedPalace);
+      // @ts-expect-error id exists in palace response
       setPalaceId(generatedPalace._id);
       setStep("palace");
     } else if (step === "palace") {
@@ -193,7 +191,7 @@ export function PalaceView({
               <CardFooter className="flex flex-col items-start space-y-4">
                 <Button
                   className="w-full"
-                  disabled={slideSelected < palace.images.length  }
+                  disabled={slideSelected < palace.images.length}
                   onClick={goToNextStep}
                 >
                   Next
@@ -266,10 +264,9 @@ export function PalaceView({
                 Select the words you want to remember.
               </p>
               <p className="text-gray-600 mb-6">
-                You can generate random lists or customize the list of words to
-                your liking. With these, we'll create a memory palace that will
-                become part of the library on our home page, ready to be
-                revisited.
+                {
+                  " You can generate random lists or customize the list of words to your liking. With these, we'll create a memory palace that will become part of the library on our home page, ready to be revisited."
+                }
               </p>
               <p className="font-bold text-gray-600 mb-6">
                 Once you have memorized your words, go to the next step.

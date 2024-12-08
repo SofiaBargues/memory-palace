@@ -1,15 +1,7 @@
 "use client";
 
-import React from "react";
-
 import ExperienceCard from "@/components/ui/experienceCards";
-import {
-  Building,
-  Castle,
-  CastleIcon,
-  Footprints,
-  PenTool,
-} from "lucide-react";
+import { CastleIcon, Footprints, PenTool } from "lucide-react";
 import CallToAction from "@/components/ui/cta";
 import Hero from "@/components/ui/hero";
 import PalacesGrid from "@/components/ui/palacesGrid";

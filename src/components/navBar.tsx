@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { RainbowButton } from "./ui/rainbow-button";
-import { GithubIcon, Star } from "lucide-react";
+import { GithubIcon } from "lucide-react";
 import { StarFilledIcon } from "@radix-ui/react-icons";
 
 export function NavBar() {

@@ -1,8 +1,6 @@
 "use client";
-import React, { useEffect, useState } from "react";
 import { Palace } from "../api/v1/generate/types";
 import { generateDataResponse } from "./DATA";
-import { selectRandomWords } from "./selectRandomWords";
 
 import { PalaceView } from "./palaceView";
 

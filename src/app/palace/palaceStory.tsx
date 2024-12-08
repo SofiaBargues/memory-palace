@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { StoryPart } from "./placePort";
 import { Palace } from "../api/v1/generate/types";
-import { type CarouselApi, CardContent } from "@/components/ui/card";
+import { type CarouselApi } from "@/components/ui/carousel";
 import * as React from "react";
 import {
   Carousel,

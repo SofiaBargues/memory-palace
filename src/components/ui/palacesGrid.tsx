@@ -1,9 +1,7 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
-import { ChevronRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import Loader from "../Loader";
 import PalaceCard from "../PalaceCard";
 import { MongoPalace } from "@/mongodb/models/palace";
