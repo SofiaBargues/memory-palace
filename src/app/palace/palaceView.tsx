@@ -193,7 +193,7 @@ export function PalaceView({
               <CardFooter className="flex flex-col items-start space-y-4">
                 <Button
                   className="w-full"
-                  disabled={slideSelected >= palace.images.length}
+                  disabled={slideSelected < palace.images.length  }
                   onClick={goToNextStep}
                 >
                   Next

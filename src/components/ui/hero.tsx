@@ -8,105 +8,99 @@ import * as React from "react";
 import { Card } from "./card";
 
 const Hero = ({}) => {
-  const [activeImage, setActiveImage] = useState(0);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
-  const images = ["/img1 (1).png", "/img1 (3).png", "/img1 (2).png"];
+  const images = [
+    {
+      src: "https://res.cloudinary.com/sofiabargues/image/upload/v1733679147/palace/xnul4xr3ed3vd4ufkkfd.png",
+      href: "/palace/6755d82ead2b664fb34ca40d",
+      alt: "The Curious Tale of the Wandering Orange",
+      title: "The Curious Tale of the Wandering Orange",
+    },
+    {
+      src: "https://res.cloudinary.com/sofiabargues/image/upload/v1731954832/palace/wqoyurhcyv3mm84jjkax.png",
+      href: "/palace/673b8893b2dc602f0ebd463f",
+      alt: "A Day of Unexpected Adventures",
+      title: "A Day of Unexpected Adventures",
+    },
+    {
+      src: "https://res.cloudinary.com/sofiabargues/image/upload/v1730708900/palace/e5ujm0c2o4ssxywsr4xn.png",
+      href: "/palace/672885a673a41580221a785b",
+      alt: "Whimsy in the Park",
+      title: "Whimsy in the Park",
+    },
+    {
+      src: "https://res.cloudinary.com/sofiabargues/image/upload/v1730632553/palace/ibhah6qybg9gq8qn7mg9.png",
+      href: "/palace/6755d82ead2b664fb34ca40d",
+      alt: "The lemon dream",
+      title: "The lemon dream",
+    },
+  ];
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setActiveImage((prev) => (prev + 1) % images.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, []);
   return (
-    <>
-      <section className="relative overflow-hidden ">
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8  ">
-          <div className="grid gap-8 lg:grid-cols-2 lg:gap-16">
-            <div className="relative z-10 flex flex-col justify-center">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-              >
-                <h1 className="text-4xl font-bold tracking-tight md:text-7xl lg:text-8xl xl:text-9xl">
-                  Memory Palace
-                </h1>
-                <h2 className="font-bold mt-3 md:mt-6 text-lg md:text-3xl">
-                  Unlock the Power of Your Mind
-                </h2>
-                <p className=" text-lg mt-2 md:mt-4 text-muted-foreground md:text-xl text-pretty">
-                  Step into a realm where memory becomes a journey. Using the
-                  ancient Method of Loci, our AI guides you through vivid mental
-                  landscapes, transforming information into unforgettable
-                  stories.
-                </p>
-                <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-                  <a href="#Create">
-                    <Button size="lg" className="w-full sm:w-auto">
-                      Create a Palace
-                    </Button>
-                  </a>
-                  <a href="#Grid">
-                    <Button
-                      size="lg"
-                      variant="outline"
-                      className="w-full sm:w-auto"
-                    >
-                      Choose a palace
-                    </Button>
-                  </a>
-                </div>
-              </motion.div>
-            </div>
-
-            <div className="relative">
-              <div className="grid grid-cols-2 gap-4 h-[600px]">
-                {images.map((src, index) => (
-                  <motion.div
-                    key={index}
-                    className={`relative ${
-                      index === 2 ? "col-span-2" : ""
-                    } rounded-2xl overflow-hidden`}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{
-                      opacity: activeImage === index ? 1 : 0.5,
-                      scale: activeImage === index ? 1 : 0.95,
-                    }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <Image
-                      src={src}
-                      alt={`Memory Palace Visualization ${index + 1}`}
-                      width={400}
-                      height={300}
-                      className="w-full h-full object-cover rounded-2xl"
-                    />
-                  </motion.div>
-                ))}
-              </div>
-
-              {/* Decorative elements */}
-              <div className="absolute -left-4 top-0 h-72 w-72 bg-primary/10 rounded-full blur-3xl" />
-              <div className="absolute -right-4 bottom-0 h-72 w-72 bg-primary/10 rounded-full blur-3xl" />
-            </div>
+    <section className="relative w-full overflow-hidden py-14">
+      <div className="container px-4 md:px-6 m-auto">
+        <div className="mb-12 text-center">
+          <h1 className="mb-4 text-4xl font-bold tracking-tighter text-primary sm:text-5xl xl:text-6xl/none">
+            Memory Palace
+          </h1>
+          <p className="mx-auto max-w-[600px] text-secondary-foreground md:text-xl">
+            {
+              "Unlock your mind's potential: Use AI-guided Memory Palaces to turn information into lasting stories."
+            }
+          </p>
+          <div className="mt-8 flex gap-4 flex-row justify-center">
+            <a href="#Create">
+              <Button size="lg" className="w-full sm:w-auto">
+                Create a Palace
+              </Button>
+            </a>
+            <a href="#Grid">
+              <Button size="lg" variant="outline" className="w-full sm:w-auto">
+                Choose a palace
+              </Button>
+            </a>
           </div>
         </div>
-      </section>
-
-      <Card className="text-center rounded-xl border text-card-foreground shadow py-12  px-10 mt-12">
-        <h2 className="text-3xl font-bold mb-8 ">
-          What is the Method of Loci?
-        </h2>
-        <p className="max-w-6xl text-lg mx-auto text-muted-foreground ">
-          The Method of Loci, also known as Memory Palace, is a powerful
-          memorization technique that uses visualization to organize and recall
-          information. By mentally placing items within a familiar location, you
-          create strong associations that significantly improve your ability to
-          remember and retrieve information.
-        </p>
-      </Card>
-    </>
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {images.map((image, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
+              onHoverStart={() => setHoveredIndex(index)}
+              onHoverEnd={() => setHoveredIndex(null)}
+            >
+              <a href={image.href}>
+                <Card className="group relative overflow-hidden rounded-lg">
+                  <div className="aspect-[3/4] w-full">
+                    <Image
+                      src={image.src}
+                      alt={image.alt}
+                      fill
+                      className="object-cover transition-transform duration-300 group-hover:scale-110"
+                    />
+                  </div>
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-t from-card/60 to-transparent"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: hoveredIndex === index ? 1 : 0.5 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <div className="absolute bottom-0 p-4">
+                      <h2 className="text-xl font-bold text-card-foreground">
+                        {image.title}
+                      </h2>
+                    </div>
+                  </motion.div>
+                </Card>
+              </a>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 };
 

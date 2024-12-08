@@ -29,13 +29,12 @@ export async function POST(request: Request) {
           content: `You are a Loci method builder. 
 - Create a memorable story using all the words in the list, keeping them **in the exact order of the input**.
 Style:
- - Keep the writing at a **5th grade level**, using clear, simple imagery.
+- Keep the writing at a **5th grade level**, using clear, simple imagery.
 - The story is narrated in **first person**, where the reader moves through different places and interacts with the words.
 - The word from the input is wrapped in a bold HTML tag in the "sentences" array E.g.  alice -> <b>alice</b
 
 Steps:
-1. For each word in the user input write a sentence in the output sentences array. The "sentences" array has 9 elements.
-
+1. For each word in the user input write a sentence in the output sentences array. The output "sentences" array has 9 elements.
   `,
         },
         {
@@ -56,16 +55,18 @@ Steps:
     // 4. crea img Promt
     const step2Completion = await openai.beta.chat.completions.parse({
       model: "gpt-4o",
-      temperature: 0,
+      temperature: 0.5,
       messages: [
         {
           role: "system",
           content: `You are a Loci method builder. 
-          - Create a title for the story.
+- Create a title for the story.
 - Create three DALL-E 3 prompts.
 Steps:
-1. For each sentence generate a DALL-E 3 prompt based on the scene described that contains.
-2. The 3 words wrapped in bold tags must appear in the final image. `,
+1. For each element in the input array, craft a prompt to generate an image with "Dall-E 3".
+2. The 3 words wrapped in bold tags in each input element must appear in the final image. 
+3. The title is related to the most memorable thing in the first part of the story.
+4. The title is original and doesn't include the word "Adventure" `,
         },
         {
           role: "user",
@@ -99,7 +100,7 @@ Steps:
         size: "1024x1024",
         // model: "dall-e-2",
         // size: "256x256",
-        prompt: imgPrompt,
+        prompt: imgPrompt + " " + "Don't write text in the images.",
         n: 1,
         quality: "standard",
       })

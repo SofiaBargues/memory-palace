@@ -43,6 +43,7 @@ const PalaceIdPage = ({ params }: { params: { id: string } }) => {
   console.log(allPalaces);
   const selectedPalace = allPalaces.find((value) => value._id === params.id);
 
+  console.log(selectedPalace);
   if (loading) {
     return (
       <div className="flex justify-center h-full items-center">
