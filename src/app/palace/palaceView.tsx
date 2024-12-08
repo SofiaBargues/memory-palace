@@ -328,7 +328,7 @@ export function PalaceView({
           </>
         )}
         {loading ? (
-          <CardContent className="flex justify-center items-center h-[900px]">
+          <CardContent className="flex justify-center items-center h-[900px] flex-col">
             <Loader />
             <p className="font-medium  mt-5 text-xl">Creating Palace</p>
           </CardContent>
