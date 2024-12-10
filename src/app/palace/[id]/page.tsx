@@ -46,8 +46,9 @@ const PalaceIdPage = ({ params }: { params: { id: string } }) => {
   console.log(selectedPalace);
   if (loading) {
     return (
-      <div className="flex justify-center h-full items-center">
-        <Loader></Loader>
+      <div className="flex justify-center h-full items-center flex-col">
+        <Loader />
+        <p className="font-medium  mt-5 text-xl">Loading Palace</p>
       </div>
     );
   }

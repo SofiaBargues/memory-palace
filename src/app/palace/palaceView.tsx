@@ -16,7 +16,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { selectRandomWord } from "./selectRandomWord";
-import { RefreshCw } from "lucide-react";
+import { RefreshCw,  Sparkles } from "lucide-react";
 
 function upDateArrayValue({
   i,
@@ -194,7 +194,7 @@ export function PalaceView({
                   disabled={slideSelected < palace.images.length}
                   onClick={goToNextStep}
                 >
-                  Next
+                  Test Me
                 </Button>
               </CardFooter>
             </>
@@ -220,7 +220,7 @@ export function PalaceView({
             </CardContent>
             <CardFooter>
               <Button className="w-full " form="submit" type="submit">
-                Next
+                Check Score
               </Button>
             </CardFooter>
           </>
@@ -247,7 +247,7 @@ export function PalaceView({
             </CardContent>
             <CardFooter>
               <Button className="w-full " form="submit" type="submit">
-                Next
+                Check Score
               </Button>
             </CardFooter>
           </>
@@ -315,7 +315,7 @@ export function PalaceView({
             </CardContent>
             <CardFooter>
               <Button className="w-full " form="submit" type="submit">
-                Next
+                Test Me
               </Button>
             </CardFooter>
           </>
@@ -345,7 +345,8 @@ export function PalaceView({
               </CardContent>
               <CardFooter className="flex flex-col items-start space-y-4">
                 <Button className="w-full" onClick={goToNextStep}>
-                  Next
+                  Generate Palace
+                  <Sparkles></Sparkles>
                 </Button>
               </CardFooter>
             </>

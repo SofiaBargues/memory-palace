@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { Card } from "./card";
+import { Sparkles } from "lucide-react";
 
 const Hero = ({}) => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -40,7 +41,7 @@ const Hero = ({}) => {
     <section className="relative w-full overflow-hidden py-14">
       <div className="container px-4 md:px-6 m-auto">
         <div className="mb-12 text-center">
-          <h1 className="mb-4 text-4xl font-bold tracking-tighter text-primary sm:text-5xl xl:text-6xl/none">
+          <h1 className="mb-4 text-4xl font-bold tracking-tighter text-primary sm:text-5xl 2xl:text-7xl xl:text-6xl/none">
             Memory Palace
           </h1>
           <p className="mx-auto max-w-[600px] text-secondary-foreground md:text-xl">
@@ -48,13 +49,14 @@ const Hero = ({}) => {
               "Unlock your mind's potential: Use AI-guided Memory Palaces to turn information into lasting stories."
             }
           </p>
-          <div className="mt-8 flex gap-4 flex-row justify-center">
-            <a href="#Create">
+          <div className="mt-8 flex gap-4 sm:flex-row flex-col justify-center">
+            <a href="/palace">
               <Button size="lg" className="w-full sm:w-auto">
                 Create a Palace
+                <Sparkles></Sparkles>
               </Button>
             </a>
-            <a href="#Grid">
+            <a href="/palaces">
               <Button size="lg" variant="outline" className="w-full sm:w-auto">
                 Choose a palace
               </Button>

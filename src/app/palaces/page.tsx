@@ -6,4 +6,4 @@ function Palaces() {
   return <PalacesGrid />;
 }
 
-export default Palaces
+export default Palaces;
