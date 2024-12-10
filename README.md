@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Memory Palace
 
-## Getting Started
+**Memory Palace** is an AI-powered tool that helps you unlock your mind's potential by turning information into lasting stories using the Memory Palace technique.
 
-First, run the development server:
+🔗 [Website](https://memorypalace.vercel.app)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Memory Palace comes packed with powerful features:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- 🏰 **AI-Generated Memory Palaces**: Create customized palaces tailored to your memory needs.
+- 🗂️ **Word List Memorization**: Remember any list of words with ease.
+- 📖 **Learn the Loci Method**: Master this time-tested mnemonic technique.
+- 🖼️ **Palace Images with DALL-E 3**: Generate vivid imagery to enhance your memory experience.
+- ✍️ **Stories with GPT-4o**: Enjoy guided stories crafted by AI.
+- 🧠 **Memory Testing**: Track your progress with scores.
+- 🎨 **UI Components with Shadcn/UI**: Experience a sleek and modern interface.
+- ✅ **Input Validation**: Ensures a smooth and error-free experience.
+- 💾 **Palace Storage**: Save your creations securely in MongoDB.
+- ☁️ **Image Storage**: Image upload and serving with Cloudinary.
+- 🌟 **Community Palaces**: Discover and explore palaces shared by others.
+- 🔣 **Lucide Icons**: Enhance the UI with beautiful icons.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Experience the Power of Memory Palaces
 
-## Learn More
+Memory Palace offers an engaging way to improve your memory by guiding you through the ancient Loci method with AI assistance.
 
-To learn more about Next.js, take a look at the following resources:
+1. **Initial Memory Test**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   - Attempt to memorize a list of words and recall them in order without any techniques.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+2. **Enter the Palace**
 
-## Deploy on Vercel
+   - Explore a guided story enhanced with vivid imagery to help you remember the same words effortlessly.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. **Mental Journey**
+   - Test your recall again using the memory palace technique and see measurable improvement.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Usage
+
+1. Visit [memorypalace.vercel.app](https://memorypalace.vercel.app) to start using Memory Palace.
+2. Follow the steps to learn and apply the Loci method to memorize anything.
+3. Explore palaces and improve your memory skills.
+
+## Installation
+
+To get started with Memory Palace locally, follow these steps:
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/SofiaBargues/memory-palace.git
+   cd memory-palace
+   ```
+
+2. Install the required dependencies using `npm`:
+
+   ```bash
+   npm install
+   ```
+
+3. Create the environment variables file:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+   Update the `.env` file with the necessary values, including your OpenAI API key. To generate your API key, visit [OpenAI API Keys](https://platform.openai.com/account/api-keys).
+
+4. Start the development server:
+
+   ```bash
+   npm run dev
+   ```
+
+   Your local server will be available at `http://localhost:3000`.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+Happy memory building! If you have any questions or suggestions, feel free to [open an issue](https://github.com/sofiabargues/memory-palace/issues) on GitHub.
