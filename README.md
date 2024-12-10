@@ -8,18 +8,18 @@
 
 Memory Palace comes packed with powerful features:
 
-- 🏰 **AI-Generated Memory Palaces**: Create customized palaces tailored to your memory needs.
-- 🗂️ **Word List Memorization**: Remember any list of words with ease.
-- 📖 **Learn the Loci Method**: Master this time-tested mnemonic technique.
-- 🖼️ **Palace Images with DALL-E 3**: Generate vivid imagery to enhance your memory experience.
-- ✍️ **Stories with GPT-4o**: Enjoy guided stories crafted by AI.
-- 🧠 **Memory Testing**: Track your progress with scores.
-- 🎨 **UI Components with Shadcn/UI**: Experience a sleek and modern interface.
-- ✅ **Input Validation**: Ensures a smooth and error-free experience.
-- 💾 **Palace Storage**: Save your creations securely in MongoDB.
-- ☁️ **Image Storage**: Image upload and serving with Cloudinary.
-- 🌟 **Community Palaces**: Discover and explore palaces shared by others.
-- 🔣 **Lucide Icons**: Enhance the UI with beautiful icons.
+- 🏰 **AI-Generated Memory Palaces**: Create custom AI-designed palaces.
+- 🗂️ **Word List Memorization**: Memorize word lists easily.
+- 📖 **Learn the Loci Method**: Master this mnemonic technique.
+- 🖼️ **Palace Images with [DALL-E 3](https://openai.com/index/dall-e-3/)**: Generate vivid, AI-made images.
+- ✍️ **Stories with [GPT-4o](https://openai.com/index/hello-gpt-4o/)**: Enjoy AI-guided storytelling.
+- 🧠 **Memory Testing**: Track progress with scores.
+- 🎨 **UI Components with [Shadcn/UI](https://ui.shadcn.com/)**: Sleek, modern interface.
+- ✅ **Input Validation**: Smooth, error-free input handling.
+- 💾 **Palace Storage**: Save data securely in [MongoDB](https://www.mongodb.com/).
+- ☁️ **Image Storage**: Manage images via [Cloudinary](https://cloudinary.com/).
+- 🌟 **Community Palaces**: Explore palaces shared by others.
+- 🔣 **[Lucide](https://lucide.dev/) Icons**: Beautiful, modern icons.
 
 ## Experience the Power of Memory Palaces
 
