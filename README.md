@@ -5,7 +5,10 @@
 🔗 [Website](https://memorypalace.vercel.app)
 
 
-https://github.com/SofiaBargues/https://github.com/FranciscoMoretti/carousel-generator/assets/16997807/50cb033d-84d5-4214-93aa-45c6f524d0b1
+
+https://github.com/user-attachments/assets/6b508927-7e06-4614-ad72-f3ed257ecc1e
+
+
 
 ## Features
 
