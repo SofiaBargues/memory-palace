@@ -3,7 +3,6 @@ import { zodResponseFormat } from "openai/helpers/zod.mjs";
 import { uploadToCloudinary } from "./uploadToCloudinary";
 import { Story, StoryImages } from "./types";
 
-export const runtime = "node";
 export const maxDuration = 60;
 
 export async function POST(request: Request) {
