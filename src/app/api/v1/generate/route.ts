@@ -27,11 +27,12 @@ export async function POST(request: Request) {
         {
           role: "system",
           content: `You are a Loci method builder. 
-- Create a memorable story using all the words in the list, keeping them **in the exact order of the input**.
+- Create a memorable story using all the words in the list, keeping them in the exact order of the input.
+
 Style:
-- Keep the writing at a **5th grade level**, using clear, simple imagery.
-- The story is narrated in **first person**, where the reader moves through different places and interacts with the words.
-- The word from the input is wrapped in a bold HTML tag in the "sentences" array E.g.  alice -> <b>alice</b
+- Keep the writing at a 5th grade level, using clear, simple imagery.
+- The story is narrated in first person, where the reader moves through different places and interacts with the words.
+- Wrap the word from the user input in a bold HTML tag in the output E.g.  alice -> <b>alice</b>
 
 Steps:
 1. For each word in the user input write a sentence in the output sentences array. The output "sentences" array has 9 elements.
