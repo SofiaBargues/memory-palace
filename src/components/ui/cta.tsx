@@ -4,7 +4,7 @@ const CallToAction = () => {
   return (
     <section
       id="Create"
-      className=" text-center my-32 px-2
+      className=" text-center my-20 px-2
      "
     >
       {/* <Card className="p-12  "> */}

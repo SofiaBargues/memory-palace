@@ -197,10 +197,8 @@ export function PalaceView({
                   Read the story to remember
                 </CardTitle>
                 <CardDescription className="text-gray-600">
-                  Welcome to the Palace of Memory. Transform words into lasting
-                  memories through vivid images and immersive stories. Link each
-                  word to a location in your palace, making recall effortless
-                  and engaging.
+                  Link each word in the story, making recall effortless and
+                  engaging.
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -258,9 +256,8 @@ export function PalaceView({
             </CardHeader>
             <CardContent>
               <p className="text-gray-600 mb-6">
-                It is time to put your journey through the palace of memory to
-                the test. Remember each scene from the story, visualizing the
-                details. Fill in the blanks as you mentally progress through the
+                Remember each scene from the story, visualizing the details.
+                Fill in the blanks as you mentally progress through the
                 narrative.
               </p>
               <WordsInput
@@ -285,16 +282,13 @@ export function PalaceView({
             </CardHeader>
             <CardContent>
               <p className="text-gray-600 mb-6">
-                Select the words you want to remember.
-              </p>
-              <p className="text-gray-600 mb-6">
                 {
                   "You can generate random lists or customize the list of words to your liking. With these, we'll create a memory palace that will become part of the library on our home page, ready to be revisited."
                 }
               </p>
-              <p className="font-bold text-gray-600 mb-6">
+              {/* <p className="font-bold text-gray-600 mb-6">
                 Once you have memorized your words, go to the next step.
-              </p>
+              </p> */}
               <div className="flex ">
                 <WordsInput
                   words={referenceWords}

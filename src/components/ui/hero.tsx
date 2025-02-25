@@ -42,7 +42,7 @@ const Hero = ({}) => {
       <div className="container px-4 md:px-6 m-auto">
         <div className="mb-12 text-center">
           <h1 className="mb-4 text-4xl font-bold tracking-tighter text-primary sm:text-5xl 2xl:text-7xl xl:text-6xl/none">
-            Memory Palace
+            Visualize and Remember
           </h1>
           <p className="mx-auto max-w-[600px] text-secondary-foreground md:text-xl">
             {
