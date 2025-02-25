@@ -46,19 +46,19 @@ const Hero = ({}) => {
           </h1>
           <p className="mx-auto max-w-[600px] text-secondary-foreground md:text-xl">
             {
-              "Unlock your mind's potential: Use AI-guided Memory Palaces to turn information into lasting stories."
+              "Choose your words and discover a visual story that will lock them into your memory forever."
             }
           </p>
           <div className="mt-8 flex gap-4 sm:flex-row flex-col justify-center">
+            <a href="/palaces">
+              <Button size="lg" variant="outline" className="w-full sm:w-auto">
+                Choose a palace
+              </Button>
+            </a>
             <a href="/palace">
               <Button size="lg" className="w-full sm:w-auto">
                 Create a Palace
                 <Sparkles></Sparkles>
-              </Button>
-            </a>
-            <a href="/palaces">
-              <Button size="lg" variant="outline" className="w-full sm:w-auto">
-                Choose a palace
               </Button>
             </a>
           </div>

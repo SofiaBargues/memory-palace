@@ -49,14 +49,14 @@ export function WordsInput({
       <form
         id="submit"
         onSubmit={handleSubmit}
-        className="space-y-4 flex w-full flex-col"
+        className="space-y-4 flex w-[200px] flex-col"
       >
         {words.map((x, index) => (
           <div key={index} className="flex items-center space-x-2 ">
             <span className="text-gray-500 w-6 ">{index + 1}.</span>
             <MyControlledInput
               index={index}
-              className="flex-1 text-black font-semibold // flex h-9 w-full rounded-md bg-secondary px-3 items-center text-sm shadow-md "
+              className="flex-1 text-black font-semibold flex h-9 w-full rounded-md bg-secondary px-3 items-center text-sm shadow-md "
               value={x}
               onChange={(value) => {
                 if (!onFieldChange) {
@@ -64,7 +64,6 @@ export function WordsInput({
                 }
                 onFieldChange(index, value);
               }}
-              
             />
           </div>
         ))}

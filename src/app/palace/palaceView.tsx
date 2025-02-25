@@ -16,7 +16,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { selectRandomWord } from "./selectRandomWord";
-import { RefreshCw,  Sparkles } from "lucide-react";
+import { RefreshCw, Sparkles } from "lucide-react";
 
 function upDateArrayValue({
   i,
@@ -106,8 +106,15 @@ export function PalaceView({
     } else {
       setFormErrorMessage(false);
       setReferenceWords(newArr);
-      console.log(newArr);
-      await goToNextStep();
+      // @ts-expect-error part of event
+      if (e.nativeEvent.submitter.name === "generate") {
+        await createPalaceAndGoToPalaceStep();
+        // @ts-expect-error part of event
+      } else if (e.nativeEvent.submitter.name === "test_me") {
+        await goToNextStep();
+      } else {
+        throw Error("unknown button");
+      }
     }
   };
 
@@ -139,17 +146,7 @@ export function PalaceView({
     } else if (step === "fill1") {
       setStep("results1");
     } else if (step === "results1") {
-      console.log("Creating New Palace");
-      console.log("Loading");
-      const generatedPalace = await generatePalace();
-      if (!generatedPalace) {
-        console.log("Palace is undefined");
-        return;
-      }
-      setPalace(generatedPalace);
-      // @ts-expect-error id exists in palace response
-      setPalaceId(generatedPalace._id);
-      setStep("palace");
+      createPalaceAndGoToPalaceStep();
     } else if (step === "palace") {
       setStep("fill2");
     } else if (step === "fill2") {
@@ -159,6 +156,33 @@ export function PalaceView({
       setInputWords([]);
       setStep("start");
     }
+  }
+
+  async function createPalaceAndGoToPalaceStep() {
+    console.log("Creating New Palace");
+    console.log("Loading");
+    const generatedPalace = await generatePalace();
+    if (!generatedPalace) {
+      console.log("Palace is undefined");
+      return;
+    }
+    setPalace(generatedPalace);
+    // @ts-expect-error id exists in palace response
+    setPalaceId(generatedPalace._id);
+    setStep("palace");
+  }
+
+  if (loading) {
+    return (
+      <div className="w-full container m-auto md:p-10 flex flex-col  gap-4">
+        <Card className="w-full md:max-w-5xl rounded-none md:rounded-xl m-auto ">
+          <CardContent className="flex justify-center items-center h-[900px] flex-col">
+            <Loader />
+            <p className="font-medium  mt-5 text-xl">Creating Palace</p>
+          </CardContent>
+        </Card>
+      </div>
+    );
   }
 
   console.log(slideSelected);
@@ -265,7 +289,7 @@ export function PalaceView({
               </p>
               <p className="text-gray-600 mb-6">
                 {
-                  " You can generate random lists or customize the list of words to your liking. With these, we'll create a memory palace that will become part of the library on our home page, ready to be revisited."
+                  "You can generate random lists or customize the list of words to your liking. With these, we'll create a memory palace that will become part of the library on our home page, ready to be revisited."
                 }
               </p>
               <p className="font-bold text-gray-600 mb-6">
@@ -313,18 +337,25 @@ export function PalaceView({
                 ""
               )}
             </CardContent>
-            <CardFooter>
-              <Button className="w-full " form="submit" type="submit">
-                Test Me
+            <CardFooter className="flex flex-row justify-between gap-2">
+              <Button
+                className="w-full "
+                form="submit"
+                type="submit"
+                name="test_me"
+                variant={"outline"}
+              >
+                Test Without Palace
+              </Button>
+              <Button className="w-full" form="submit" name="generate">
+                Generate Palace
+                <Sparkles></Sparkles>
               </Button>
             </CardFooter>
           </>
         )}
         {loading ? (
-          <CardContent className="flex justify-center items-center h-[900px] flex-col">
-            <Loader />
-            <p className="font-medium  mt-5 text-xl">Creating Palace</p>
-          </CardContent>
+          <></>
         ) : (
           step === "results1" && (
             //paso previo a ver el palace
