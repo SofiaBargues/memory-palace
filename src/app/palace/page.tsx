@@ -19,7 +19,7 @@ function PalacePage() {
   return (
     <PalaceView
       initialPalace={palace}
-      initialStep="start"
+      initialStep="chooseWords"
       initialPalaceId={undefined}
     />
   );

@@ -62,7 +62,7 @@ const PalaceIdPage = ({ params }: { params: { id: string } }) => {
       <div className="flex">
         <PalaceView
           initialPalace={selectedPalace}
-          initialStep="palace"
+          initialStep="story"
           initialPalaceId={params.id}
         />
       </div>

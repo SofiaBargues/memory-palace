@@ -5,9 +5,7 @@ import { Palace } from "../api/v1/generate/types";
 import { WordsInput } from "./wordsInput";
 import { WordsList } from "./wordList";
 import { PalaceStory } from "./palaceStory";
-import { Description } from "./description";
 import { Loader } from "@/components";
-import { TutorialPage } from "../tutorial/page";
 import {
   Card,
   CardContent,
@@ -18,6 +16,7 @@ import {
 } from "@/components/ui/card";
 import { selectRandomWord } from "./selectRandomWord";
 import { RefreshCw, Sparkles } from "lucide-react";
+import MemoryTestStep from "./memoryTestStep";
 
 function upDateArrayValue({
   i,
@@ -38,12 +37,9 @@ export type PalaceStep =
   // new
   | "chooseWords"
   | "story"
-  | "testIntro"
-  | "testFill"
-  | "testResult"
+  | "memoryTest"
   // old
   | "start"
-  | "palace"
   | "fill2"
   | "results2";
 
@@ -147,16 +143,12 @@ export function PalaceView({
   };
 
   async function goToNextStep() {
-   if (step === "chooseWords") {
+    if (step === "chooseWords") {
       await createPalace();
       setStep("story");
     } else if (step === "story") {
-      setStep("testIntro");
-    } else if (step === "testIntro") {
-      setStep("testFill");
-    } else if (step === "testFill") {
-      setStep("testResult");
-    } else if (step === "testResult") {
+      setStep("memoryTest");
+    } else if (step === "memoryTest") {
       setResults([]);
       setInputWords([]);
       setStep("chooseWords");
@@ -193,7 +185,7 @@ export function PalaceView({
   return (
     <div className="w-full container m-auto md:p-10 flex flex-col  gap-4">
       <Card className="w-full md:max-w-5xl rounded-none md:rounded-xl m-auto ">
-        {step === "palace" && (
+        {step === "story" && (
           <>
             <CardHeader className="pb-0">
               <CardTitle className="text-2xl font-bold ">
@@ -223,6 +215,15 @@ export function PalaceView({
               </Button>
             </CardFooter>
           </>
+        )}
+
+        {step === "memoryTest" && (
+          <MemoryTestStep
+            wordsToRemember={referenceWords}
+            onBackToStoryClick={() => {
+              setStep("story");
+            }}
+          />
         )}
 
         {step === "fill2" && (
