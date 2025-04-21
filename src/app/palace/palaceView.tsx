@@ -34,6 +34,14 @@ function upDateArrayValue({
 }
 
 export type PalaceStep =
+  // new
+  | "tutorial"
+  | "chooseWords"
+  | "story"
+  | "testIntro"
+  | "testFill"
+  | "testResult"
+  // old
   | "start"
   | "fill1"
   | "results1"
