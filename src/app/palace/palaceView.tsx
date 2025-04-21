@@ -7,6 +7,7 @@ import { WordsList } from "./wordList";
 import { PalaceStory } from "./palaceStory";
 import { Description } from "./description";
 import { Loader } from "@/components";
+import { TutorialPage } from "../tutorial/page";
 import {
   Card,
   CardContent,
@@ -35,7 +36,6 @@ function upDateArrayValue({
 
 export type PalaceStep =
   // new
-  | "tutorial"
   | "chooseWords"
   | "story"
   | "testIntro"
@@ -147,9 +147,7 @@ export function PalaceView({
   };
 
   async function goToNextStep() {
-    if (step === "tutorial") {
-      setStep("chooseWords");
-    } else if (step === "chooseWords") {
+   if (step === "chooseWords") {
       await createPalace();
       setStep("story");
     } else if (step === "story") {
@@ -161,7 +159,7 @@ export function PalaceView({
     } else if (step === "testResult") {
       setResults([]);
       setInputWords([]);
-      setStep("tutorial");
+      setStep("chooseWords");
     }
   }
 
@@ -195,39 +193,37 @@ export function PalaceView({
   return (
     <div className="w-full container m-auto md:p-10 flex flex-col  gap-4">
       <Card className="w-full md:max-w-5xl rounded-none md:rounded-xl m-auto ">
-        <>
-          {step === "palace" && (
-            <>
-              <CardHeader className="pb-0">
-                <CardTitle className="text-2xl font-bold ">
-                  Read the story to remember
-                </CardTitle>
-                <CardDescription className="text-gray-600">
-                  Link each word in the story, making recall effortless and
-                  engaging.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <PalaceStory
-                  palace={palace}
-                  onSlideSelected={(num) => {
-                    console.log(" changed", num);
-                    setSlideSelected(num);
-                  }}
-                />
-              </CardContent>
-              <CardFooter className="flex flex-col items-start space-y-4">
-                <Button
-                  className="w-full"
-                  disabled={slideSelected < palace.images.length}
-                  onClick={goToNextStep}
-                >
-                  Test Me
-                </Button>
-              </CardFooter>
-            </>
-          )}
-        </>
+        {step === "palace" && (
+          <>
+            <CardHeader className="pb-0">
+              <CardTitle className="text-2xl font-bold ">
+                Read the story to remember
+              </CardTitle>
+              <CardDescription className="text-gray-600">
+                Link each word in the story, making recall effortless and
+                engaging.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <PalaceStory
+                palace={palace}
+                onSlideSelected={(num) => {
+                  console.log(" changed", num);
+                  setSlideSelected(num);
+                }}
+              />
+            </CardContent>
+            <CardFooter className="flex flex-col items-start space-y-4">
+              <Button
+                className="w-full"
+                disabled={slideSelected < palace.images.length}
+                onClick={goToNextStep}
+              >
+                Test Me
+              </Button>
+            </CardFooter>
+          </>
+        )}
 
         {step === "fill2" && (
           <>
@@ -330,7 +326,7 @@ export function PalaceView({
             </CardFooter>
           </>
         )}
-       
+
         {step === "results2" && (
           <>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
