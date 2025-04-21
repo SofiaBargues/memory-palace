@@ -43,8 +43,6 @@ export type PalaceStep =
   | "testResult"
   // old
   | "start"
-  | "fill1"
-  | "results1"
   | "palace"
   | "fill2"
   | "results2";
@@ -116,7 +114,7 @@ export function PalaceView({
       setReferenceWords(newArr);
       // @ts-expect-error part of event
       if (e.nativeEvent.submitter.name === "generate") {
-        await createPalaceAndGoToPalaceStep();
+        await goToNextStep();
         // @ts-expect-error part of event
       } else if (e.nativeEvent.submitter.name === "test_me") {
         await goToNextStep();
@@ -149,24 +147,25 @@ export function PalaceView({
   };
 
   async function goToNextStep() {
-    if (step === "start") {
-      setStep("fill1");
-    } else if (step === "fill1") {
-      setStep("results1");
-    } else if (step === "results1") {
-      createPalaceAndGoToPalaceStep();
-    } else if (step === "palace") {
-      setStep("fill2");
-    } else if (step === "fill2") {
-      setStep("results2");
-    } else if (step === "results2") {
+    if (step === "tutorial") {
+      setStep("chooseWords");
+    } else if (step === "chooseWords") {
+      await createPalace();
+      setStep("story");
+    } else if (step === "story") {
+      setStep("testIntro");
+    } else if (step === "testIntro") {
+      setStep("testFill");
+    } else if (step === "testFill") {
+      setStep("testResult");
+    } else if (step === "testResult") {
       setResults([]);
       setInputWords([]);
-      setStep("start");
+      setStep("tutorial");
     }
   }
 
-  async function createPalaceAndGoToPalaceStep() {
+  async function createPalace() {
     console.log("Creating New Palace");
     console.log("Loading");
     const generatedPalace = await generatePalace();
@@ -177,7 +176,6 @@ export function PalaceView({
     setPalace(generatedPalace);
     // @ts-expect-error id exists in palace response
     setPalaceId(generatedPalace._id);
-    setStep("palace");
   }
 
   if (loading) {
@@ -231,30 +229,6 @@ export function PalaceView({
           )}
         </>
 
-        {step === "fill1" && (
-          <>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-2xl font-bold">Memory Place</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <h2 className="text-xl font-semibold mb-4">Fill</h2>
-              <p className="text-gray-600 mb-6">
-                Complete the blanks with the previous words in the correct
-                order.
-              </p>
-              <WordsInput
-                words={new Array(9).fill(undefined)}
-                handleSubmit={handleFillSubmit}
-                step={step}
-              />
-            </CardContent>
-            <CardFooter>
-              <Button className="w-full " form="submit" type="submit">
-                Check Score
-              </Button>
-            </CardFooter>
-          </>
-        )}
         {step === "fill2" && (
           <>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -356,35 +330,7 @@ export function PalaceView({
             </CardFooter>
           </>
         )}
-        {loading ? (
-          <></>
-        ) : (
-          step === "results1" && (
-            //paso previo a ver el palace
-            <>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-2xl font-bold">Results</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <Description>
-                  These are the results of your first attempt.
-                </Description>
-                <WordsList
-                  step={step}
-                  inputWords={inputWords}
-                  originalWords={referenceWords}
-                  results={results}
-                />
-              </CardContent>
-              <CardFooter className="flex flex-col items-start space-y-4">
-                <Button className="w-full" onClick={goToNextStep}>
-                  Generate Palace
-                  <Sparkles></Sparkles>
-                </Button>
-              </CardFooter>
-            </>
-          )
-        )}
+       
         {step === "results2" && (
           <>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
