@@ -19,7 +19,7 @@ export async function GET() {
 }
 export async function POST(request: Request) {
   try {
-    const palace = await request.json();
+    const palace = await request.json(); // body
     //conecta la base de datos
     await dbConnect();
 

@@ -6,11 +6,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { Card } from "./card";
 import { Sparkles } from "lucide-react";
-
-const Hero = ({}) => {
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-
-  const images = [
+const images = [
     {
       src: "https://res.cloudinary.com/sofiabargues/image/upload/v1733679147/palace/xnul4xr3ed3vd4ufkkfd.png",
       href: "/palace/6755d82ead2b664fb34ca40d",
@@ -36,7 +32,9 @@ const Hero = ({}) => {
       title: "The lemon dream",
     },
   ];
-
+  
+const Hero = ({}) => {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   return (
     <section className="relative w-full overflow-hidden py-14">
       <div className="container px-4 md:px-6 m-auto">
