@@ -14,6 +14,13 @@ import {
 } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { ArrowLeft, Check, X, Brain, Trophy } from "lucide-react";
+import { Label } from "@/components/ui/label";
+
+type Step = "testIntro" | "testFill" | "testResult";
+
+function areWordsEqual(word1: string, word2: string) {
+  return word1.trim().toLowerCase() === word2.trim().toLowerCase();
+}
 
 export default function MemoryTestStep({
   wordsToRemember,
@@ -25,25 +32,23 @@ export default function MemoryTestStep({
   const [userAnswers, setUserAnswers] = useState<string[]>(
     Array(wordsToRemember.length).fill("")
   );
-
-  // TODO refactor testFill step
-  const [currentStep, setCurrentStep] = useState(0);
-  const [currentAnswer, setCurrentAnswer] = useState("");
-
-  // TODO: Refactor to testIntro / testFill / testResult
-  const [showResults, setShowResults] = useState(false);
-  const [testStarted, setTestStarted] = useState(false);
-
+  const [step, setStep] = useState<Step>("testIntro");
   const [timeElapsed, setTimeElapsed] = useState(0);
 
-  const score = userAnswers.filter(
-    (answer, index) => answer === wordsToRemember[index].toLowerCase()
+  const handleInputChange = (index: number, value: string) => {
+    const newUserAnswers = [...userAnswers];
+    newUserAnswers[index] = value;
+    setUserAnswers(newUserAnswers);
+  };
+
+  const score = userAnswers.filter((answer, index) =>
+    areWordsEqual(answer, wordsToRemember[index])
   ).length;
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
 
-    if (testStarted && !showResults) {
+    if (step === "testFill") {
       interval = setInterval(() => {
         setTimeElapsed((prev) => prev + 1);
       }, 1000);
@@ -52,39 +57,20 @@ export default function MemoryTestStep({
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [testStarted, showResults]);
+  }, [step]);
 
   const handleStartTest = () => {
-    setTestStarted(true);
+    setStep("testFill");
   };
-
-  const handleSubmitAnswer = () => {
-    if (currentAnswer.trim()) {
-      const newAnswers = [...userAnswers];
-      newAnswers[currentStep] = currentAnswer.trim().toLowerCase();
-      setUserAnswers(newAnswers);
-      setCurrentAnswer("");
-
-      if (currentStep < wordsToRemember.length - 1) {
-        setCurrentStep(currentStep + 1);
-      } else {
-        setShowResults(true);
-      }
-    }
+  const handleVerify = () => {
+    console.log("Verifying words:", userAnswers);
+    setStep("testResult");
   };
-
-  const handleSkip = () => {
-    const newAnswers = [...userAnswers];
-    newAnswers[currentStep] = "";
-    setUserAnswers(newAnswers);
-
-    if (currentStep < wordsToRemember.length - 1) {
-      setCurrentStep(currentStep + 1);
-    } else {
-      setShowResults(true);
-    }
+  const handleBackToIntro = () => {
+    setStep("testIntro");
+    setTimeElapsed(0);
+    setUserAnswers(Array(wordsToRemember.length).fill(""));
   };
-
   const getScoreMessage = () => {
     const percentage = (score / wordsToRemember.length) * 100;
     if (percentage >= 90)
@@ -94,7 +80,7 @@ export default function MemoryTestStep({
     return "Sigue practicando. El método de loci requiere tiempo y práctica.";
   };
 
-  if (!testStarted) {
+  if (step === "testIntro") {
     return (
       <div className="container max-w-4xl py-12">
         <Button
@@ -135,7 +121,7 @@ export default function MemoryTestStep({
     );
   }
 
-  if (showResults) {
+  if (step === "testResult") {
     return (
       <div className="container max-w-4xl py-12">
         <Card>
@@ -204,8 +190,7 @@ export default function MemoryTestStep({
                     className="flex items-center justify-between p-2 rounded-md bg-muted"
                   >
                     <div className="flex items-center gap-2">
-                      {userAnswers[index].toLowerCase() ===
-                      word.toLowerCase() ? (
+                      {areWordsEqual(userAnswers[index], word) ? (
                         <Check className="h-5 w-5 text-green-500" />
                       ) : (
                         <X className="h-5 w-5 text-red-500" />
@@ -216,8 +201,7 @@ export default function MemoryTestStep({
                     </div>
                     <div className="text-sm">
                       {userAnswers[index] ? (
-                        userAnswers[index].toLowerCase() ===
-                        word.toLowerCase() ? (
+                        areWordsEqual(userAnswers[index], word) ? (
                           <span className="text-green-500">Correcto</span>
                         ) : (
                           <span className="text-red-500">
@@ -249,71 +233,45 @@ export default function MemoryTestStep({
   }
 
   return (
-    <div className="container max-w-4xl py-12">
-      <div className="space-y-8">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold tracking-tight">
-            Prueba de memoria
-          </h1>
-          <p className="text-muted-foreground mt-2">
-            Recorre mentalmente tu palacio de memoria y escribe las palabras que
-            recuerdes
+    // TODO add timer visualization
+    <div className="flex justify-center items-center min-h-screen p-4 bg-background">
+      <Card className="w-full max-w-md shadow-lg">
+        <CardHeader className="space-y-1 pb-2">
+          <CardTitle className="text-2xl font-bold">Test Your Memory</CardTitle>
+          <CardDescription>
+            Recall the words from your memory palace and type them in the
+            correct order
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm font-medium mb-4">
+            Enter the words in the correct sequence:
           </p>
-        </div>
 
-        <div className="flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <span className="font-medium">Progreso:</span>
-            <span>
-              {currentStep + 1} de {wordsToRemember.length}
-            </span>
-          </div>
-          <Progress
-            value={(currentStep / wordsToRemember.length) * 100}
-            className="w-1/2 h-2"
-          />
-        </div>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Palabra {currentStep + 1}</CardTitle>
-            <CardDescription>
-              ¿Qué palabra estaba en la posición {currentStep + 1} de la
-              historia?
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="flex gap-2">
+          <div className="space-y-3">
+            {Array.from({ length: userAnswers.length }).map((_, index) => (
+              <div key={index} className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor={`word-${index + 1}`} className="text-right">
+                  Word {index + 1}
+                </Label>
                 <Input
-                  placeholder="Escribe la palabra..."
-                  value={currentAnswer}
-                  onChange={(e) => setCurrentAnswer(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      handleSubmitAnswer();
-                    }
-                  }}
-                  autoFocus
+                  id={`word-${index + 1}`}
+                  className="col-span-3"
+                  placeholder="Enter word..."
+                  value={userAnswers[index]}
+                  onChange={(e) => handleInputChange(index, e.target.value)}
                 />
-                <Button onClick={handleSubmitAnswer}>Enviar</Button>
               </div>
-              <p className="text-sm text-muted-foreground">
-                Intenta visualizar el lugar en tu palacio de memoria donde
-                colocaste esta palabra.
-              </p>
-            </div>
-          </CardContent>
-          <CardFooter className="flex justify-between">
-            <Button variant="ghost" onClick={handleSkip}>
-              No recuerdo / Saltar
-            </Button>
-            <div className="text-sm text-muted-foreground">
-              {currentStep + 1} de {wordsToRemember.length}
-            </div>
-          </CardFooter>
-        </Card>
-      </div>
+            ))}
+          </div>
+        </CardContent>
+        <CardFooter className="flex justify-between pt-2">
+          <Button variant="outline" onClick={handleBackToIntro}>
+            Back
+          </Button>
+          <Button onClick={handleVerify}>Verify Answers</Button>
+        </CardFooter>
+      </Card>
     </div>
   );
 }
