@@ -44,11 +44,6 @@ export type PalaceStep =
   | "fill2"
   | "results2";
 
-function hasDuplicated(listWords: string[]) {
-  const set = new Set(listWords);
-  return listWords.length !== set.size;
-}
-
 export function PalaceView({
   initialPalace,
   initialStep,
@@ -59,18 +54,13 @@ export function PalaceView({
   initialStep: PalaceStep;
 }) {
   const [palace, setPalace] = useState(initialPalace);
-  const [formErrorMessage, setFormErrorMessage] = useState(false);
   const [palaceId, setPalaceId] = useState(initialPalaceId);
   const [step, setStep] = useState<PalaceStep>(initialStep);
   const [loading, setLoading] = useState(false);
 
   const [referenceWords, setReferenceWords] = useState<string[]>(palace.words);
-
-  const [inputWords, setInputWords] = useState<string[]>([]);
-  const [results, setResults] = useState<boolean[]>([]);
   const [slideSelected, setSlideSelected] = useState(0);
 
-  console.log(hasDuplicated(inputWords));
   async function generatePalace(): Promise<Palace | undefined> {
     setLoading(true);
     try {
@@ -97,28 +87,6 @@ export function PalaceView({
   ) => {
     const newArr = [];
     e.preventDefault();
-    for (let i = 0; i < referenceWords.length; i++) {
-      // @ts-expect-error  form has elements attribute
-      const value = e.target.elements["input_" + i].value;
-      const sanitized = value.trim();
-
-      newArr.push(sanitized);
-    }
-    if (hasDuplicated(newArr)) {
-      setFormErrorMessage(true);
-    } else {
-      setFormErrorMessage(false);
-      setReferenceWords(newArr);
-      // @ts-expect-error part of event
-      if (e.nativeEvent.submitter.name === "generate") {
-        await goToNextStep();
-        // @ts-expect-error part of event
-      } else if (e.nativeEvent.submitter.name === "test_me") {
-        await goToNextStep();
-      } else {
-        throw Error("unknown button");
-      }
-    }
   };
 
   async function goToNextStep() {
@@ -128,8 +96,6 @@ export function PalaceView({
     } else if (step === "story") {
       setStep("memoryTest");
     } else if (step === "memoryTest") {
-      setResults([]);
-      setInputWords([]);
       setStep("chooseWords");
     }
   }
@@ -205,86 +171,13 @@ export function PalaceView({
           />
         )}
 
-        {step === "chooseWords" && <ChooseWordsStep  onGeneratePalaceClick={goToNextStep}  words={referenceWords} setWords={ setReferenceWords}/>}
-
-      
-        {step === "start" && (
-          <>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-2xl font-bold">
-                Choose words to remember
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-600 mb-6">
-                {
-                  "You can generate random lists or customize the list of words to your liking. With these, we'll create a memory palace that will become part of the library on our home page, ready to be revisited."
-                }
-              </p>
-              {/* <p className="font-bold text-gray-600 mb-6">
-                Once you have memorized your words, go to the next step.
-              </p> */}
-              <div className="flex ">
-                <WordsInput
-                  words={referenceWords}
-                  handleSubmit={handleWordsChoiceSubmit}
-                  onFieldChange={(i, value) => {
-                    setReferenceWords(
-                      upDateArrayValue({
-                        i,
-                        newVal: value || "",
-                        arr: referenceWords,
-                      })
-                    );
-                  }}
-                  step={step}
-                />
-                <div className="flex flex-col  mt-0 pt-0">
-                  {referenceWords.map((v, i) => (
-                    <Button
-                      key={i}
-                      variant="ghost"
-                      className="mb-4 ml-2 border "
-                      onClick={() =>
-                        setReferenceWords(
-                          upDateArrayValue({
-                            i: i,
-                            arr: referenceWords,
-                            newVal: selectRandomWord(),
-                          })
-                        )
-                      }
-                    >
-                      <RefreshCw />
-                    </Button>
-                  ))}
-                </div>
-              </div>
-              {formErrorMessage ? (
-                <p className=" text-red-600">* All words must be different.</p>
-              ) : (
-                ""
-              )}
-            </CardContent>
-            <CardFooter className="flex flex-row justify-between gap-2">
-              <Button
-                className="w-full "
-                form="submit"
-                type="submit"
-                name="test_me"
-                variant={"outline"}
-              >
-                Test Without Palace
-              </Button>
-              <Button className="w-full" form="submit" name="generate">
-                Generate Palace
-                <Sparkles></Sparkles>
-              </Button>
-            </CardFooter>
-          </>
+        {step === "chooseWords" && (
+          <ChooseWordsStep
+            onGeneratePalaceClick={goToNextStep}
+            words={referenceWords}
+            setWords={setReferenceWords}
+          />
         )}
-
-    
       </Card>
     </div>
   );

@@ -77,6 +77,7 @@ export function ChooseWordsStep({
   const [selectedCategory, setSelectedCategory] = useState<
     "animals" | "fruits" | "objects" | "custom"
   >("custom");
+  const [formErrorMessage, setFormErrorMessage] = useState<null | string>(null);
 
   // Fill words with a category
   const selectCategory = (
@@ -235,7 +236,11 @@ export function ChooseWordsStep({
                   </Button>
                 </div>
               ))}
-
+              {formErrorMessage ? (
+                <p className=" text-red-600">* All words must be different.</p>
+              ) : (
+                ""
+              )}
               <div className="flex justify-end mt-6">
                 <Button
                   onClick={() => setWords(Array(9).fill(""))}
@@ -246,7 +251,18 @@ export function ChooseWordsStep({
                 </Button>
                 {/* 
                 // TODO: validate que no sean texto vacio antes de llamar a generate palace. Mostrar un error */}
-                <Button onClick={onGeneratePalaceClick}>Generate Palace</Button>
+                <Button
+                  onClick={async () => {
+                    if (hasDuplicated(words)) {
+                      setFormErrorMessage("All words must be different");
+                    } else {
+                      setFormErrorMessage(null);
+                      await onGeneratePalaceClick();
+                    }
+                  }}
+                >
+                  Generate Palace
+                </Button>
               </div>
             </div>
           </CardContent>
@@ -286,4 +302,9 @@ function CategoryCard({
       </CardContent>
     </Card>
   );
+}
+
+function hasDuplicated(listWords: string[]) {
+  const set = new Set(listWords);
+  return listWords.length !== set.size;
 }
