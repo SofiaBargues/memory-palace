@@ -17,6 +17,7 @@ import {
 import { selectRandomWord } from "./selectRandomWord";
 import { RefreshCw, Sparkles } from "lucide-react";
 import MemoryTestStep from "./memoryTestStep";
+import { ChooseWordsStep } from "./chooseWordsStep";
 
 function upDateArrayValue({
   i,
@@ -120,28 +121,6 @@ export function PalaceView({
     }
   };
 
-  const handleFillSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    const newArr = [];
-    e.preventDefault();
-    for (let i = 0; i < referenceWords.length; i++) {
-      // @ts-expect-error  form has elements attribute
-      newArr.push(e.target.elements["input_" + i].value);
-    }
-    setInputWords(newArr);
-
-    const isCorrectArr = [];
-    for (let i = 0; i < newArr.length; i++) {
-      const palabra = newArr[i];
-      if (palabra.toLowerCase() === referenceWords[i].toLowerCase()) {
-        isCorrectArr.push(true);
-      } else {
-        isCorrectArr.push(false);
-      }
-    }
-    setResults(isCorrectArr);
-    await goToNextStep();
-  };
-
   async function goToNextStep() {
     if (step === "chooseWords") {
       await createPalace();
@@ -226,32 +205,9 @@ export function PalaceView({
           />
         )}
 
-        {step === "fill2" && (
-          <>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-2xl font-bold">
-                Remember the story and complete the words
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-600 mb-6">
-                Remember each scene from the story, visualizing the details.
-                Fill in the blanks as you mentally progress through the
-                narrative.
-              </p>
-              <WordsInput
-                words={new Array(9).fill(undefined)}
-                handleSubmit={handleFillSubmit}
-                step={step}
-              />{" "}
-            </CardContent>
-            <CardFooter>
-              <Button className="w-full " form="submit" type="submit">
-                Check Score
-              </Button>
-            </CardFooter>
-          </>
-        )}
+        {step === "chooseWords" && <ChooseWordsStep  onGeneratePalaceClick={goToNextStep}  words={referenceWords} setWords={ setReferenceWords}/>}
+
+      
         {step === "start" && (
           <>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -328,36 +284,7 @@ export function PalaceView({
           </>
         )}
 
-        {step === "results2" && (
-          <>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-2xl font-bold">Results</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-600 mb-6">
-                These are the results of your journey by the memory palace.
-              </p>
-              <WordsList
-                step={step}
-                inputWords={inputWords}
-                originalWords={referenceWords}
-                results={results}
-              />
-            </CardContent>
-            <CardFooter>
-              <div className="flex justify-end w-full gap-4 bg-none">
-                <a href={"/palace/" + palaceId}>
-                  <Button size="lg" variant="outline">
-                    Play again
-                  </Button>
-                </a>
-                <a href="/palaces">
-                  <Button size="lg">More Palaces</Button>
-                </a>
-              </div>
-            </CardFooter>
-          </>
-        )}
+    
       </Card>
     </div>
   );
