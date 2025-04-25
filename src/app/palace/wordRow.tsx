@@ -1,6 +1,6 @@
 import { Input } from "@/components/ui/input";
 import { CheckCircle2, XCircle } from "lucide-react";
-import { PalaceStep } from "./palaceView";
+import { PalaceStep } from "./memoryGame";
 export function WordRow({
   index,
   isCorrect,

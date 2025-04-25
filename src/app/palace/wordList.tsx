@@ -1,7 +1,7 @@
 import { WordRow } from "./wordRow";
 import { Progress } from "@/components/ui/progress";
 import { useEffect, useState } from "react";
-import { PalaceStep } from "./palaceView";
+import { PalaceStep } from "./memoryGame";
 
 export function WordsList({
   inputWords,

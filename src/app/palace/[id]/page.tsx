@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { PalaceView } from "../palaceView";
+import { MemoryGame } from "../memoryGame";
 import { Palace } from "@/app/api/v1/generate/types";
 import { Loader } from "@/components";
 
@@ -60,7 +60,7 @@ const PalaceIdPage = ({ params }: { params: { id: string } }) => {
   return (
     <>
       <div className="flex">
-        <PalaceView
+        <MemoryGame
           initialPalace={selectedPalace}
           initialStep="story"
           initialPalaceId={params.id}

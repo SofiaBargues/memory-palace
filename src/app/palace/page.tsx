@@ -2,7 +2,7 @@
 import { Palace } from "../api/v1/generate/types";
 import { generateDataResponse } from "./DATA";
 
-import { PalaceView } from "./palaceView";
+import { MemoryGame } from "./memoryGame";
 
 const generateData = JSON.parse(generateDataResponse);
 const storyData = Palace.parse(generateData);
@@ -17,7 +17,7 @@ function PalacePage() {
     sentences: storyData.sentences,
   };
   return (
-    <PalaceView
+    <MemoryGame
       initialPalace={palace}
       initialStep="chooseWords"
       initialPalaceId={undefined}

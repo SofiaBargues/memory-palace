@@ -18,6 +18,7 @@ import { selectRandomWord } from "./selectRandomWord";
 import { RefreshCw, Sparkles } from "lucide-react";
 import MemoryTestStep from "./memoryTestStep";
 import { ChooseWordsStep } from "./chooseWordsStep";
+import { StoryStep } from "./storyStep";
 
 function upDateArrayValue({
   i,
@@ -44,7 +45,7 @@ export type PalaceStep =
   | "fill2"
   | "results2";
 
-export function PalaceView({
+export function MemoryGame({
   initialPalace,
   initialStep,
   initialPalaceId,
@@ -132,33 +133,7 @@ export function PalaceView({
       <Card className="w-full md:max-w-5xl rounded-none md:rounded-xl m-auto ">
         {step === "story" && (
           <>
-            <CardHeader className="pb-0">
-              <CardTitle className="text-2xl font-bold ">
-                Read the story to remember
-              </CardTitle>
-              <CardDescription className="text-gray-600">
-                Link each word in the story, making recall effortless and
-                engaging.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <PalaceStory
-                palace={palace}
-                onSlideSelected={(num) => {
-                  console.log(" changed", num);
-                  setSlideSelected(num);
-                }}
-              />
-            </CardContent>
-            <CardFooter className="flex flex-col items-start space-y-4">
-              <Button
-                className="w-full"
-                disabled={slideSelected < palace.images.length}
-                onClick={goToNextStep}
-              >
-                Test Me
-              </Button>
-            </CardFooter>
+           <StoryStep setSlideSelected={setSlideSelected} slideSelected={slideSelected} goToNextStep={goToNextStep} palace={palace}  />
           </>
         )}
 
