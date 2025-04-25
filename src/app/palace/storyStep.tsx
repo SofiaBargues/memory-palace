@@ -4,16 +4,17 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowLeft, ArrowRight, BookOpen } from "lucide-react";
+
 export function StoryStep({
   palace,
   setSlideSelected,
   slideSelected,
-  goToNextStep,
+  onFinishClick
 }: {
   palace: Palace;
   setSlideSelected: (slide: number) => void;
   slideSelected: number;
-  goToNextStep: () => void;
+  onFinishClick: () => void;
 }) {
   return (
     <>
@@ -82,7 +83,7 @@ export function StoryStep({
           <Button
             onClick={() => {
               if (slideSelected === palace.images.length - 1) {
-                goToNextStep();
+                onFinishClick();
               } else {
                 setSlideSelected(slideSelected + 1);
               }

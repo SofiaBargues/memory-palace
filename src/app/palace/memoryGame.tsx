@@ -133,7 +133,12 @@ export function MemoryGame({
       <Card className="w-full md:max-w-5xl rounded-none md:rounded-xl m-auto ">
         {step === "story" && (
           <>
-           <StoryStep setSlideSelected={setSlideSelected} slideSelected={slideSelected} goToNextStep={goToNextStep} palace={palace}  />
+            <StoryStep
+              setSlideSelected={setSlideSelected}
+              slideSelected={slideSelected}
+              onFinishClick={goToNextStep}
+              palace={palace}
+            />
           </>
         )}
 
