@@ -7,32 +7,32 @@ import Image from "next/image";
 import { Card } from "./card";
 import { Sparkles } from "lucide-react";
 const images = [
-    {
-      src: "https://res.cloudinary.com/sofiabargues/image/upload/v1733679147/palace/xnul4xr3ed3vd4ufkkfd.png",
-      href: "/palace/6755d82ead2b664fb34ca40d",
-      alt: "The Curious Tale of the Wandering Orange",
-      title: "The Curious Tale of the Wandering Orange",
-    },
-    {
-      src: "https://res.cloudinary.com/sofiabargues/image/upload/v1731954832/palace/wqoyurhcyv3mm84jjkax.png",
-      href: "/palace/673b8893b2dc602f0ebd463f",
-      alt: "A Day of Unexpected Adventures",
-      title: "A Day of Unexpected Adventures",
-    },
-    {
-      src: "https://res.cloudinary.com/sofiabargues/image/upload/v1730708900/palace/e5ujm0c2o4ssxywsr4xn.png",
-      href: "/palace/672885a673a41580221a785b",
-      alt: "Whimsy in the Park",
-      title: "Whimsy in the Park",
-    },
-    {
-      src: "https://res.cloudinary.com/sofiabargues/image/upload/v1730632553/palace/ibhah6qybg9gq8qn7mg9.png",
-      href: "/palace/67275b6c25eadec2b359697e",
-      alt: "The lemon dream",
-      title: "The lemon dream",
-    },
-  ];
-  
+  {
+    src: "https://res.cloudinary.com/sofiabargues/image/upload/v1733679147/palace/xnul4xr3ed3vd4ufkkfd.png",
+    href: "/palace/6755d82ead2b664fb34ca40d",
+    alt: "The Curious Tale of the Wandering Orange",
+    title: "The Curious Tale of the Wandering Orange",
+  },
+  {
+    src: "https://res.cloudinary.com/sofiabargues/image/upload/v1731954832/palace/wqoyurhcyv3mm84jjkax.png",
+    href: "/palace/673b8893b2dc602f0ebd463f",
+    alt: "A Day of Unexpected Adventures",
+    title: "A Day of Unexpected Adventures",
+  },
+  {
+    src: "https://res.cloudinary.com/sofiabargues/image/upload/v1730708900/palace/e5ujm0c2o4ssxywsr4xn.png",
+    href: "/palace/672885a673a41580221a785b",
+    alt: "Whimsy in the Park",
+    title: "Whimsy in the Park",
+  },
+  {
+    src: "https://res.cloudinary.com/sofiabargues/image/upload/v1730632553/palace/ibhah6qybg9gq8qn7mg9.png",
+    href: "/palace/67275b6c25eadec2b359697e",
+    alt: "The lemon dream",
+    title: "The lemon dream",
+  },
+];
+
 const Hero = ({}) => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   return (
@@ -53,7 +53,7 @@ const Hero = ({}) => {
                 Choose a palace
               </Button>
             </a>
-            <a href="/palace">
+            <a href="/tutorial">
               <Button size="lg" className="w-full sm:w-auto">
                 Create a Palace
                 <Sparkles></Sparkles>

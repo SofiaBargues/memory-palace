@@ -237,10 +237,11 @@ export function ChooseWordsStep({
                 </div>
               ))}
               {formErrorMessage ? (
-                <p className=" text-red-600">* All words must be different.</p>
+                <p className=" text-red-600">* {formErrorMessage}.</p>
               ) : (
                 ""
               )}
+
               <div className="flex justify-end mt-6">
                 <Button
                   onClick={() => setWords(Array(9).fill(""))}
@@ -253,7 +254,9 @@ export function ChooseWordsStep({
                 // TODO: validate que no sean texto vacio antes de llamar a generate palace. Mostrar un error */}
                 <Button
                   onClick={async () => {
-                    if (hasDuplicated(words)) {
+                    if (hasEmptyWords(words)) {
+                      setFormErrorMessage("No empty words");
+                    } else if (hasDuplicated(words)) {
                       setFormErrorMessage("All words must be different");
                     } else {
                       setFormErrorMessage(null);
@@ -307,4 +310,11 @@ function CategoryCard({
 function hasDuplicated(listWords: string[]) {
   const set = new Set(listWords);
   return listWords.length !== set.size;
+}
+
+function hasEmptyWords(listWords: string[]) {
+  for (const word of listWords) {
+    if (word.trim() === "") return true;
+  }
+  return false;
 }
