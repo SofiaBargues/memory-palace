@@ -30,7 +30,6 @@ export function MemoryGame({
   useEffect(() => {
     const fetchPosts = async () => {
       setLoading(true);
-      if (isNewPalace) return;
       try {
         const response = await fetch("/api/v1/palace", {
           method: "GET",
@@ -59,8 +58,9 @@ export function MemoryGame({
         setLoading(false);
       }
     };
-
-    fetchPosts();
+    if (!isNewPalace) {
+      fetchPosts();
+    }
   }, [initialPalaceId, isNewPalace]);
 
   async function generatePalace(): Promise<Palace | undefined> {
@@ -112,31 +112,31 @@ export function MemoryGame({
     setPalaceId(generatedPalace._id);
   }
 
-  if (loading) {
-    return (
-      <div className="w-full container m-auto md:p-10 flex flex-col  gap-4">
-        <Card className="w-full md:max-w-5xl rounded-none md:rounded-xl m-auto ">
-          <CardContent className="flex justify-center items-center h-[900px] flex-col">
-            <Loader />
-            <p className="font-medium  mt-5 text-xl">Creating Palace</p>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
   console.log(slideSelected);
   return (
     <div className="w-full container m-auto md:p-10 flex flex-col  gap-4">
       <Card className="w-full md:max-w-5xl rounded-none md:rounded-xl m-auto ">
         {step === "story" && (
           <>
-            <StoryStep
-              setSlideSelected={setSlideSelected}
-              slideSelected={slideSelected}
-              onFinishClick={goToNextStep}
-              palace={palace}
-            />
+            {loading ? (
+              <div className="w-full container m-auto md:p-10 flex flex-col  gap-4">
+                <Card className="w-full md:max-w-5xl rounded-none md:rounded-xl m-auto ">
+                  <CardContent className="flex justify-center items-center h-[900px] flex-col">
+                    <Loader />
+                    <p className="font-medium  mt-5 text-xl">Creating Palace</p>
+                  </CardContent>
+                </Card>
+              </div>
+            ) : palace ? (
+              <StoryStep
+                setSlideSelected={setSlideSelected}
+                slideSelected={slideSelected}
+                onFinishClick={goToNextStep}
+                palace={palace}
+              />
+            ) : (
+              <div>Palace not found</div>
+            )}
           </>
         )}
 
