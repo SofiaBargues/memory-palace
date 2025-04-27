@@ -1,5 +1,5 @@
 import React from "react";
-import { Palace } from "../api/v1/generate/types";
+import { Palace } from "../../app/api/v1/generate/types";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";

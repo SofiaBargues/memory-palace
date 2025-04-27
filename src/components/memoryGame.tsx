@@ -1,12 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Palace } from "../api/v1/generate/types";
+import { Palace } from "../app/api/v1/generate/types";
 import { Loader } from "@/components/Loader";
 import { Card, CardContent } from "@/components/ui/card";
-import MemoryTestStep from "./memoryTestStep";
-import { ChooseWordsStep } from "./chooseWordsStep";
-import { StoryStep } from "./storyStep";
-import { TutorialStep } from "./tutorialStep";
+import MemoryTestStep from "./steps/memoryTestStep";
+import { ChooseWordsStep } from "./steps/chooseWordsStep";
+import { StoryStep } from "./steps/storyStep";
+import { TutorialStep } from "./steps/tutorialStep";
 
 export type PalaceStep = "chooseWords" | "story" | "memoryTest" | "tutorial";
 

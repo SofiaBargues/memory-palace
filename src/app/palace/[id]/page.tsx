@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { MemoryGame } from "../memoryGame";
+import { MemoryGame } from "../../../components/memoryGame";
 
 const PalaceIdPage = ({ params }: { params: { id: string } }) => {
   return (
