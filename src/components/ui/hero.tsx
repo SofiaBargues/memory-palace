@@ -53,8 +53,8 @@ const Hero = ({}) => {
                 Choose a palace
               </Button>
             </a>
-            <a href="/tutorial">
-              <Button size="lg" className="w-full sm:w-auto">
+            <a href="/palace">
+              <Button  size="lg" className="w-full sm:w-auto">
                 Create a Palace
                 <Sparkles></Sparkles>
               </Button>

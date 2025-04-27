@@ -62,7 +62,6 @@ const PalaceIdPage = ({ params }: { params: { id: string } }) => {
       <div className="flex">
         <MemoryGame
           initialPalace={selectedPalace}
-          initialStep="story"
           initialPalaceId={params.id}
         />
       </div>

@@ -6,21 +6,20 @@ import { Card, CardContent } from "@/components/ui/card";
 import MemoryTestStep from "./memoryTestStep";
 import { ChooseWordsStep } from "./chooseWordsStep";
 import { StoryStep } from "./storyStep";
+import { TutorialStep } from "./tutorialStep";
 
 export type PalaceStep = "chooseWords" | "story" | "memoryTest" | "tutorial";
 
 export function MemoryGame({
   initialPalace,
-  initialStep,
   initialPalaceId,
 }: {
   initialPalaceId: string | undefined;
   initialPalace: Palace;
-  initialStep: PalaceStep;
 }) {
   const [palace, setPalace] = useState(initialPalace);
   const [palaceId, setPalaceId] = useState(initialPalaceId);
-  const [step, setStep] = useState<PalaceStep>(initialStep);
+  const [step, setStep] = useState<PalaceStep>("tutorial");
   const [loading, setLoading] = useState(false);
 
   const [referenceWords, setReferenceWords] = useState<string[]>(palace.words);
@@ -104,6 +103,8 @@ export function MemoryGame({
             />
           </>
         )}
+
+        {step === "tutorial" && <TutorialStep />}
 
         {step === "memoryTest" && (
           <MemoryTestStep

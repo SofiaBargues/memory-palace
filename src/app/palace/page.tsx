@@ -19,7 +19,6 @@ function PalacePage() {
   return (
     <MemoryGame
       initialPalace={palace}
-      initialStep="chooseWords"
       initialPalaceId={undefined}
     />
   );
