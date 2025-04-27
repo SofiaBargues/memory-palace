@@ -151,6 +151,7 @@ export function MemoryGame({
           wordsToRemember={referenceWords}
           onBackToStoryClick={() => {
             setStep("story");
+            setSlideSelected(0)
           }}
         />
       )}

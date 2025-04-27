@@ -50,7 +50,7 @@ export default function MemoryTestStep({
 
     if (step === "testFill") {
       interval = setInterval(() => {
-        setTimeElapsed((prev)=>prev + 1);
+        setTimeElapsed((prev) => prev + 1);
       }, 1000);
     }
 
@@ -91,18 +91,18 @@ export default function MemoryTestStep({
         </Button>
 
         <Card className="text-center">
-          <CardHeader>
+          <CardHeader className="pb-2">
             <CardTitle className="text-2xl">Prueba de memoria</CardTitle>
-            <CardDescription>
+            {/* <CardDescription>
               Vamos a poner a prueba tu capacidad para recordar las 9 palabras
               de la historia
-            </CardDescription>
+            </CardDescription> */}
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-4 pt-2">
             <div className="w-16 h-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center">
               <Brain className="h-8 w-8 text-primary" />
             </div>
-            <p>
+            <p className="text-balance">
               Recuerda recorrer mentalmente tu palacio de memoria para encontrar
               las palabras que ubicaste en cada lugar.
             </p>
@@ -231,8 +231,8 @@ export default function MemoryTestStep({
   }
 
   return (
-    <div className="flex justify-center items-center min-h-screen p-4 bg-background">
-      <Card className="w-full max-w-md shadow-lg">
+    <div className="container max-w-4xl py-12">
+      <Card className="w-full max-w-md m-auto shadow-lg ">
         <CardHeader className="space-y-1 pb-2">
           <CardTitle className="text-2xl font-bold">Test Your Memory</CardTitle>
           <CardDescription>
