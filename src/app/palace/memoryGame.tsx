@@ -104,7 +104,7 @@ export function MemoryGame({
           </>
         )}
 
-        {step === "tutorial" && <TutorialStep />}
+        {step === "tutorial" && <TutorialStep onContinueClick={goToNextStep} />}
 
         {step === "memoryTest" && (
           <MemoryTestStep
