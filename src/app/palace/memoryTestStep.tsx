@@ -50,7 +50,7 @@ export default function MemoryTestStep({
 
     if (step === "testFill") {
       interval = setInterval(() => {
-        setTimeElapsed((prev) => prev + 1);
+        setTimeElapsed((prev)=>prev + 1);
       }, 1000);
     }
 
@@ -231,7 +231,6 @@ export default function MemoryTestStep({
   }
 
   return (
-    // TODO add timer visualization
     <div className="flex justify-center items-center min-h-screen p-4 bg-background">
       <Card className="w-full max-w-md shadow-lg">
         <CardHeader className="space-y-1 pb-2">
@@ -240,6 +239,10 @@ export default function MemoryTestStep({
             Recall the words from your memory palace and type them in the
             correct order
           </CardDescription>
+          <div className="text-sm text-muted-foreground">
+            Time: {Math.floor(timeElapsed / 60)}:
+            {timeElapsed % 60 < 10 ? `0${timeElapsed % 60}` : timeElapsed % 60}
+          </div>
         </CardHeader>
         <CardContent>
           <p className="text-sm font-medium mb-4">

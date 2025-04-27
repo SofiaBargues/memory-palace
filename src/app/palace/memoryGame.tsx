@@ -35,15 +35,7 @@ function upDateArrayValue({
   return arrWork;
 }
 
-export type PalaceStep =
-  // new
-  | "chooseWords"
-  | "story"
-  | "memoryTest"
-  // old
-  | "start"
-  | "fill2"
-  | "results2";
+export type PalaceStep = "chooseWords" | "story" | "memoryTest";
 
 export function MemoryGame({
   initialPalace,
@@ -82,13 +74,6 @@ export function MemoryGame({
       setLoading(false);
     }
   }
-
-  const handleWordsChoiceSubmit = async (
-    e: React.FormEvent<HTMLFormElement>
-  ) => {
-    const newArr = [];
-    e.preventDefault();
-  };
 
   async function goToNextStep() {
     if (step === "chooseWords") {
