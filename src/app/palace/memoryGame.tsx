@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Palace } from "../api/v1/generate/types";
 import { Loader } from "@/components";
 import { Card, CardContent } from "@/components/ui/card";
@@ -11,21 +11,57 @@ import { TutorialStep } from "./tutorialStep";
 export type PalaceStep = "chooseWords" | "story" | "memoryTest" | "tutorial";
 
 export function MemoryGame({
-  initialPalace,
   initialPalaceId,
 }: {
   initialPalaceId: string | undefined;
-  initialPalace: Palace;
 }) {
-  const [palace, setPalace] = useState(initialPalace);
+  const [palace, setPalace] = useState<Palace | null>(null);
   const [palaceId, setPalaceId] = useState(initialPalaceId);
   const [step, setStep] = useState<PalaceStep>("tutorial");
   const [loading, setLoading] = useState(false);
 
-  const [referenceWords, setReferenceWords] = useState<string[]>(palace.words);
+  const [referenceWords, setReferenceWords] = useState<string[]>(
+    new Array(9).fill(undefined)
+  );
   const [slideSelected, setSlideSelected] = useState(0);
 
   const isNewPalace = initialPalaceId ? false : true;
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      setLoading(true);
+      if (isNewPalace) return;
+      try {
+        const response = await fetch("/api/v1/palace", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (response.ok) {
+          console.log(response);
+          const result = await response.json();
+          console.log(result);
+          const fetchedPalace = result.data.find(
+            (value: Palace & { _id: string }) => value._id === initialPalaceId
+          );
+          setPalace(fetchedPalace);
+          setReferenceWords(fetchedPalace?.words);
+        } else {
+          const errorData = await response.json();
+          console.log(errorData);
+          throw new Error(errorData.message || "Error en la solicitud");
+        }
+      } catch (error) {
+        alert(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPosts();
+  }, [initialPalaceId, isNewPalace]);
 
   async function generatePalace(): Promise<Palace | undefined> {
     setLoading(true);
@@ -104,7 +140,9 @@ export function MemoryGame({
           </>
         )}
 
-        {step === "tutorial" && <TutorialStep isNew={isNewPalace} onContinueClick={goToNextStep} />}
+        {step === "tutorial" && (
+          <TutorialStep isNew={isNewPalace} onContinueClick={goToNextStep} />
+        )}
 
         {step === "memoryTest" && (
           <MemoryTestStep
