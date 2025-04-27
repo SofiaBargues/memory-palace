@@ -115,52 +115,54 @@ export function MemoryGame({
   console.log(slideSelected);
   return (
     <div className="w-full container m-auto md:p-10 flex flex-col  gap-4">
-      <Card className="w-full md:max-w-5xl rounded-none md:rounded-xl m-auto ">
-        {step === "story" && (
-          <>
-            {loading ? (
-              <div className="w-full container m-auto md:p-10 flex flex-col  gap-4">
-                <Card className="w-full md:max-w-5xl rounded-none md:rounded-xl m-auto ">
-                  <CardContent className="flex justify-center items-center h-[900px] flex-col">
-                    <Loader />
-                    <p className="font-medium  mt-5 text-xl">Creating Palace</p>
-                  </CardContent>
-                </Card>
-              </div>
-            ) : palace ? (
-              <StoryStep
-                setSlideSelected={setSlideSelected}
-                slideSelected={slideSelected}
-                onFinishClick={goToNextStep}
-                palace={palace}
-              />
-            ) : (
-              <div>Palace not found</div>
-            )}
-          </>
-        )}
+      {/* <Card className="w-full md:max-w-5xl rounded-none md:rounded-xl m-auto "> */}
+      {step === "story" && (
+        <>
+          {loading ? (
+            <div className="w-full container m-auto md:p-10 flex flex-col  gap-4">
+              <Card className="w-full md:max-w-5xl rounded-none md:rounded-xl m-auto ">
+                <CardContent className="flex justify-center items-center h-[900px] flex-col">
+                  <Loader />
+                  <p className="font-medium  mt-5 text-xl">
+                    {isNewPalace ? "Creating Palace" : "Loading Palace"}
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+          ) : palace ? (
+            <StoryStep
+              setSlideSelected={setSlideSelected}
+              slideSelected={slideSelected}
+              onFinishClick={goToNextStep}
+              palace={palace}
+            />
+          ) : (
+            <div>Palace not found</div>
+          )}
+        </>
+      )}
 
-        {step === "tutorial" && (
-          <TutorialStep isNew={isNewPalace} onContinueClick={goToNextStep} />
-        )}
+      {step === "tutorial" && (
+        <TutorialStep isNew={isNewPalace} onContinueClick={goToNextStep} />
+      )}
 
-        {step === "memoryTest" && (
-          <MemoryTestStep
-            wordsToRemember={referenceWords}
-            onBackToStoryClick={() => {
-              setStep("story");
-            }}
-          />
-        )}
+      {step === "memoryTest" && (
+        <MemoryTestStep
+          wordsToRemember={referenceWords}
+          onBackToStoryClick={() => {
+            setStep("story");
+          }}
+        />
+      )}
 
-        {step === "chooseWords" && (
-          <ChooseWordsStep
-            onGeneratePalaceClick={goToNextStep}
-            words={referenceWords}
-            setWords={setReferenceWords}
-          />
-        )}
-      </Card>
+      {step === "chooseWords" && (
+        <ChooseWordsStep
+          onGeneratePalaceClick={goToNextStep}
+          words={referenceWords}
+          setWords={setReferenceWords}
+        />
+      )}
+      {/* </Card> */}
     </div>
   );
 }
