@@ -1,6 +1,6 @@
 import React from "react";
 
-const Loader = () => (
+export const Loader = () => (
   <svg
     aria-hidden="true"
     className="inline w-32 h-32 mr-2 text-gray-200 animate-spin fill-[#000000]"
@@ -18,5 +18,3 @@ const Loader = () => (
     />
   </svg>
 );
-
-export default Loader;

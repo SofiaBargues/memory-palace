@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { Card } from "./card";
+import { Card } from "./ui/card";
 import { Sparkles } from "lucide-react";
 const images = [
   {
@@ -54,7 +54,7 @@ const Hero = ({}) => {
               </Button>
             </a>
             <a href="/palace">
-              <Button  size="lg" className="w-full sm:w-auto">
+              <Button size="lg" className="w-full sm:w-auto">
                 Create a Palace
                 <Sparkles></Sparkles>
               </Button>

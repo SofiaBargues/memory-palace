@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Palace } from "../api/v1/generate/types";
-import { Loader } from "@/components";
+import { Loader } from "@/components/Loader";
 import { Card, CardContent } from "@/components/ui/card";
 import MemoryTestStep from "./memoryTestStep";
 import { ChooseWordsStep } from "./chooseWordsStep";

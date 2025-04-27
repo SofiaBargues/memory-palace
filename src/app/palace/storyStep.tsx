@@ -9,7 +9,7 @@ export function StoryStep({
   palace,
   setSlideSelected,
   slideSelected,
-  onFinishClick
+  onFinishClick,
 }: {
   palace: Palace;
   setSlideSelected: (slide: number) => void;
@@ -29,7 +29,7 @@ export function StoryStep({
 
         <Card>
           <CardContent className="p-6 space-y-6">
-            <div className="relative aspect-video overflow-hidden rounded-lg">
+            <div className="relative  aspect-square overflow-hidden rounded-lg max-w-72 m-auto">
               <Image
                 src={palace.images[slideSelected] || "/placeholder.svg"}
                 alt="Historia visualizada"

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { RainbowButton } from "./ui/rainbow-button";
+import { RainbowButton } from "./rainbow-button";
 import { GithubIcon } from "lucide-react";
 import { StarFilledIcon } from "@radix-ui/react-icons";
 import { Button } from "./ui/button";
