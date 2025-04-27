@@ -22,10 +22,13 @@ const data = [
   ],
 ];
 export function TutorialStep({
+  isNew,
   onContinueClick,
 }: {
+  isNew: boolean;
   onContinueClick: () => void;
 }) {
+  const displayData = isNew ? data : data.slice(2);
   return (
     <div className="max-w-3xl mx-auto p-4">
       <h1 className="text-3xl font-bold mb-6">
@@ -61,10 +64,10 @@ export function TutorialStep({
             Cómo usar esta aplicación:
           </h2>
           <ol className="space-y-4">
-            {data.map((item, index) => (
+            {displayData.map((item, index) => (
               <li key={index} className="flex gap-3">
                 <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground">
-                  {index}
+                  {index + 1}
                 </div>
                 <div className="flex-1">
                   <h3 className="font-medium">{item[0]}</h3>
