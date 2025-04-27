@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import Loader from "./Loader";
+import {Loader} from "./Loader";
 import PalaceCard from "./PalaceCard";
 import { MongoPalace } from "@/mongodb/models/palace";
 
