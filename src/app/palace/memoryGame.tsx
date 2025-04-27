@@ -1,41 +1,13 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Palace } from "../api/v1/generate/types";
-import { WordsInput } from "./wordsInput";
-import { WordsList } from "./wordList";
-import { PalaceStory } from "./palaceStory";
 import { Loader } from "@/components";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { selectRandomWord } from "./selectRandomWord";
-import { RefreshCw, Sparkles } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
 import MemoryTestStep from "./memoryTestStep";
 import { ChooseWordsStep } from "./chooseWordsStep";
 import { StoryStep } from "./storyStep";
 
-function upDateArrayValue({
-  i,
-  newVal,
-  arr,
-}: {
-  i: number;
-  newVal: string;
-  arr: string[];
-}) {
-  const arrWork = [...arr];
-  arrWork[i] = newVal;
-
-  return arrWork;
-}
-
-export type PalaceStep = "chooseWords" | "story" | "memoryTest";
+export type PalaceStep = "chooseWords" | "story" | "memoryTest" | "tutorial";
 
 export function MemoryGame({
   initialPalace,
@@ -53,6 +25,8 @@ export function MemoryGame({
 
   const [referenceWords, setReferenceWords] = useState<string[]>(palace.words);
   const [slideSelected, setSlideSelected] = useState(0);
+
+  const isNewPalace = initialPalaceId ? false : true;
 
   async function generatePalace(): Promise<Palace | undefined> {
     setLoading(true);
@@ -76,13 +50,17 @@ export function MemoryGame({
   }
 
   async function goToNextStep() {
-    if (step === "chooseWords") {
+    if (step === "tutorial" && isNewPalace) {
+      setStep("chooseWords");
+    } else if (step === "tutorial" && !isNewPalace) {
+      setStep("story");
+    } else if (step === "chooseWords") {
       await createPalace();
       setStep("story");
     } else if (step === "story") {
       setStep("memoryTest");
     } else if (step === "memoryTest") {
-      setStep("chooseWords");
+      setStep("tutorial");
     }
   }
 
