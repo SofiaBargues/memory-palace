@@ -220,12 +220,10 @@ export default function MemoryTestStep({
             </div>
           </CardContent>
           <CardFooter className="flex justify-center gap-4">
-            <Link href="/">
-              <Button variant="outline">Volver al inicio</Button>
+            <Link href="/palaces">
+              <Button variant="outline">All palaces</Button>
             </Link>
-            <Link href="/palace">
-              <Button>Crear nuevo palacio</Button>
-            </Link>
+            <Button onClick={onBackToStoryClick}>Play again</Button>
           </CardFooter>
         </Card>
       </div>
