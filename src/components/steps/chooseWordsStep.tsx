@@ -15,37 +15,37 @@ import { RefreshCw, ArrowLeft } from "lucide-react";
 // Predefined word lists
 const PREDEFINED_LISTS = {
   animals: [
-    "Elefante",
-    "León",
-    "Jirafa",
-    "Tigre",
-    "Delfín",
-    "Águila",
+    "Elephant",
+    "Lion",
+    "Giraffe",
+    "Tiger",
+    "Dolphin",
+    "Eagle",
     "Koala",
-    "Pingüino",
-    "Cebra",
+    "Penguin",
+    "Zebra",
   ],
   fruits: [
-    "Manzana",
-    "Plátano",
-    "Naranja",
-    "Fresa",
-    "Piña",
+    "Apple",
+    "Banana",
+    "Orange",
+    "Strawberry",
+    "Pineapple",
     "Mango",
-    "Sandía",
-    "Uva",
+    "Watermelon",
+    "Grape",
     "Kiwi",
   ],
   objects: [
-    "Lámpara",
-    "Teléfono",
-    "Reloj",
-    "Libro",
-    "Llave",
-    "Silla",
-    "Bolígrafo",
-    "Taza",
-    "Gafas",
+    "Lamp",
+    "Phone",
+    "Watch",
+    "Book",
+    "Key",
+    "Chair",
+    "Pen",
+    "Cup",
+    "Glasses",
   ],
 };
 
@@ -144,36 +144,36 @@ export function ChooseWordsStep({
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h1 className="text-3xl font-bold mb-2">Palacio Mental</h1>
+        <h1 className="text-3xl font-bold mb-2">Memory Palace</h1>
         <p className="text-muted-foreground">
-          Elige o personaliza 9 palabras para memorizar usando tu palacio mental
+          Choose or customize 9 words to memorize using your memory palace
         </p>
       </div>
 
       {step === "categories" ? (
         <div className="mt-8">
           <h2 className="text-xl font-semibold mb-4 text-center">
-            Selecciona una categoría de palabras
+            Select a word category
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto">
             <CategoryCard
-              title="Animales"
-              description="Memoriza una lista de 9 animales diferentes"
+              title="Animals"
+              description="Memorize a list of 9 different animals"
               onClick={() => selectCategory("animals")}
             />
             <CategoryCard
-              title="Frutas"
-              description="Memoriza una lista de 9 frutas diferentes"
+              title="Fruits"
+              description="Memorize a list of 9 different fruits"
               onClick={() => selectCategory("fruits")}
             />
             <CategoryCard
-              title="Objetos"
-              description="Memoriza una lista de 9 objetos cotidianos"
+              title="Objects"
+              description="Memorize a list of 9 different objects"
               onClick={() => selectCategory("objects")}
             />
             <CategoryCard
-              title="Personalizado"
-              description="Crea tu propia lista de 9 palabras para memorizar"
+              title="Custom"
+              description="Create your own list of 9 words to memorize"
               onClick={() => selectCategory("custom")}
               isCustom
             />
@@ -194,20 +194,20 @@ export function ChooseWordsStep({
               </Button>
               <div>
                 <CardTitle>
-                  {selectedCategory === "animals" && "Animales"}
-                  {selectedCategory === "fruits" && "Frutas"}
-                  {selectedCategory === "objects" && "Objetos"}
-                  {selectedCategory === "custom" && "Lista Personalizada"}
+                  {selectedCategory === "animals" && "Animals"}
+                  {selectedCategory === "fruits" && "Fruits"}
+                  {selectedCategory === "objects" && "Objects"}
+                  {selectedCategory === "custom" && "Custom List"}
                 </CardTitle>
                 <CardDescription>
                   {selectedCategory === "custom"
-                    ? "Ingresa tus propias palabras o genera palabras aleatorias"
-                    : `Lista de palabras de la categoría ${
+                    ? "Enter your own words or generate random words"
+                    : `List of words from the category ${
                         selectedCategory === "animals"
-                          ? "Animales"
+                          ? "Animals"
                           : selectedCategory === "fruits"
-                          ? "Frutas"
-                          : "Objetos"
+                          ? "Fruits"
+                          : "Objects"
                       }`}
                 </CardDescription>
               </div>
@@ -223,14 +223,14 @@ export function ChooseWordsStep({
                   <Input
                     value={word}
                     onChange={(e) => handleWordChange(index, e.target.value)}
-                    placeholder="Ingresa una palabra"
+                    placeholder="Enter a word"
                     className="flex-1"
                   />
                   <Button
                     variant="outline"
                     size="icon"
                     onClick={() => refreshWord(index)}
-                    title="Generar palabra aleatoria"
+                    title="Generate random word"
                   >
                     <RefreshCw className="h-4 w-4" />
                   </Button>
@@ -248,7 +248,7 @@ export function ChooseWordsStep({
                   variant="outline"
                   className="mr-2"
                 >
-                  Limpiar todo
+                  Clean all
                 </Button>
                 {/* 
                 // TODO: validate que no sean texto vacio antes de llamar a generate palace. Mostrar un error */}
@@ -300,7 +300,7 @@ function CategoryCard({
       </CardHeader>
       <CardContent className="pt-0">
         <Button variant="secondary" className="w-full">
-          Seleccionar
+          Select
         </Button>
       </CardContent>
     </Card>

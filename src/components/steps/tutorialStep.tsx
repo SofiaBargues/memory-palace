@@ -5,21 +5,15 @@ import { ChevronRight } from "lucide-react";
 
 const data = [
   [
-    "Crear un palacio",
-    "Te proporcionaremos un palacio de memoria virtual para usar.",
+    "Create a palace",
+    "We will provide you with a virtual memory palace to use.",
   ],
+  ["Choose words", "Select or use our predefined words to memorize."],
   [
-    "Elegir palabras",
-    "Selecciona o usa nuestras palabras predefinidas para memorizar.",
+    "Read the story",
+    "Read a story that connects the words with locations in your palace.",
   ],
-  [
-    "Leer la historia",
-    "Lee una historia que conecta las palabras con lugares en tu palacio.",
-  ],
-  [
-    "Poner a prueba tu memoria",
-    "Intenta recordar todas las palabras en el orden correcto.",
-  ],
+  ["Test your memory", "Try to recall all the words in the correct order."],
 ];
 export function TutorialStep({
   isNew,
@@ -32,22 +26,22 @@ export function TutorialStep({
   return (
     <div className="max-w-3xl mx-auto p-4">
       <h1 className="text-3xl font-bold mb-6">
-        El Método Loci: Palacio de la Memoria
+        The Method of Loci: Memory Palace
       </h1>
 
       <Card className="mb-8">
         <CardContent className="p-6">
           <div className="grid gap-6 md:grid-cols-2 items-center">
             <div>
-              <h2 className="text-xl font-semibold mb-2">¿Cómo funciona?</h2>
+              <h2 className="text-xl font-semibold mb-2"> How does it work?</h2>
               <p className="text-muted-foreground">
-                El método Loci consiste en asociar información que quieres
-                recordar con lugares específicos de un espacio familiar.
+                The Loci method consists of associating information you want to
+                remember with specific places in a familiar space.
               </p>
             </div>
             <div className="flex justify-center">
               <Image
-                src="/placeholder.svg?height=200&width=300"
+                src="/memoryPalace.png"
                 width={300}
                 height={200}
                 alt="Ilustración del método Loci"
@@ -60,9 +54,7 @@ export function TutorialStep({
 
       <Card className="mb-8">
         <CardContent className="p-6">
-          <h2 className="text-xl font-semibold mb-4">
-            Cómo usar esta aplicación:
-          </h2>
+          <h2 className="text-xl font-semibold mb-4">How to use:</h2>
           <ol className="space-y-4">
             {displayData.map((item, index) => (
               <li key={index} className="flex gap-3">
@@ -81,7 +73,7 @@ export function TutorialStep({
 
       <div className="flex justify-center">
         <Button size="lg" className="gap-2" onClick={onContinueClick}>
-          Continuar
+          Continue
           <ChevronRight className="h-4 w-4" />
         </Button>
       </div>

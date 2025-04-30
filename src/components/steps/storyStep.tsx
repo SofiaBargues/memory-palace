@@ -18,12 +18,12 @@ export function StoryStep({
 }) {
   return (
     <>
-      <div className="space-y-8">
-        <div className="text-center">
+      <div className="space-y-8 container mx-auto max-w-4xl">
+        <div className="">
           <h1 className="text-3xl font-bold tracking-tight">{palace.title}</h1>
           <p className="text-muted-foreground mt-2">
-            Lee atentamente y visualiza la historia. Intenta asociar cada
-            palabra clave con una ubicación en tu palacio de memoria.
+            Read carefully and visualize the story. Try to associate each
+            keyword with a location in your memory palace.
           </p>
         </div>
 
@@ -32,7 +32,7 @@ export function StoryStep({
             <div className="relative  aspect-square overflow-hidden rounded-lg max-w-72 m-auto">
               <Image
                 src={palace.images[slideSelected] || "/placeholder.svg"}
-                alt="Historia visualizada"
+                alt="History viewed"
                 fill
                 className="object-cover"
               />
@@ -50,7 +50,7 @@ export function StoryStep({
             </div>
 
             <div className="pt-4 border-t">
-              <h3 className="font-semibold mb-2">Palabras clave a recordar:</h3>
+              <h3 className="font-semibold mb-2">Key words to remember:</h3>
               <div className="flex flex-wrap gap-2">
                 {palace.words
                   .slice(slideSelected * 3, slideSelected * 3 + 3)
@@ -73,11 +73,11 @@ export function StoryStep({
             onClick={() => setSlideSelected(slideSelected - 1)}
             disabled={slideSelected === 0}
           >
-            <ArrowLeft className="mr-2 h-4 w-4" /> Anterior
+            <ArrowLeft className="mr-2 h-4 w-4" /> Back
           </Button>
           <div className="flex items-center gap-2">
             <span className="text-sm text-muted-foreground">
-              {slideSelected + 1} de {palace.images.length}
+              {slideSelected + 1} of {palace.images.length}
             </span>
           </div>
           <Button
@@ -91,11 +91,11 @@ export function StoryStep({
           >
             {slideSelected < palace.images.length - 1 ? (
               <>
-                Siguiente <ArrowRight className="ml-2 h-4 w-4" />
+                Next <ArrowRight className="ml-2 h-4 w-4" />
               </>
             ) : (
               <>
-                Finalizar lectura <BookOpen className="ml-2 h-4 w-4" />
+                Complete reading <BookOpen className="ml-2 h-4 w-4" />
               </>
             )}
           </Button>
