@@ -1,10 +1,18 @@
 "use client";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  // CarouselNext,
+  // CarouselPrevious,
+} from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { Card } from "./ui/card";
 import { Sparkles } from "lucide-react";
 const images = [
   {
@@ -34,7 +42,6 @@ const images = [
 ];
 
 const Hero = ({}) => {
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   return (
     <section className="relative w-full overflow-hidden py-14">
       <div className="container px-4 md:px-6 m-auto">
@@ -61,46 +68,98 @@ const Hero = ({}) => {
             </a>
           </div>
         </div>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {images.map((image, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-              onHoverStart={() => setHoveredIndex(index)}
-              onHoverEnd={() => setHoveredIndex(null)}
-            >
-              <a href={image.href}>
-                <Card className="group relative overflow-hidden rounded-lg">
-                  <div className="md:aspect-[3/4] aspect-square w-full">
-                    <Image
-                      src={image.src}
-                      alt={image.alt}
-                      fill
-                      className="object-cover transition-transform duration-300 group-hover:scale-110"
-                    />
-                  </div>
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-t from-card/60 to-transparent"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: hoveredIndex === index ? 1 : 0.5 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <div className="absolute bottom-0 p-4">
-                      <h2 className="text-xl font-bold text-card-foreground">
-                        {image.title}
-                      </h2>
-                    </div>
-                  </motion.div>
-                </Card>
-              </a>
-            </motion.div>
-          ))}
-        </div>
+        <HeroCards />
       </div>
     </section>
   );
 };
+
+function HeroCards() {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  return (
+    <>
+      {/* mobile screen */}
+      <Carousel
+        plugins={[
+          Autoplay({
+            delay: 2000,
+          }),
+        ]}
+        className="w-full sm:hidden p-1"
+      >
+        <CarouselContent>
+          {images.map((image, index) => (
+            <CarouselItem key={index}>
+              <div className="p-1">
+                <Card>
+                  <CardContent className="relative flex aspect-square items-center justify-center p-6 overflow-hidden rounded-lg">
+                    <Image
+                      src={image.src}
+                      alt={image.alt}
+                      fill
+                      className="rounded-lg object-cover"
+                    />
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-t from-card/60 to-transparent"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: hoveredIndex === index ? 1 : 0.5 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <div className="absolute bottom-0 p-4">
+                        <h2 className="text-xl font-bold text-card-foreground">
+                          {image.title}
+                        </h2>
+                      </div>
+                    </motion.div>
+                  </CardContent>
+                </Card>
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        {/* <CarouselPrevious /> */}
+        {/* <CarouselNext /> */}
+      </Carousel>
+      {/* desktop screen */}
+      <div className="hidden sm:grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {images.map((image, index) => (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.1 }}
+            onHoverStart={() => setHoveredIndex(index)}
+            onHoverEnd={() => setHoveredIndex(null)}
+          >
+            <a href={image.href}>
+              <Card className="group relative overflow-hidden rounded-lg">
+                <div className="md:aspect-[3/4] aspect-square w-full">
+                  <Image
+                    src={image.src}
+                    alt={image.alt}
+                    fill
+                    className="object-cover transition-transform duration-300 group-hover:scale-110"
+                  />
+                </div>
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-t from-card/60 to-transparent"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: hoveredIndex === index ? 1 : 0.5 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <div className="absolute bottom-0 p-4">
+                    <h2 className="text-xl font-bold text-card-foreground">
+                      {image.title}
+                    </h2>
+                  </div>
+                </motion.div>
+              </Card>
+            </a>
+          </motion.div>
+        ))}
+      </div>
+    </>
+  );
+}
 
 export default Hero;
