@@ -11,43 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { RefreshCw, ArrowLeft } from "lucide-react";
-
-// Predefined word lists
-const PREDEFINED_LISTS = {
-  animals: [
-    "Elephant",
-    "Lion",
-    "Giraffe",
-    "Tiger",
-    "Dolphin",
-    "Eagle",
-    "Koala",
-    "Penguin",
-    "Zebra",
-  ],
-  fruits: [
-    "Apple",
-    "Banana",
-    "Orange",
-    "Strawberry",
-    "Pineapple",
-    "Mango",
-    "Watermelon",
-    "Grape",
-    "Kiwi",
-  ],
-  objects: [
-    "Lamp",
-    "Phone",
-    "Watch",
-    "Book",
-    "Key",
-    "Chair",
-    "Pen",
-    "Cup",
-    "Glasses",
-  ],
-};
+import { PREDEFINED_LISTS } from "./DATA";
 
 // Random words for each category
 const getRandomWord = (
