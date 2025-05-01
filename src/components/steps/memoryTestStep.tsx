@@ -13,7 +13,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { ArrowLeft, Check, X, Brain, Trophy, Ghost } from "lucide-react";
+import { ArrowLeft, Check, X, Brain, Trophy } from "lucide-react";
 import { Label } from "@/components/ui/label";
 
 type Step = "testIntro" | "testFill" | "testResult";

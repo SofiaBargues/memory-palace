@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowLeft, ArrowRight, BookOpen } from "lucide-react";
+import { Container } from "../Container";
 
 export function StoryStep({
   palace,
@@ -18,7 +19,9 @@ export function StoryStep({
 }) {
   return (
     <>
-      <div className="space-y-8 container mx-auto max-w-4xl">
+      {/* <div className="space-y-8 container mx-auto max-w-4xl">
+       */}
+      <Container>
         <div className="">
           <h1 className="text-3xl font-bold tracking-tight">{palace.title}</h1>
           <p className="text-muted-foreground mt-2">
@@ -100,7 +103,8 @@ export function StoryStep({
             )}
           </Button>
         </div>
-      </div>
+      </Container>
+      {/* </div> */}
     </>
   );
 }

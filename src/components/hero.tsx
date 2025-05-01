@@ -81,6 +81,7 @@ function HeroCards() {
       {/* mobile screen */}
       <Carousel
         plugins={[
+          // @ts-expect-error actualizar los tipos
           Autoplay({
             delay: 2000,
           }),

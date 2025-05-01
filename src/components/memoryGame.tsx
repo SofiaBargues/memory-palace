@@ -16,7 +16,7 @@ export function MemoryGame({
   initialPalaceId: string | undefined;
 }) {
   const [palace, setPalace] = useState<Palace | null>(null);
-  const [palaceId, setPalaceId] = useState(initialPalaceId);
+  // const [_, setPalaceId] = useState(initialPalaceId);
   const [step, setStep] = useState<PalaceStep>("tutorial");
   const [loading, setLoading] = useState(false);
 

@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
 import { ChevronRight } from "lucide-react";
+import { Container } from "../Container";
 
 const data = [
   [
@@ -24,10 +25,8 @@ export function TutorialStep({
 }) {
   const displayData = isNew ? data : data.slice(2);
   return (
-    <div className="max-w-3xl mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-6">
-        The Loci Method
-      </h1>
+    <Container>
+      <h1 className="text-3xl font-bold mb-6">The Loci Method</h1>
 
       <Card className="mb-8">
         <CardContent className="p-6">
@@ -77,6 +76,6 @@ export function TutorialStep({
           <ChevronRight className="h-4 w-4" />
         </Button>
       </div>
-    </div>
+    </Container>
   );
 }
