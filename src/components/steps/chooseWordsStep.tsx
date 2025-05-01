@@ -12,6 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { RefreshCw, ArrowLeft } from "lucide-react";
 import { PREDEFINED_LISTS } from "./DATA";
+import { Container } from "../Container";
 
 // Random words for each category
 const getRandomWord = (
@@ -106,10 +107,10 @@ export function ChooseWordsStep({
   };
 
   return (
-    <div className="space-y-6">
+    <Container>
       <div className="text-center">
         <h1 className="text-3xl font-bold mb-2">Memory Palace</h1>
-        <p className="text-muted-foreground">
+        <p className="text-muted-foreground my-4">
           Choose or customize 9 words to memorize using your memory palace
         </p>
       </div>
@@ -163,7 +164,7 @@ export function ChooseWordsStep({
                   {selectedCategory === "objects" && "Objects"}
                   {selectedCategory === "custom" && "Custom List"}
                 </CardTitle>
-                <CardDescription>
+                <CardDescription className="">
                   {selectedCategory === "custom"
                     ? "Enter your own words or generate random words"
                     : `List of words from the category ${
@@ -235,7 +236,7 @@ export function ChooseWordsStep({
           </CardContent>
         </Card>
       )}
-    </div>
+    </Container>
   );
 }
 

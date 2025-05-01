@@ -15,6 +15,7 @@ import {
 import { Progress } from "@/components/ui/progress";
 import { ArrowLeft, Check, X, Brain, Trophy } from "lucide-react";
 import { Label } from "@/components/ui/label";
+import { Container } from "../Container";
 
 type Step = "testIntro" | "testFill" | "testResult";
 
@@ -82,7 +83,7 @@ export default function MemoryTestStep({
 
   if (step === "testIntro") {
     return (
-      <div className="container max-w-4xl  mx-auto py-12">
+      <Container>
         <Button
           onClick={onBackToStoryClick}
           variant="ghost"
@@ -118,26 +119,26 @@ export default function MemoryTestStep({
             </Button>
           </CardFooter>
         </Card>
-      </div>
+      </Container>
     );
   }
 
   if (step === "testResult") {
     return (
-      <div className="container   mx-auto  max-w-4xl py-12">
+      <Container>
         <Card>
-          <CardHeader className="text-center">
-            <div className="w-16 h-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center mb-4">
-              <Trophy className="h-8 w-8 text-primary" />
+          <CardHeader className="text-center p-2 md:p-6">
+            <div className="w-10 h-10 md:w-16 md:h-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center md:mb-4">
+              <Trophy className="h-4 w-4  md:h-8 md:w-8 text-primary" />
             </div>
-            <CardTitle className="text-2xl">Test Results</CardTitle>
+            <CardTitle className="text-2xl ">Test Results</CardTitle>
             <CardDescription>
               You have completed the memory test
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-6">
+          <CardContent className="md:space-y-6  p-2 md:p-6  space-y-2">
             <div className="text-center">
-              <p className="text-4xl font-bold">
+              <p className="md:text-4xl text-2xl font-bold">
                 {score} / {wordsToRemember.length}
               </p>
               <p className="text-muted-foreground">Correct words</p>
@@ -145,14 +146,16 @@ export default function MemoryTestStep({
 
             <Progress
               value={(score / wordsToRemember.length) * 100}
-              className="h-3"
+              className="h-3 "
             />
 
-            <p className="text-center font-medium">{getScoreMessage()}</p>
+            <p className="text-center font-medium text-sm sm:text-lg">
+              {getScoreMessage()}
+            </p>
 
             <div className="border rounded-lg overflow-hidden">
               <div className="grid grid-cols-2 gap-px bg-muted">
-                <div className="bg-card p-4 text-center">
+                <div className="bg-card md:p-4 text-center">
                   <p className="text-sm text-muted-foreground">Time</p>
                   <p className="font-medium">
                     {Math.floor(timeElapsed / 60)}:
@@ -161,7 +164,7 @@ export default function MemoryTestStep({
                       : timeElapsed % 60}
                   </p>
                 </div>
-                <div className="bg-card p-4 text-center">
+                <div className="bg-card md:p-4 text-center">
                   <p className="text-sm text-muted-foreground">Precision</p>
                   <p className="font-medium">
                     {Math.round((score / wordsToRemember.length) * 100)}%
@@ -176,7 +179,7 @@ export default function MemoryTestStep({
                 {wordsToRemember.map((word, index) => (
                   <div
                     key={index}
-                    className="flex items-center justify-between p-2 rounded-md bg-muted"
+                    className="flex items-center justify-between p-2 text-sm md:text-lg rounded-md bg-muted"
                   >
                     <div className="flex items-center gap-2">
                       {areWordsEqual(userAnswers[index], word) ? (
@@ -213,12 +216,12 @@ export default function MemoryTestStep({
             <Button onClick={onBackToStoryClick}>Play again</Button>
           </CardFooter>
         </Card>
-      </div>
+      </Container>
     );
   }
 
   return (
-    <div className="container max-w-4xl   mx-auto  py-12">
+    <Container>
       <Card className="w-full max-w-md m-auto shadow-lg">
         <CardHeader className="space-y-1 pb-2 ">
           <div className="flex items-center flex-row justify-between">
@@ -266,6 +269,6 @@ export default function MemoryTestStep({
           <Button onClick={handleVerify}>Verify Answers</Button>
         </CardFooter>
       </Card>
-    </div>
+    </Container>
   );
 }

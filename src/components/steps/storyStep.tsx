@@ -22,9 +22,11 @@ export function StoryStep({
       {/* <div className="space-y-8 container mx-auto max-w-4xl">
        */}
       <Container>
-        <div className="">
-          <h1 className="text-3xl font-bold tracking-tight">{palace.title}</h1>
-          <p className="text-muted-foreground mt-2">
+        <div className="py-4">
+          <h1 className="md:text-3xl text-2xl font-bold tracking-tight">
+            {palace.title}
+          </h1>
+          <p className="text-muted-foreground  mt-2">
             Read carefully and visualize the story. Try to associate each
             keyword with a location in your memory palace.
           </p>
@@ -43,7 +45,7 @@ export function StoryStep({
 
             <div>
               <p
-                className="text-lg leading-relaxed"
+                className="md:text-lg text-md leading-relaxed"
                 dangerouslySetInnerHTML={{
                   __html: palace.sentences
                     .slice(slideSelected * 3, slideSelected * 3 + 3)
@@ -70,7 +72,7 @@ export function StoryStep({
           </CardContent>
         </Card>
 
-        <div className="flex justify-between">
+        <div className="flex justify-between mt-4">
           <Button
             variant="outline"
             onClick={() => setSlideSelected(slideSelected - 1)}

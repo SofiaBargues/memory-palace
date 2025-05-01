@@ -43,7 +43,7 @@ const images = [
 
 const Hero = ({}) => {
   return (
-    <section className="relative w-full overflow-hidden py-14">
+    <section className="relative w-full overflow-hidden pt-10 sm:py-14">
       <div className="container px-4 md:px-6 m-auto">
         <div className="mb-12 text-center">
           <h1 className="mb-4 text-4xl font-bold tracking-tighter text-primary sm:text-5xl 2xl:text-7xl xl:text-6xl/none">
