@@ -1,6 +1,6 @@
 "use client";
 
-import PalacesGrid from "@/components/ui/palacesGrid";
+import PalacesGrid from "@/components/palacesGrid";
 
 function Palaces() {
   return <PalacesGrid />;
