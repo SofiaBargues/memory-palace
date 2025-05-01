@@ -73,7 +73,7 @@ const Hero = ({}) => {
             >
               <a href={image.href}>
                 <Card className="group relative overflow-hidden rounded-lg">
-                  <div className="aspect-[3/4] w-full">
+                  <div className="md:aspect-[3/4] aspect-square w-full">
                     <Image
                       src={image.src}
                       alt={image.alt}

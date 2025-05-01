@@ -171,7 +171,7 @@ export default function MemoryTestStep({
             </div>
 
             <div className="space-y-2">
-              <h3 className="font-semibold">Detalle de respuestas:</h3>
+              <h3 className="font-semibold">Answers:</h3>
               <div className="space-y-2">
                 {wordsToRemember.map((word, index) => (
                   <div
@@ -191,7 +191,7 @@ export default function MemoryTestStep({
                     <div className="text-sm">
                       {userAnswers[index] ? (
                         areWordsEqual(userAnswers[index], word) ? (
-                          <span className="text-green-500">Correcto</span>
+                          <span className="text-green-500">Correct</span>
                         ) : (
                           <span className="text-red-500">
                             Your answer: {userAnswers[index]}

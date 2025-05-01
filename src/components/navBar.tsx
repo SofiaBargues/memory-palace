@@ -8,19 +8,19 @@ export function NavBar() {
   return (
     <header className="w-full flex justify-between items-center bg-withe sm:px-89 px-4 py-4 border-b border-b-[#e6ebf4] ">
       <Link href="/">
-        <Button variant={"secondary"}>
+        <Button variant="ghost">
           <div className="flex items-center gap-2 text-md md:text-lg lg:text-xl font-medium">
             <img
               src={"/castle.svg"}
               alt="logo"
-              className="w-6 object-contain "
+              className="w-5 object-contain "
             />
-            Memory Palace
+            <span className="sm:block hidden">Memory Palace</span>
           </div>
         </Button>
       </Link>
       <a href="https://github.com/SofiaBargues/memory-palace">
-        <RainbowButton className="gap-2">
+        <RainbowButton className="gap-2 px-4 rounded-lg">
           <GithubIcon className="size-5" />
           <p className="hidden sm:block">Star on Github</p>
           <StarFilledIcon className="hidden sm:block group-hover:text-yellow-400" />
