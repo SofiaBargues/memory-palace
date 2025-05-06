@@ -7,6 +7,7 @@ import MemoryTestStep from "./steps/memoryTestStep";
 import { ChooseWordsStep } from "./steps/chooseWordsStep";
 import { StoryStep } from "./steps/storyStep";
 import { TutorialStep } from "./steps/tutorialStep";
+import { flushSync } from "react-dom";
 
 export type PalaceStep = "chooseWords" | "story" | "memoryTest" | "tutorial";
 
@@ -64,7 +65,6 @@ export function MemoryGame({
   }, [initialPalaceId, isNewPalace]);
 
   async function generatePalace(): Promise<Palace | undefined> {
-    setLoading(true);
     try {
       const response = await fetch("/api/v1/generate", {
         method: "POST",
@@ -79,8 +79,6 @@ export function MemoryGame({
       return generatedPalace as Palace;
     } catch (error) {
       console.error("Fetch error:", error);
-    } finally {
-      setLoading(false);
     }
   }
 
@@ -102,14 +100,29 @@ export function MemoryGame({
   async function createPalace() {
     console.log("Creating New Palace");
     console.log("Loading");
+    flushSync(() => setLoading(true));
     const generatedPalace = await generatePalace();
     if (!generatedPalace) {
       console.log("Palace is undefined");
       return;
     }
+    setLoading(false);
     setPalace(generatedPalace);
-    // @ts-expect-error id exists in palace response
-    setPalaceId(generatedPalace._id);
+  }
+
+  if (loading && (step === "story" || step === "chooseWords")) {
+    return (
+      <div className="w-full container m-auto md:p-10 flex flex-col gap-4">
+        <Card className="w-full md:max-w-5xl rounded-none md:rounded-xl m-auto ">
+          <CardContent className="flex justify-center items-center h-[900px] flex-col">
+            <Loader />
+            <p className="font-medium  mt-5 text-xl">
+              {isNewPalace ? "Creating Palace" : "Loading Palace"}
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+    );
   }
 
   console.log(slideSelected);
@@ -118,18 +131,7 @@ export function MemoryGame({
       {/* <Card className="w-full md:max-w-5xl rounded-none md:rounded-xl m-auto "> */}
       {step === "story" && (
         <>
-          {loading ? (
-            <div className="w-full container m-auto md:p-10 flex flex-col  gap-4">
-              <Card className="w-full md:max-w-5xl rounded-none md:rounded-xl m-auto ">
-                <CardContent className="flex justify-center items-center h-[900px] flex-col">
-                  <Loader />
-                  <p className="font-medium  mt-5 text-xl">
-                    {isNewPalace ? "Creating Palace" : "Loading Palace"}
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
-          ) : palace ? (
+          {palace ? (
             <StoryStep
               setSlideSelected={setSlideSelected}
               slideSelected={slideSelected}
@@ -151,7 +153,7 @@ export function MemoryGame({
           wordsToRemember={referenceWords}
           onBackToStoryClick={() => {
             setStep("story");
-            setSlideSelected(0)
+            setSlideSelected(0);
           }}
         />
       )}
