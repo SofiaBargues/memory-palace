@@ -51,12 +51,7 @@ export function ChooseWordsStep({
     setSelectedCategory(category);
 
     if (category !== "custom") {
-      const newWords = Array(9)
-        .fill("")
-        .map((_, index) => {
-          const usedWords = words.slice(0, index);
-          return getRandomWord(category, usedWords);
-        });
+      const newWords = PREDEFINED_LISTS[category].slice(0, 9);
       setWords(newWords);
     } else {
       setWords(Array(9).fill(""));

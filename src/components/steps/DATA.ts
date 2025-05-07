@@ -9,6 +9,17 @@ export const PREDEFINED_LISTS = {
     "Koala",
     "Penguin",
     "Zebra",
+    "Goat",
+    "Bear",
+    "Kangaroo",
+    "Crocodile",
+    "Panda",
+    "Fox",
+    "Wolf",
+    "Otter",
+    "Hippopotamus",
+    "Peacock",
+    "Chameleon"
   ],
   fruits: [
     "Apple",
@@ -20,6 +31,17 @@ export const PREDEFINED_LISTS = {
     "Watermelon",
     "Grape",
     "Kiwi",
+    "Pear",
+    "Blueberry",
+    "Peach",
+    "Cherry",
+    "Lemon",
+    "Plum",
+    "Coconut",
+    "Papaya",
+    "Fig",
+    "Apricot",
+    "Raspberry"
   ],
   objects: [
     "Lamp",
@@ -31,6 +53,17 @@ export const PREDEFINED_LISTS = {
     "Pen",
     "Cup",
     "Glasses",
+    "Table",
+    "Backpack",
+    "Spoon",
+    "Pillow",
+    "Towel",
+    "Mirror",
+    "Clock",
+    "Scissors",
+    "Bottle",
+    "Notebook",
+    "Remote"
   ],
 };
 // export const wordsArray = [
