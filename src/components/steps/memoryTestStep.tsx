@@ -23,6 +23,36 @@ function areWordsEqual(word1: string, word2: string) {
   return word1.trim().toLowerCase() === word2.trim().toLowerCase();
 }
 
+function calculateMatchesAndUnorderedMatches(
+  userAnswers: string[],
+  wordsToRemember: string[]
+) {
+  //SCORE
+  //correct word at correct place
+
+  const incorrectWords = userAnswers.filter(
+    (answer, index) => !areWordsEqual(answer, wordsToRemember[index])
+  );
+
+  const partialScore = wordsToRemember.length - incorrectWords.length;
+
+  //correct word at wrong place
+  const wordsToRememberSet = new Set(
+    wordsToRemember.map((x) => x.trim().toLowerCase())
+  );
+
+  const uniqueUnorderedWords = new Set(
+    incorrectWords.filter((answer) =>
+      wordsToRememberSet.has(answer.trim().toLowerCase())
+    )
+  );
+
+  return {
+    fullMatches: partialScore,
+    unorderedMatches: uniqueUnorderedWords.size,
+  };
+}
+
 export default function MemoryTestStep({
   wordsToRemember,
   onBackToStoryClick,
@@ -41,10 +71,11 @@ export default function MemoryTestStep({
     newUserAnswers[index] = value;
     setUserAnswers(newUserAnswers);
   };
-
-  const score = userAnswers.filter((answer, index) =>
-    areWordsEqual(answer, wordsToRemember[index])
-  ).length;
+  const { fullMatches, unorderedMatches } = calculateMatchesAndUnorderedMatches(
+    userAnswers,
+    wordsToRemember
+  );
+  const score = fullMatches + unorderedMatches / 2;
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -208,8 +239,15 @@ export default function MemoryTestStep({
                 ))}
               </div>
             </div>
+            <div className="flex gap-4 text-md text-muted-foreground">
+              {unorderedMatches === 0
+                ? " "
+                : "* Correct words at the wrong place add 0.5 to score"}
+            </div>
           </CardContent>
-          <CardFooter className="flex justify-between gap-4">
+          {/* agregar el * que las palabras correctas suman medio punto*/}
+
+          <CardFooter className="flex justify-between gap-4 ">
             <Link href="/palaces">
               <Button variant="outline">All palaces</Button>
             </Link>
