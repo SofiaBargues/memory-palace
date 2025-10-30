@@ -1,10 +1,18 @@
 // Generated with ChatGPT. Cloudinary SDK doesn't work on edge runtime
 
-export async function uploadToCloudinary(imageUrl: string): Promise<string> {
+export async function uploadToCloudinary(imageData: string): Promise<string> {
   const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
   const apiKey = process.env.CLOUDINARY_API_KEY;
   const apiSecret = process.env.CLOUDINARY_API_SECRET;
   const uploadPreset = "palace_";
+
+  if (!cloudName || !apiKey || !apiSecret) {
+    throw new Error("Missing Cloudinary environment variables");
+  }
+
+  if (!imageData) {
+    throw new Error("imageData parameter is required and cannot be empty");
+  }
 
   // URL de la API de Cloudinary para subir imágenes
   const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
@@ -14,27 +22,28 @@ export async function uploadToCloudinary(imageUrl: string): Promise<string> {
   const stringToSign = `timestamp=${timestamp}&upload_preset=${uploadPreset}${apiSecret}`;
   const signature = sha1(stringToSign);
 
-  // Crear el cuerpo de la solicitud como JSON
-  const requestBody = {
-    file: imageUrl,
-    upload_preset: uploadPreset,
-    api_key: apiKey,
-    timestamp: timestamp.toString(),
-    signature: signature,
-  };
+  // Crear el cuerpo de la solicitud como FormData
+  const formData = new FormData();
+  formData.append("file", `data:image/png;base64,${imageData}`);
+  formData.append("upload_preset", uploadPreset);
+  formData.append("api_key", apiKey);
+  formData.append("timestamp", timestamp.toString());
+  formData.append("signature", signature);
 
   // Realizar la solicitud POST a la API de Cloudinary
   const response = await fetch(url, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json", // Especificar el tipo de contenido JSON
-    },
-    body: JSON.stringify(requestBody),
+    // No especificar Content-Type para que el navegador establezca automáticamente multipart/form-data
+    body: formData,
   });
 
   if (!response.ok) {
     const body = await response.json();
-    throw new Error(`Error al subir la imagen: ${body.error}`);
+
+    // Usar console.dir para inspeccionar el objeto completo
+    console.dir(body, { depth: null });
+
+    throw new Error(`Error al subir la imagen: ${JSON.stringify(body)}`);
   }
 
   // Extraer y devolver la URL de la imagen subida

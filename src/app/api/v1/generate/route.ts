@@ -20,7 +20,7 @@ export async function POST(request: Request) {
     });
 
     // 3. crea senteces
-    const completionSentences = await openai.beta.chat.completions.parse({
+    const completionSentences = await openai.chat.completions.parse({
       model: "gpt-4o",
       temperature: 1.2,
       messages: [
@@ -54,7 +54,7 @@ Steps:
       });
     }
     // 4. crea img Promt
-    const step2Completion = await openai.beta.chat.completions.parse({
+    const step2Completion = await openai.chat.completions.parse({
       model: "gpt-4o",
       temperature: 0.5,
       messages: [
@@ -96,24 +96,38 @@ Steps:
     // DALLE
     const promises = imgPrompts.map((imgPrompt) =>
       openai.images.generate({
-        response_format: "url", // Can be `b64_json`
-        model: "dall-e-3",
-        size: "1024x1024",
-        // model: "dall-e-2",
-        // size: "256x256",
-        prompt: imgPrompt + " " + "Don't write text in the images.",
-        n: 1,
-        quality: "standard",
+        model: "gpt-image-1",
+        prompt: imgPrompt,
+        quality: "low",
       })
     );
+
+    // // DALLE
+    // const promises = imgPrompts.map((imgPrompt) =>
+    //   openai.images.generate({
+    //     response_format: "url", // Can be `b64_json`
+    //     model: "dall-e-3",
+    //     size: "1024x1024",
+    //     // model: "dall-e-2",
+    //     // size: "256x256",
+    //     prompt: imgPrompt + " " + "Don't write text in the images.",
+    //     n: 1,
+    //     quality: "standard",
+    //   })
+    // );
     const responses = await Promise.all(promises);
-    const temporalImages = responses.map((res) => res.data[0].url!); // Can be `b64_json`
+
+    const base64Images = responses
+      .map((res) => res.data?.[0]?.b64_json)
+      .filter(Boolean); // Filtrar valores undefined
 
     // 6. guardo img en cloudinary
 
     const persistentImages = [];
-    for (const image of temporalImages) {
-      persistentImages.push(await uploadToCloudinary(image));
+    for (const image of base64Images) {
+      if (image) {
+        persistentImages.push(await uploadToCloudinary(image));
+      }
     }
 
     // 7. construyo Palace
