@@ -1,8 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Palace } from "../app/api/v1/generate/types";
-import { Loader } from "@/components/Loader";
 import { Card, CardContent } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
 import MemoryTestStep from "./steps/memoryTestStep";
 import { ChooseWordsStep } from "./steps/chooseWordsStep";
 import { StoryStep } from "./steps/storyStep";
@@ -20,6 +20,7 @@ export function MemoryGame({
   // const [_, setPalaceId] = useState(initialPalaceId);
   const [step, setStep] = useState<PalaceStep>("tutorial");
   const [loading, setLoading] = useState(false);
+  const [loadingProgress, setLoadingProgress] = useState(0);
 
   const [referenceWords, setReferenceWords] = useState<string[]>(
     new Array(9).fill(undefined)
@@ -27,6 +28,30 @@ export function MemoryGame({
   const [slideSelected, setSlideSelected] = useState(0);
 
   const isNewPalace = initialPalaceId ? false : true;
+
+  useEffect(() => {
+    if (!loading) {
+      setLoadingProgress(0);
+      return;
+    }
+
+    setLoadingProgress(8);
+
+    const interval = window.setInterval(() => {
+      setLoadingProgress((currentProgress) => {
+        if (currentProgress >= 92) {
+          return currentProgress;
+        }
+
+        const stepSize = Math.max(2, Math.ceil((100 - currentProgress) / 12));
+        return Math.min(currentProgress + stepSize, 92);
+      });
+    }, 400);
+
+    return () => {
+      window.clearInterval(interval);
+    };
+  }, [loading]);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -103,9 +128,11 @@ export function MemoryGame({
     flushSync(() => setLoading(true));
     const generatedPalace = await generatePalace();
     if (!generatedPalace) {
+      setLoading(false);
       console.log("Palace is undefined");
       return;
     }
+    setLoadingProgress(100);
     setLoading(false);
     setPalace(generatedPalace);
   }
@@ -114,11 +141,19 @@ export function MemoryGame({
     return (
       <div className="w-full container m-auto md:p-10 flex flex-col gap-4">
         <Card className="w-full md:max-w-5xl rounded-none md:rounded-xl m-auto ">
-          <CardContent className="flex justify-center items-center h-[900px] flex-col">
-            <Loader />
-            <p className="font-medium  mt-5 text-xl">
-              {isNewPalace ? "Creating Palace" : "Loading Palace"}
-            </p>
+          <CardContent className="flex justify-center items-center h-[900px] flex-col gap-5 px-8">
+            <div className="w-full max-w-xl space-y-4 text-center">
+              <p className="text-5xl font-semibold tabular-nums">
+                {loadingProgress}%
+              </p>
+              <p className="font-medium text-xl">
+                {isNewPalace ? "Creating Palace" : "Loading Palace"}
+              </p>
+              <Progress value={loadingProgress} className="h-4" />
+              <p className="text-sm text-muted-foreground">
+                Generating the story and images. This can take a few seconds.
+              </p>
+            </div>
           </CardContent>
         </Card>
       </div>
