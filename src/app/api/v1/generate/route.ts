@@ -62,9 +62,9 @@ Steps:
           role: "system",
           content: `You are a Loci method builder. 
 - Create a title for the story.
-- Create three DALL-E 3 prompts.
+- Create three GPT Image 2 prompts.
 Steps:
-1. For each element in the input array, craft a prompt to generate an image with "Dall-E 3".
+1. For each element in the input array, craft a prompt to generate an image with "GPT Image 2".
 2. The 3 words wrapped in bold tags in each input element must appear in the final image. 
 3. The title is related to the most memorable thing in the first part of the story.
 4. The title is original and doesn't include the word "Adventure" `,
@@ -96,7 +96,7 @@ Steps:
     // DALLE
     const promises = imgPrompts.map((imgPrompt) =>
       openai.images.generate({
-        model: "gpt-image-1",
+        model: "gpt-image-2",
         prompt: imgPrompt,
         quality: "low",
       })
