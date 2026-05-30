@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Palace } from "../app/api/v1/generate/types";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -11,6 +11,26 @@ import { flushSync } from "react-dom";
 
 export type PalaceStep = "chooseWords" | "story" | "memoryTest" | "tutorial";
 
+const LOADING_START_PROGRESS = 8;
+const LOADING_MAX_PROGRESS = 98;
+const LOADING_COMPLETE_DELAY_MS = 250;
+const LOADING_ESTIMATED_DURATION_MS = 45000;
+
+function getTimedLoadingProgress(startedAt: number) {
+  const elapsedMilliseconds = Date.now() - startedAt;
+  const progressRange = LOADING_MAX_PROGRESS - LOADING_START_PROGRESS;
+  const elapsedRatio = Math.min(
+    elapsedMilliseconds / LOADING_ESTIMATED_DURATION_MS,
+    1
+  );
+
+  return Math.round(LOADING_START_PROGRESS + progressRange * elapsedRatio);
+}
+
+function wait(milliseconds: number) {
+  return new Promise((resolve) => window.setTimeout(resolve, milliseconds));
+}
+
 export function MemoryGame({
   initialPalaceId,
 }: {
@@ -21,6 +41,7 @@ export function MemoryGame({
   const [step, setStep] = useState<PalaceStep>("tutorial");
   const [loading, setLoading] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(0);
+  const loadingStartedAtRef = useRef<number | null>(null);
 
   const [referenceWords, setReferenceWords] = useState<string[]>(
     new Array(9).fill(undefined)
@@ -35,23 +56,28 @@ export function MemoryGame({
       return;
     }
 
-    setLoadingProgress(8);
+    loadingStartedAtRef.current = Date.now();
+    setLoadingProgress(LOADING_START_PROGRESS);
 
     const interval = window.setInterval(() => {
-      setLoadingProgress((currentProgress) => {
-        if (currentProgress >= 92) {
-          return currentProgress;
-        }
+      if (!loadingStartedAtRef.current) {
+        return;
+      }
 
-        const stepSize = Math.max(2, Math.ceil((100 - currentProgress) / 12));
-        return Math.min(currentProgress + stepSize, 92);
-      });
-    }, 400);
+      setLoadingProgress(getTimedLoadingProgress(loadingStartedAtRef.current));
+    }, 100);
 
     return () => {
       window.clearInterval(interval);
     };
   }, [loading]);
+
+  const completeLoading = useCallback(async () => {
+    setLoadingProgress(100);
+    await wait(LOADING_COMPLETE_DELAY_MS);
+    loadingStartedAtRef.current = null;
+    setLoading(false);
+  }, []);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -65,9 +91,7 @@ export function MemoryGame({
         });
 
         if (response.ok) {
-          console.log(response);
           const result = await response.json();
-          console.log(result);
           const fetchedPalace = result.data.find(
             (value: Palace & { _id: string }) => value._id === initialPalaceId
           );
@@ -75,19 +99,18 @@ export function MemoryGame({
           setReferenceWords(fetchedPalace?.words);
         } else {
           const errorData = await response.json();
-          console.log(errorData);
           throw new Error(errorData.message || "Error en la solicitud");
         }
       } catch (error) {
         alert(error);
       } finally {
-        setLoading(false);
+        await completeLoading();
       }
     };
     if (!isNewPalace) {
       fetchPosts();
     }
-  }, [initialPalaceId, isNewPalace]);
+  }, [completeLoading, initialPalaceId, isNewPalace]);
 
   async function generatePalace(): Promise<Palace | undefined> {
     try {
@@ -100,7 +123,6 @@ export function MemoryGame({
         throw new Error("Network response was not ok " + response.statusText);
       }
       const generatedPalace = await response.json(); // Convierte la respuesta a JSON
-      console.log(generatedPalace); // Imprime cada nombre de usuario
       return generatedPalace as Palace;
     } catch (error) {
       console.error("Fetch error:", error);
@@ -123,17 +145,14 @@ export function MemoryGame({
   }
 
   async function createPalace() {
-    console.log("Creating New Palace");
-    console.log("Loading");
     flushSync(() => setLoading(true));
     const generatedPalace = await generatePalace();
     if (!generatedPalace) {
       setLoading(false);
-      console.log("Palace is undefined");
+      console.error("Palace is undefined");
       return;
     }
-    setLoadingProgress(100);
-    setLoading(false);
+    await completeLoading();
     setPalace(generatedPalace);
   }
 
@@ -143,13 +162,10 @@ export function MemoryGame({
         <Card className="w-full md:max-w-5xl rounded-none md:rounded-xl m-auto ">
           <CardContent className="flex justify-center items-center h-[900px] flex-col gap-5 px-8">
             <div className="w-full max-w-xl space-y-4 text-center">
-              <p className="text-5xl font-semibold tabular-nums">
-                {loadingProgress}%
-              </p>
-              <p className="font-medium text-xl">
+              <p className="font-medium text-2xl">
                 {isNewPalace ? "Creating Palace" : "Loading Palace"}
               </p>
-              <Progress value={loadingProgress} className="h-4" />
+              <Progress value={loadingProgress} animated className="h-4" />
               <p className="text-sm text-muted-foreground">
                 Generating the story and images. This can take a few seconds.
               </p>
@@ -160,7 +176,6 @@ export function MemoryGame({
     );
   }
 
-  console.log(slideSelected);
   return (
     <div className="w-full container m-auto md:p-10 flex flex-col  gap-4">
       {/* <Card className="w-full md:max-w-5xl rounded-none md:rounded-xl m-auto "> */}

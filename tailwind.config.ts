@@ -70,7 +70,9 @@ const config: Config = {
   			sm: 'calc(var(--radius) - 4px)'
   		},
   		animation: {
-  			rainbow: 'rainbow var(--speed, 2s) infinite linear'
+  			rainbow: 'rainbow var(--speed, 2s) infinite linear',
+  			'progress-shine': 'progress-shine 1.2s ease-in-out infinite',
+  			'progress-sweep': 'progress-sweep 1.4s ease-in-out infinite'
   		},
   		keyframes: {
   			rainbow: {
@@ -79,6 +81,22 @@ const config: Config = {
   				},
   				'100%': {
   					'background-position': '200%'
+  				}
+  			},
+  			'progress-shine': {
+  				'0%': {
+  					transform: 'translateX(-125%)'
+  				},
+  				'100%': {
+  					transform: 'translateX(325%)'
+  				}
+  			},
+  			'progress-sweep': {
+  				'0%': {
+  					transform: 'translateX(-100%)'
+  				},
+  				'100%': {
+  					transform: 'translateX(100%)'
   				}
   			}
   		}
