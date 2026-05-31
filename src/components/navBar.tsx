@@ -1,31 +1,46 @@
 import Link from "next/link";
-import { RainbowButton } from "./rainbow-button";
+import Image from "next/image";
 import { GithubIcon } from "lucide-react";
-import { StarFilledIcon } from "@radix-ui/react-icons";
 import { Button } from "./ui/button";
 
 export function NavBar() {
   return (
-    <header className="w-full flex justify-between items-center bg-withe sm:px-89 px-4 py-4 border-b border-b-[#e6ebf4] ">
+    <header className="w-full border-b border-b-[#dfe4ec] bg-[#fdfdfb] px-4 py-2 sm:px-8 sm:py-3 lg:px-12">
+      <div className="mx-auto flex max-w-7xl items-center justify-between">
       <Link href="/">
-        <Button variant="ghost">
-          <div className="flex items-center gap-2 text-md md:text-lg lg:text-xl font-medium">
-            <img
+        <Button variant="ghost" className="h-auto px-0 hover:bg-transparent">
+          <div className="flex items-center gap-3 font-serif text-xl font-semibold text-[#111318] md:text-2xl">
+            <Image
               src={"/castle.svg"}
               alt="logo"
-              className="w-5 object-contain "
+              width={24}
+              height={24}
+              className="object-contain"
             />
             <span className="sm:block hidden">Memory Palace</span>
           </div>
         </Button>
       </Link>
-      <a href="https://github.com/SofiaBargues/memory-palace">
-        <RainbowButton className="gap-2 px-4 rounded-lg">
+      <nav className="hidden items-center gap-11 text-sm font-medium text-[#111318] md:flex">
+        <Link href="/palaces">Palaces</Link>
+        <Link href="/#how-it-works">How it works</Link>
+        <Link href="/#about">About</Link>
+        <span className="h-8 w-px bg-[#cbd3df]" aria-hidden="true" />
+        <a
+          href="https://github.com/SofiaBargues/memory-palace"
+          aria-label="Memory Palace on GitHub"
+        >
           <GithubIcon className="size-5" />
-          <p className="hidden sm:block">Star on Github</p>
-          <StarFilledIcon className="hidden sm:block group-hover:text-yellow-400" />
-        </RainbowButton>
+        </a>
+      </nav>
+      <a
+        href="https://github.com/SofiaBargues/memory-palace"
+        className="md:hidden"
+        aria-label="Memory Palace on GitHub"
+      >
+        <GithubIcon className="size-5" />
       </a>
+      </div>
     </header>
   );
 }

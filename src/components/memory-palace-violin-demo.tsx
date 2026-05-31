@@ -88,6 +88,7 @@ const TIMING: Record<Step, number> = {
 const PALACE_IMAGE_URL = "/images/memory-palace.png";
 const PALACE_IMAGE_ASPECT_RATIO = 1024 / 1536;
 const BASE_RECALL_IMAGE_WIDTH = 240;
+const STEP_PADDING_CLASS = "p-3 sm:p-6";
 
 interface MemoryPalaceViolinDemoProps {
   className?: string;
@@ -163,15 +164,18 @@ export function MemoryPalaceViolinDemo({
     if (currentStep === "Palace") {
       STORY_SEGMENTS.forEach((segment, index) => {
         timers.push(
-          window.setTimeout(() => {
-            setVisibleStoryLines(index + 1);
-            setRecallKeywordIndex(index);
-            setRevealedObjects((prev) =>
-              prev.includes(segment.keyword)
-                ? prev
-                : [...prev, segment.keyword],
-            );
-          }, 800 + index * 1000),
+          window.setTimeout(
+            () => {
+              setVisibleStoryLines(index + 1);
+              setRecallKeywordIndex(index);
+              setRevealedObjects((prev) =>
+                prev.includes(segment.keyword)
+                  ? prev
+                  : [...prev, segment.keyword],
+              );
+            },
+            800 + index * 1000,
+          ),
         );
       });
 
@@ -234,16 +238,16 @@ export function MemoryPalaceViolinDemo({
       const renderedImage =
         frameAspectRatio > PALACE_IMAGE_ASPECT_RATIO
           ? {
-              width: height * PALACE_IMAGE_ASPECT_RATIO,
-              height,
-              x: (width - height * PALACE_IMAGE_ASPECT_RATIO) / 2,
-              y: 0,
-            }
-          : {
               width,
               height: width / PALACE_IMAGE_ASPECT_RATIO,
               x: 0,
               y: (height - width / PALACE_IMAGE_ASPECT_RATIO) / 2,
+            }
+          : {
+              width: height * PALACE_IMAGE_ASPECT_RATIO,
+              height,
+              x: (width - height * PALACE_IMAGE_ASPECT_RATIO) / 2,
+              y: 0,
             };
 
       return {
@@ -282,86 +286,22 @@ export function MemoryPalaceViolinDemo({
   const activeRecallHighlightSize = activeRecallPosition
     ? Math.round(activeRecallPosition.size * 1.25)
     : 0;
-  const mobileStepHeight: Record<Step, string> = {
-    Words: "h-[360px]",
-    Palace: "h-[660px]",
-    Recall: "h-[360px]",
-    Result: "h-[420px]",
-  };
-
   return (
     <div className={cn("w-full max-w-3xl", className)}>
-      <Card className="overflow-hidden rounded-lg border-2 shadow-xl shadow-primary/10">
-        <CardHeader className="bg-muted/30 pb-4">
-          <div className="flex items-center justify-between">
-            {STEPS.map((step, index) => {
-              const Icon = STEP_ICONS[step];
-              const isActive = index === stepIndex;
-              const isComplete = index < stepIndex;
-
-              return (
-                <div key={step} className="flex items-center">
-                  <div className="flex flex-col items-center gap-1.5">
-                    <button
-                      type="button"
-                      aria-current={isActive ? "step" : undefined}
-                      aria-label={`Show ${step} step`}
-                      onClick={() => startStep(step)}
-                      className={cn(
-                        "flex size-10 items-center justify-center rounded-full border-2 transition-all duration-500 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-                        isComplete
-                          ? "border-primary bg-primary text-primary-foreground"
-                          : isActive
-                            ? "animate-pulse-glow border-primary bg-primary text-primary-foreground"
-                            : "border-border bg-muted text-muted-foreground",
-                      )}
-                    >
-                      {isComplete ? (
-                        <Check className="size-5" />
-                      ) : (
-                        <Icon className="size-5" />
-                      )}
-                    </button>
-                    <span
-                      className={cn(
-                        "text-xs font-medium transition-colors duration-300",
-                        index <= stepIndex
-                          ? "text-foreground"
-                          : "text-muted-foreground",
-                      )}
-                    >
-                      {step}
-                    </span>
-                  </div>
-                  {index < STEPS.length - 1 && (
-                    <div
-                      className={cn(
-                        "mx-2 mt-[-20px] h-0.5 w-6 transition-colors duration-500 sm:mx-3 sm:w-12 lg:w-14",
-                        index < stepIndex ? "bg-primary" : "bg-border",
-                      )}
-                    />
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </CardHeader>
-
+      <Card className="overflow-hidden rounded-lg border-0 shadow-none bg-transparent">
         <CardContent
-          className={cn(
-            "relative overflow-hidden p-0 sm:h-[620px] lg:h-[460px]",
-            mobileStepHeight[currentStep],
-          )}
+          className="relative h-[386px] overflow-hidden p-0 sm:h-[620px] lg:h-[460px]"
         >
           <div
             className={cn(
-              "absolute inset-0 flex flex-col items-center justify-center p-8 transition-all duration-700",
+              "absolute inset-0 flex flex-col items-center justify-center gap-5 transition-all duration-700",
+              STEP_PADDING_CLASS,
               currentStep === "Words"
                 ? "translate-y-0 opacity-100"
                 : "pointer-events-none -translate-y-8 opacity-0",
             )}
           >
-            <p className="mb-6 text-center text-sm text-muted-foreground">
+            <p className="text-center text-sm text-muted-foreground">
               A list of random words, hard to remember on their own
             </p>
             <div
@@ -395,7 +335,7 @@ export function MemoryPalaceViolinDemo({
               })}
             </div>
             {wordsConverging && (
-              <p className="mt-6 animate-pulse text-sm font-medium text-primary">
+              <p className="animate-pulse text-sm font-medium text-primary">
                 Transforming into a memorable scene...
               </p>
             )}
@@ -403,16 +343,17 @@ export function MemoryPalaceViolinDemo({
 
           <div
             className={cn(
-              "absolute inset-0 flex flex-col p-4 transition-all duration-700 sm:p-6",
+              "absolute inset-0 flex flex-col transition-all duration-700",
+              STEP_PADDING_CLASS,
               currentStep === "Palace"
                 ? "translate-y-0 opacity-100"
                 : "pointer-events-none translate-y-8 opacity-0",
             )}
           >
-            <div className="flex h-full min-h-0 flex-col gap-4 lg:flex-row">
+            <div className="flex h-full min-h-0 flex-col gap-2.5 sm:gap-4 lg:flex-row">
               <div
                 ref={palaceImageRef}
-                className="relative h-56 w-full shrink-0 overflow-hidden rounded-lg border-2 border-border bg-muted shadow-lg sm:h-72 lg:h-full lg:w-1/2"
+                className="relative h-[176px] w-full shrink-0 overflow-hidden rounded-lg border-2 border-border bg-muted shadow-lg sm:h-72 lg:h-full lg:w-1/2"
               >
                 <Image
                   src={PALACE_IMAGE_URL}
@@ -426,7 +367,7 @@ export function MemoryPalaceViolinDemo({
                   src={PALACE_IMAGE_URL}
                   alt="Memory palace scene"
                   fill
-                  className="object-contain grayscale"
+                  className="object-cover grayscale"
                   sizes="(min-width: 1024px) 24rem, 100vw"
                   priority
                 />
@@ -442,7 +383,7 @@ export function MemoryPalaceViolinDemo({
                       alt=""
                       aria-hidden="true"
                       fill
-                      className="z-10 object-contain"
+                      className="z-10 object-cover"
                       sizes="(min-width: 1024px) 24rem, 100vw"
                       style={{
                         clipPath: `circle(${radius}px at ${pos.x}% ${pos.y}%)`,
@@ -509,14 +450,14 @@ export function MemoryPalaceViolinDemo({
                 </div>
               </div>
 
-              <Card className="min-h-0 flex-1 rounded-lg border-2 shadow-none">
-                <CardHeader className="pb-2">
+              <Card className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-lg border-2 shadow-none">
+                <CardHeader className="hidden pb-2 sm:block">
                   <CardTitle className="flex items-center gap-2 text-sm text-muted-foreground">
                     <BookOpen className="size-4" />
                     The story unfolds...
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-2.5 overflow-y-auto pr-3">
+                <CardContent className="min-h-0 flex-1 space-y-1.5 overflow-y-auto p-3.5 pr-3 sm:space-y-2.5 sm:p-6 sm:pt-0">
                   {STORY_SEGMENTS.map((segment, index) => {
                     const colors = WORD_COLORS[segment.keyword];
                     const isActive = index === recallKeywordIndex;
@@ -525,7 +466,7 @@ export function MemoryPalaceViolinDemo({
                       <p
                         key={segment.keyword}
                         className={cn(
-                          "text-sm leading-relaxed transition-all duration-500",
+                          "text-sm leading-6 transition-all duration-500",
                           index < visibleStoryLines
                             ? "translate-x-0 opacity-100"
                             : "-translate-x-4 opacity-0",
@@ -557,14 +498,15 @@ export function MemoryPalaceViolinDemo({
 
           <div
             className={cn(
-              "absolute inset-0 flex flex-col items-center justify-center p-4 transition-all duration-700 sm:p-6",
+              "absolute inset-0 flex flex-col items-center justify-center transition-all duration-700",
+              STEP_PADDING_CLASS,
               currentStep === "Recall"
                 ? "translate-y-0 opacity-100"
                 : "pointer-events-none translate-y-8 opacity-0",
             )}
           >
             <Card className="w-full max-w-md rounded-lg border-2 shadow-none">
-              <CardContent className="flex min-h-[240px] flex-col items-center justify-center gap-4 p-6 text-center">
+              <CardContent className="flex min-h-[240px] flex-col items-center justify-center gap-5 p-5 text-center sm:p-6">
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <Brain className="size-4 text-primary" />
                   Test your memory
@@ -610,7 +552,8 @@ export function MemoryPalaceViolinDemo({
 
           <div
             className={cn(
-              "absolute inset-0 flex flex-col items-center justify-center p-8 transition-all duration-700",
+              "absolute inset-0 flex flex-col items-center justify-center transition-all duration-700",
+              STEP_PADDING_CLASS,
               currentStep === "Result"
                 ? "scale-100 opacity-100"
                 : "pointer-events-none scale-95 opacity-0",
@@ -618,23 +561,25 @@ export function MemoryPalaceViolinDemo({
           >
             <div
               className={cn(
-                "text-center transition-all duration-700",
+                "flex flex-col items-center gap-5 text-center transition-all duration-700",
                 showSuccess
                   ? "translate-y-0 opacity-100"
                   : "translate-y-4 opacity-0",
               )}
             >
-              <div className="mx-auto mb-6 flex size-20 items-center justify-center rounded-full border-2 border-primary bg-primary/10 shadow-lg">
+              <div className="flex size-20 items-center justify-center rounded-full border-2 border-primary bg-primary/10 shadow-lg">
                 <Trophy className="size-10 text-primary" />
               </div>
-              <h3 className="mb-2 text-2xl font-bold text-foreground">
-                You remembered the path.
-              </h3>
-              <p className="mx-auto max-w-sm text-muted-foreground">
-                A list became a place you can revisit anytime.
-              </p>
+              <div className="space-y-2">
+                <h3 className="text-2xl font-bold text-foreground">
+                  You remembered the path.
+                </h3>
+                <p className="max-w-sm text-muted-foreground">
+                  A list became a place you can revisit anytime.
+                </p>
+              </div>
 
-              <div className="mt-6 flex flex-wrap justify-center gap-2">
+              <div className="flex flex-wrap justify-center gap-2">
                 {WORDS.map((word) => {
                   const colors = WORD_COLORS[word];
 
@@ -658,7 +603,7 @@ export function MemoryPalaceViolinDemo({
           </div>
         </CardContent>
 
-        <div className="px-6 pb-4 pt-2">
+        <div className="px-5 pb-4 pt-2 sm:px-6">
           <Progress value={progressValue} className="h-1.5" />
         </div>
       </Card>
