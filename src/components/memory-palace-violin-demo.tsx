@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { BookOpen, Brain, Check, Sparkles, Trophy } from "lucide-react";
+import { BookOpen, Brain, Check, Trophy } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -71,13 +71,6 @@ const STORY_SEGMENTS = [
 const STEPS = ["Words", "Palace", "Recall", "Result"] as const;
 type Step = (typeof STEPS)[number];
 
-const STEP_ICONS = {
-  Words: Sparkles,
-  Palace: BookOpen,
-  Recall: Brain,
-  Result: Trophy,
-};
-
 const TIMING: Record<Step, number> = {
   Words: 3500,
   Palace: 8000,
@@ -101,7 +94,6 @@ export function MemoryPalaceViolinDemo({
   const [stepRunId, setStepRunId] = useState(0);
   const [visibleWords, setVisibleWords] = useState<number[]>([]);
   const [wordsConverging, setWordsConverging] = useState(false);
-  const [visibleStoryLines, setVisibleStoryLines] = useState(0);
   const [recallKeywordIndex, setRecallKeywordIndex] = useState(-1);
   const [revealedObjects, setRevealedObjects] = useState<Word[]>([]);
   const [answerRevealed, setAnswerRevealed] = useState(false);
@@ -115,7 +107,6 @@ export function MemoryPalaceViolinDemo({
   const resetState = useCallback(() => {
     setVisibleWords([]);
     setWordsConverging(false);
-    setVisibleStoryLines(0);
     setRecallKeywordIndex(-1);
     setRevealedObjects([]);
     setAnswerRevealed(false);
@@ -166,7 +157,6 @@ export function MemoryPalaceViolinDemo({
         timers.push(
           window.setTimeout(
             () => {
-              setVisibleStoryLines(index + 1);
               setRecallKeywordIndex(index);
               setRevealedObjects((prev) =>
                 prev.includes(segment.keyword)
@@ -283,6 +273,10 @@ export function MemoryPalaceViolinDemo({
   const activeRecallPosition = activeRecallWord
     ? getRecallObjectPosition(activeRecallWord)
     : null;
+  const activeStorySegment =
+    recallKeywordIndex >= 0 && recallKeywordIndex < STORY_SEGMENTS.length
+      ? STORY_SEGMENTS[recallKeywordIndex]
+      : null;
   const activeRecallHighlightSize = activeRecallPosition
     ? Math.round(activeRecallPosition.size * 1.25)
     : 0;
@@ -290,7 +284,7 @@ export function MemoryPalaceViolinDemo({
     <div className={cn("w-full max-w-3xl", className)}>
       <Card className="overflow-hidden rounded-lg border-0 shadow-none bg-transparent">
         <CardContent
-          className="relative h-[386px] overflow-hidden p-0 sm:h-[620px] lg:h-[460px]"
+          className="relative h-[430px] overflow-hidden p-0 sm:h-[620px] lg:h-[460px]"
         >
           <div
             className={cn(
@@ -344,16 +338,16 @@ export function MemoryPalaceViolinDemo({
           <div
             className={cn(
               "absolute inset-0 flex flex-col transition-all duration-700",
-              STEP_PADDING_CLASS,
+              "px-3 pb-3 pt-0 sm:px-6 sm:pb-6 sm:pt-0",
               currentStep === "Palace"
                 ? "translate-y-0 opacity-100"
                 : "pointer-events-none translate-y-8 opacity-0",
             )}
           >
-            <div className="flex h-full min-h-0 flex-col gap-2.5 sm:gap-4 lg:flex-row">
+            <div className="flex h-full min-h-0 flex-col overflow-hidden rounded-lg border-2 border-border bg-card shadow-lg lg:flex-row">
               <div
                 ref={palaceImageRef}
-                className="relative h-[176px] w-full shrink-0 overflow-hidden rounded-lg border-2 border-border bg-muted shadow-lg sm:h-72 lg:h-full lg:w-1/2"
+                className="relative h-[260px] w-full shrink-0 overflow-hidden border-b-2 border-border bg-muted sm:h-72 lg:h-full lg:w-1/2 lg:border-b-0 lg:border-r-2"
               >
                 <Image
                   src={PALACE_IMAGE_URL}
@@ -450,49 +444,38 @@ export function MemoryPalaceViolinDemo({
                 </div>
               </div>
 
-              <Card className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-lg border-2 shadow-none">
-                <CardHeader className="hidden pb-2 sm:block">
+              <div className="flex min-h-0 flex-1 flex-col overflow-hidden bg-card">
+                <CardHeader className="hidden pb-2 sm:block lg:block">
                   <CardTitle className="flex items-center gap-2 text-sm text-muted-foreground">
                     <BookOpen className="size-4" />
                     The story unfolds...
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="min-h-0 flex-1 space-y-1.5 overflow-y-auto p-3.5 pr-3 sm:space-y-2.5 sm:p-6 sm:pt-0">
-                  {STORY_SEGMENTS.map((segment, index) => {
-                    const colors = WORD_COLORS[segment.keyword];
-                    const isActive = index === recallKeywordIndex;
-
-                    return (
-                      <p
-                        key={segment.keyword}
+                <CardContent className="flex min-h-0 flex-1 items-center p-5 sm:items-start sm:p-6 sm:pt-0 lg:items-start">
+                  {activeStorySegment ? (
+                    <p
+                      key={activeStorySegment.keyword}
+                      className="text-lg leading-8 text-foreground/80 transition-all duration-500 sm:text-base sm:leading-7"
+                    >
+                      <span>{activeStorySegment.before}</span>
+                      <span
                         className={cn(
-                          "text-sm leading-6 transition-all duration-500",
-                          index < visibleStoryLines
-                            ? "translate-x-0 opacity-100"
-                            : "-translate-x-4 opacity-0",
+                          "animate-keyword-glow mx-1 inline-block scale-110 font-bold transition-all duration-500",
+                          WORD_COLORS[activeStorySegment.keyword].tailwind,
                         )}
                       >
-                        <span className="text-foreground/80">
-                          {segment.before}
-                        </span>
-                        <span
-                          className={cn(
-                            "font-bold transition-all duration-500",
-                            colors.tailwind,
-                            isActive &&
-                              "animate-keyword-glow mx-1 inline-block scale-125",
-                          )}
-                        >
-                          {segment.displayKeyword || segment.keyword}
-                        </span>
-                        <span className="text-foreground/80">
-                          {segment.after}
-                        </span>
-                      </p>
-                    );
-                  })}
+                        {activeStorySegment.displayKeyword ||
+                          activeStorySegment.keyword}
+                      </span>
+                      <span>{activeStorySegment.after}</span>
+                    </p>
+                  ) : (
+                    <p className="text-lg leading-8 text-foreground/50 sm:text-base sm:leading-7">
+                      The story unfolds...
+                    </p>
+                  )}
                 </CardContent>
-              </Card>
+              </div>
             </div>
           </div>
 

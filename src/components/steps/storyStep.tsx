@@ -1,6 +1,7 @@
 import React from "react";
 import { Palace } from "../../app/api/v1/generate/types";
 import Image from "next/image";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -10,32 +11,8 @@ import {
   ChevronLeft,
   ChevronRight,
   Eye,
-  Landmark,
 } from "lucide-react";
 import { Container } from "../Container";
-
-const mobileLabelPositions = [
-  "left-[11%] top-[31%]",
-  "left-[40%] top-[57%]",
-  "right-[7%] top-[59%]",
-];
-
-const keywordEmoji = (keyword: string) => {
-  const normalizedKeyword = keyword.toLowerCase();
-
-  if (normalizedKeyword.includes("fig")) return "🍇";
-  if (normalizedKeyword.includes("apple")) return "🍎";
-  if (normalizedKeyword.includes("carrot")) return "🥕";
-  if (normalizedKeyword.includes("banana")) return "🍌";
-  if (normalizedKeyword.includes("orange")) return "🍊";
-  if (normalizedKeyword.includes("grape")) return "🍇";
-  if (normalizedKeyword.includes("kiwi")) return "🥝";
-  if (normalizedKeyword.includes("watermelon")) return "🍉";
-  if (normalizedKeyword.includes("lemon")) return "🍋";
-  if (normalizedKeyword.includes("strawberry")) return "🍓";
-
-  return "✦";
-};
 
 export function StoryStep({
   palace,
@@ -50,7 +27,7 @@ export function StoryStep({
 }) {
   const currentWords = palace.words.slice(
     slideSelected * 3,
-    slideSelected * 3 + 3
+    slideSelected * 3 + 3,
   );
   const currentSentences = palace.sentences
     .slice(slideSelected * 3, slideSelected * 3 + 3)
@@ -75,7 +52,7 @@ export function StoryStep({
   return (
     <>
       <div className="fixed inset-0 z-50 min-h-[100svh] overflow-y-auto bg-white text-[#10212c] md:hidden">
-        <section className="relative min-h-[56svh] overflow-hidden bg-[#17351d]">
+        <section className="relative min-h-[56svh] overflow-hidden bg-black">
           <Image
             src={palace.images[slideSelected] || "/placeholder.svg"}
             alt="Memory palace scene"
@@ -87,57 +64,52 @@ export function StoryStep({
           <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/60 to-transparent" />
           <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/35 to-transparent" />
 
-          <button
-            type="button"
-            onClick={goBack}
-            disabled={isFirstSlide}
-            aria-label="Back"
-            className="absolute left-4 top-10 z-20 flex h-9 w-9 items-center justify-center text-white disabled:opacity-45"
-          >
-            <ArrowLeft className="h-7 w-7 stroke-[3]" />
-          </button>
+          {isFirstSlide ? (
+            <Link
+              href="/palaces"
+              aria-label="Back to palaces"
+              className="absolute left-4 top-10 z-20 flex h-9 w-9 items-center justify-center text-white"
+            >
+              <ArrowLeft className="h-7 w-7 stroke-[3]" />
+            </Link>
+          ) : (
+            <button
+              type="button"
+              onClick={goBack}
+              aria-label="Back"
+              className="absolute left-4 top-10 z-20 flex h-9 w-9 items-center justify-center text-white"
+            >
+              <ArrowLeft className="h-7 w-7 stroke-[3]" />
+            </button>
+          )}
 
-          <h1 className="absolute left-[16%] right-24 top-10 z-20 text-[clamp(1.05rem,5.8vw,1.55rem)] font-extrabold leading-tight text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)]">
+          <h1 className="absolute left-[16%] right-24 top-10 z-20 text-[clamp(0.92rem,4.6vw,1.2rem)] font-extrabold leading-tight text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)]">
             {palace.title}
           </h1>
 
-          <div className="absolute right-4 top-7 z-20 rounded-[1.1rem] bg-[#101923]/85 px-4 py-3 text-white shadow-2xl backdrop-blur-md">
-            <div className="text-center text-xl font-extrabold leading-none">
+          <div className="absolute right-4 top-8 z-20 rounded-[0.85rem] bg-[#101923]/85 px-3 py-2.5 text-white shadow-2xl backdrop-blur-md">
+            <div className="text-center text-base font-extrabold leading-none">
               {slideSelected + 1}/{palace.images.length}
             </div>
-            <div className="mt-3 flex items-center justify-center gap-2.5">
+            <div className="mt-2.5 flex items-center justify-center gap-2">
               {palace.images.map((_, index) => (
                 <span
                   key={index}
-                  className={`h-2.5 w-2.5 rounded-full ${
-                    index === slideSelected ? "bg-[#5fda45]" : "bg-white/55"
+                  className={`h-2 w-2 rounded-full ${
+                    index === slideSelected ? "bg-[#e9530a]" : "bg-white/55"
                   }`}
                 />
               ))}
             </div>
           </div>
-
-          {currentWords.map((keyword, index) => (
-            <div
-              key={`${keyword}-${index}`}
-              className={`absolute z-10 flex items-center gap-2 rounded-2xl bg-white/95 py-1.5 pl-1.5 pr-4 text-base font-bold text-[#10212c] shadow-[0_10px_24px_rgba(16,33,44,0.22)] ${
-                mobileLabelPositions[index] || "left-6 top-1/2"
-              }`}
-            >
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#207b35] text-lg font-extrabold text-white">
-                {slideSelected * 3 + index + 1}
-              </span>
-              <span className="max-w-[7rem] truncate">{keyword}</span>
-            </div>
-          ))}
         </section>
 
         <section className="relative z-20 -mt-8 rounded-t-[1.9rem] bg-white px-6 pb-28 pt-4 shadow-[0_-18px_38px_rgba(13,32,23,0.16)]">
-          <div className="mx-auto mb-6 h-1.5 w-24 rounded-full bg-black/25" />
+       
 
           <div className="flex gap-4">
-            <Eye className="mt-0.5 h-7 w-7 shrink-0 text-[#1f6e2d]" />
-            <p className="text-[1.2rem] font-extrabold leading-snug text-[#1f6e2d]">
+            <Eye className="mt-0.5 h-7 w-7 shrink-0 text-black" />
+            <p className="text-[1.2rem] font-extrabold leading-snug text-black">
               Visualize the scene and connect each keyword to a place.
             </p>
           </div>
@@ -145,7 +117,7 @@ export function StoryStep({
           <div className="my-5 h-px bg-black/15" />
 
           <div className="flex gap-4">
-            <BookOpen className="mt-0.5 h-8 w-8 shrink-0 text-[#1f6e2d]" />
+            <BookOpen className="mt-0.5 h-8 w-8 shrink-0 text-black" />
             <p
               className="text-[1.1rem] leading-snug text-[#10212c]"
               dangerouslySetInnerHTML={{ __html: currentSentences }}
@@ -154,46 +126,64 @@ export function StoryStep({
 
           <div className="my-5 h-px bg-black/15" />
 
-          <h2 className="text-[1.15rem] font-extrabold text-[#1f6e2d]">
+          <h2 className="text-[1.15rem] font-extrabold text-black">
             Story Keywords
           </h2>
-          <div className="mt-4 flex gap-3 overflow-x-auto pb-2">
+          <div className="mt-4 grid grid-cols-3 gap-2.5 pb-2">
             {currentWords.map((keyword, index) => (
               <div
                 key={`${keyword}-chip-${index}`}
-                className="flex shrink-0 items-center gap-2.5 rounded-2xl border border-[#d7eadb] bg-[#f4faf5] py-2 pl-3 pr-4 text-base text-[#10212c] shadow-[inset_0_1px_0_rgba(255,255,255,0.9)]"
+                className="flex min-w-0 max-w-full items-center gap-2 rounded-xl border border-black/15 bg-white py-2 pl-2 pr-2.5 text-sm text-[#10212c] shadow-[inset_0_1px_0_rgba(255,255,255,0.9)]"
               >
-                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#207b35] text-base font-extrabold text-white">
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-black text-sm font-extrabold text-white">
                   {slideSelected * 3 + index + 1}
                 </span>
-                <span className="text-2xl leading-none">{keywordEmoji(keyword)}</span>
-                <span className="max-w-[7.5rem] truncate">{keyword}</span>
+                <span className="min-w-0 truncate">{keyword}</span>
               </div>
             ))}
           </div>
         </section>
 
-        <nav className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-[1fr_auto_1fr] items-center gap-3 border-t border-black/10 bg-white px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 shadow-[0_-8px_26px_rgba(16,33,44,0.1)]">
-          <Button
-            variant="outline"
-            onClick={goBack}
-            disabled={isFirstSlide}
-            className="h-12 rounded-xl border-2 border-[#17682a] bg-white px-3 text-base font-extrabold text-[#17682a] disabled:opacity-45"
-          >
-            <ChevronLeft className="mr-1.5 h-5 w-5 stroke-[3]" />
-            Back
-          </Button>
+        <nav className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-[1fr_auto_1fr] items-center gap-3 border-t border-[#dfe4ec] bg-[#fdfdfb] px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 shadow-[0_-8px_26px_rgba(16,33,44,0.1)]">
+          {isFirstSlide ? (
+            <Button
+              asChild
+              variant="outline"
+              className="h-12 rounded-[5px] border-2 border-black bg-white px-3 text-base font-extrabold text-black"
+            >
+              <Link href="/palaces">
+                <ChevronLeft className="mr-1.5 h-5 w-5 stroke-[3]" />
+                Back
+              </Link>
+            </Button>
+          ) : (
+            <Button
+              variant="outline"
+              onClick={goBack}
+              className="h-12 rounded-[5px] border-2 border-black bg-white px-3 text-base font-extrabold text-black"
+            >
+              <ChevronLeft className="mr-1.5 h-5 w-5 stroke-[3]" />
+              Back
+            </Button>
+          )}
 
-          <div className="flex min-w-20 flex-col items-center justify-center text-[#17682a]">
-            <Landmark className="h-7 w-7" />
-            <span className="mt-0.5 whitespace-nowrap text-[0.7rem] font-semibold">
-              Memory Palace
-            </span>
-          </div>
+          <Link
+            href="/"
+            aria-label="Go home"
+            className="flex min-w-20 flex-col items-center justify-center text-black"
+          >
+            <Image
+              src="/castle.svg"
+              alt=""
+              width={26}
+              height={26}
+              className="object-contain"
+            />
+          </Link>
 
           <Button
             onClick={goNext}
-            className="h-12 rounded-xl bg-[#17682a] px-3 text-base font-extrabold text-white shadow-[0_12px_24px_rgba(23,104,42,0.28)] hover:bg-[#17682a]/95"
+            className="h-12 rounded-[5px] bg-[#e9530a] px-3 text-base font-extrabold text-white shadow-[0_12px_24px_rgba(233,83,10,0.26)] hover:bg-[#d94c08]"
           >
             {isLastSlide ? "Complete" : "Next"}
             {isLastSlide ? (
@@ -254,9 +244,17 @@ export function StoryStep({
           </Card>
 
           <div className="flex justify-between mt-4">
-            <Button variant="outline" onClick={goBack} disabled={isFirstSlide}>
-              <ArrowLeft className="mr-2 h-4 w-4" /> Back
-            </Button>
+            {isFirstSlide ? (
+              <Button asChild variant="outline">
+                <Link href="/palaces">
+                  <ArrowLeft className="mr-2 h-4 w-4" /> Back
+                </Link>
+              </Button>
+            ) : (
+              <Button variant="outline" onClick={goBack}>
+                <ArrowLeft className="mr-2 h-4 w-4" /> Back
+              </Button>
+            )}
             <div className="flex items-center gap-2">
               <span className="text-sm text-muted-foreground">
                 {slideSelected + 1} of {palace.images.length}

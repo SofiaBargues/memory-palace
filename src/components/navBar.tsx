@@ -23,8 +23,7 @@ export function NavBar() {
       </Link>
       <nav className="hidden items-center gap-11 text-sm font-medium text-[#111318] md:flex">
         <Link href="/palaces">Palaces</Link>
-        <Link href="/#how-it-works">How it works</Link>
-        <Link href="/#about">About</Link>
+        <Link href="/how-it-works">How it works</Link>
         <span className="h-8 w-px bg-[#cbd3df]" aria-hidden="true" />
         <a
           href="https://github.com/SofiaBargues/memory-palace"

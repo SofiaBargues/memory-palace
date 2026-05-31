@@ -2,34 +2,6 @@
 
 import Hero from "@/components/hero";
 import MemoryPalaceViolinDemo from "@/components/memory-palace-violin-demo";
-import { Compass, Footprints, Landmark, ListChecks } from "lucide-react";
-
-const steps = [
-  {
-    number: "01",
-    title: "Words",
-    body: "Start with the list you need to remember.",
-    icon: ListChecks,
-  },
-  {
-    number: "02",
-    title: "Palace",
-    body: "Place each word in a vivid location.",
-    icon: Landmark,
-  },
-  {
-    number: "03",
-    title: "Recall",
-    body: "Walk the route and let each image trigger.",
-    icon: Footprints,
-  },
-  {
-    number: "04",
-    title: "Result",
-    body: "Keep the order without forcing it.",
-    icon: Compass,
-  },
-];
 
 const Home = () => {
   return (

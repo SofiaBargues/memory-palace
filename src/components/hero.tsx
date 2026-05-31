@@ -6,7 +6,7 @@ import { ArrowRight, Landmark, MapPin, Sparkles, X } from "lucide-react";
 const Hero = ({}) => {
   return (
     <aside className="mx-auto w-full max-w-[22rem] lg:mx-0">
-      <div className="mb-7 text-[#31573a]">
+      <div className="mb-7 text-[#31573a] ">
         <Landmark className="size-12 stroke-[1.35]" />
       </div>
 
@@ -32,7 +32,7 @@ const Hero = ({}) => {
             variant="outline"
             className="h-14 w-full justify-between rounded-[5px] border-[#111318] bg-white px-7 text-base font-medium text-[#111318] hover:bg-white"
           >
-            Choose a palace
+            Discover Palaces
             <ArrowRight className="size-5" />
           </Button>
         </a>

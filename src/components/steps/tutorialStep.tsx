@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Container } from "../Container";
 
 export function TutorialStep({
+  isNew,
   onContinueClick,
 }: {
   isNew: boolean;
@@ -12,10 +13,14 @@ export function TutorialStep({
 }) {
   return (
     <Container>
-      <MemoryPalaceDemo className="mx-auto" />
+      <MemoryPalaceDemo className="mx-auto" showChooseWordsStep={isNew} />
 
-      <div className="mt-8 flex justify-center">
-        <Button size="lg" className="gap-2" onClick={onContinueClick}>
+      <div className="mx-auto mt-0 w-[92%] sm:mt-5 sm:w-full">
+        <Button
+          size="lg"
+          className="h-11 w-full gap-2 bg-slate-950 text-white shadow-md hover:bg-slate-900"
+          onClick={onContinueClick}
+        >
           Continue
           <ChevronRight className="h-4 w-4" />
         </Button>

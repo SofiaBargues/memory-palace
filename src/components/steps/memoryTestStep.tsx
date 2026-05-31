@@ -123,8 +123,8 @@ export default function MemoryTestStep({
           <ArrowLeft className="h-4 w-4" /> Back to the story
         </Button>
 
-        <Card className="text-center ">
-          <CardHeader className="pb-2">
+        <Card className="rounded-none border-0 bg-transparent text-center shadow-none md:rounded-xl md:border md:bg-card md:shadow-sm">
+          <CardHeader className="pb-2 pt-6">
             <CardTitle className="text-2xl">Memory Test</CardTitle>
             {/* <CardDescription>
               Vamos a poner a prueba tu capacidad para recordar las 9 palabras
@@ -144,7 +144,7 @@ export default function MemoryTestStep({
               in the story.
             </p>
           </CardContent>
-          <CardFooter className="flex justify-center">
+          <CardFooter className="flex justify-center pb-6">
             <Button size="lg" onClick={handleStartTest}>
               Start Test
             </Button>
