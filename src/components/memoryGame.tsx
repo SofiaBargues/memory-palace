@@ -177,7 +177,13 @@ export function MemoryGame({
   }
 
   return (
-    <div className="w-full container m-auto md:p-10 flex flex-col  gap-4">
+    <div
+      className={
+        step === "story"
+          ? "w-full flex flex-col gap-4"
+          : "w-full container m-auto md:p-10 flex flex-col  gap-4"
+      }
+    >
       {/* <Card className="w-full md:max-w-5xl rounded-none md:rounded-xl m-auto "> */}
       {step === "story" && (
         <>

@@ -2,8 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
-  font-family: "Inter", sans-serif;
+body {
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+.font-serif {
+  font-family: "Bodoni 72", "Bodoni 72 Oldstyle", Didot, Baskerville, Georgia,
+    serif;
 }
 
 @media screen and (min-width: 480px) {

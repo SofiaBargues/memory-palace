@@ -29,10 +29,10 @@ export default function RootLayout({
     <html lang="en">
       <body
         suppressHydrationWarning
-        className={`grid min-h-screen grid-rows-[auto_1fr_auto] ${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`flex min-h-screen flex-col ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <NavBar />
-        <div className="w-full bg-[#f9fafe]">{children}</div>
+        <main className="">{children}</main>
         <Footer />
       </body>
     </html>

@@ -85,17 +85,30 @@ const STEP_PADDING_CLASS = "p-3 sm:p-6";
 
 interface MemoryPalaceViolinDemoProps {
   className?: string;
+  initialStep?: Step;
+  autoPlay?: boolean;
+  heroPreview?: boolean;
 }
 
 export function MemoryPalaceViolinDemo({
   className,
+  initialStep = "Words",
+  autoPlay = true,
+  heroPreview = false,
 }: MemoryPalaceViolinDemoProps) {
-  const [currentStep, setCurrentStep] = useState<Step>("Words");
+  const [currentStep, setCurrentStep] = useState<Step>(initialStep);
   const [stepRunId, setStepRunId] = useState(0);
   const [visibleWords, setVisibleWords] = useState<number[]>([]);
   const [wordsConverging, setWordsConverging] = useState(false);
-  const [recallKeywordIndex, setRecallKeywordIndex] = useState(-1);
-  const [revealedObjects, setRevealedObjects] = useState<Word[]>([]);
+  const [visibleStoryLines, setVisibleStoryLines] = useState(
+    initialStep === "Palace" ? 1 : 0,
+  );
+  const [recallKeywordIndex, setRecallKeywordIndex] = useState(
+    initialStep === "Palace" ? 0 : -1,
+  );
+  const [revealedObjects, setRevealedObjects] = useState<Word[]>(
+    initialStep === "Palace" ? ["orange"] : [],
+  );
   const [answerRevealed, setAnswerRevealed] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const palaceImageRef = useRef<HTMLDivElement>(null);
@@ -107,6 +120,7 @@ export function MemoryPalaceViolinDemo({
   const resetState = useCallback(() => {
     setVisibleWords([]);
     setWordsConverging(false);
+    setVisibleStoryLines(0);
     setRecallKeywordIndex(-1);
     setRevealedObjects([]);
     setAnswerRevealed(false);
@@ -123,6 +137,10 @@ export function MemoryPalaceViolinDemo({
   );
 
   useEffect(() => {
+    if (!autoPlay) {
+      return;
+    }
+
     const timer = window.setTimeout(() => {
       const currentIndex = STEPS.indexOf(currentStep);
       const nextStep = STEPS[(currentIndex + 1) % STEPS.length];
@@ -131,9 +149,13 @@ export function MemoryPalaceViolinDemo({
     }, TIMING[currentStep]);
 
     return () => window.clearTimeout(timer);
-  }, [currentStep, startStep, stepRunId]);
+  }, [autoPlay, currentStep, startStep, stepRunId]);
 
   useEffect(() => {
+    if (!autoPlay) {
+      return;
+    }
+
     const timers: number[] = [];
 
     if (currentStep === "Words") {
@@ -157,6 +179,7 @@ export function MemoryPalaceViolinDemo({
         timers.push(
           window.setTimeout(
             () => {
+              setVisibleStoryLines(index + 1);
               setRecallKeywordIndex(index);
               setRevealedObjects((prev) =>
                 prev.includes(segment.keyword)
@@ -193,7 +216,7 @@ export function MemoryPalaceViolinDemo({
     }
 
     return () => timers.forEach(window.clearTimeout);
-  }, [currentStep, stepRunId]);
+  }, [autoPlay, currentStep, stepRunId]);
 
   useEffect(() => {
     const imageFrame = palaceImageRef.current;
@@ -282,9 +305,14 @@ export function MemoryPalaceViolinDemo({
     : 0;
   return (
     <div className={cn("w-full max-w-3xl", className)}>
-      <Card className="overflow-hidden rounded-lg border-0 shadow-none bg-transparent">
+      <Card className="overflow-hidden rounded-lg border-0 bg-transparent shadow-none">
         <CardContent
-          className="relative h-[430px] overflow-hidden p-0 sm:h-[620px] lg:h-[460px]"
+          className={cn(
+            "relative overflow-hidden space-y-0 p-0",
+            heroPreview
+              ? "h-[292px] sm:h-[340px] lg:h-[430px]"
+              : "h-[430px] sm:h-[620px] lg:h-[460px]",
+          )}
         >
           <div
             className={cn(
@@ -338,16 +366,28 @@ export function MemoryPalaceViolinDemo({
           <div
             className={cn(
               "absolute inset-0 flex flex-col transition-all duration-700",
-              "px-3 pb-3 pt-0 sm:px-6 sm:pb-6 sm:pt-0",
+              heroPreview ? "p-0" : "px-3 pb-3 pt-0 sm:px-6 sm:pb-6 sm:pt-0",
               currentStep === "Palace"
                 ? "translate-y-0 opacity-100"
                 : "pointer-events-none translate-y-8 opacity-0",
             )}
           >
-            <div className="flex h-full min-h-0 flex-col overflow-hidden rounded-lg border-2 border-border bg-card shadow-lg lg:flex-row">
+            <div
+              className={cn(
+                "flex h-full min-h-0 overflow-hidden bg-card",
+                heroPreview
+                  ? "flex-row rounded-[8px] border border-[#d7dde7] shadow-none"
+                  : "flex-col rounded-lg border-2 border-border shadow-lg lg:flex-row",
+              )}
+            >
               <div
                 ref={palaceImageRef}
-                className="relative h-[260px] w-full shrink-0 overflow-hidden border-b-2 border-border bg-muted sm:h-72 lg:h-full lg:w-1/2 lg:border-b-0 lg:border-r-2"
+                className={cn(
+                  "relative shrink-0 overflow-hidden bg-muted",
+                  heroPreview
+                    ? "h-full w-[55%] border-r border-[#d7dde7]"
+                    : "h-[260px] w-full border-b-2 border-border sm:h-72 lg:h-full lg:w-1/2 lg:border-b-0 lg:border-r-2",
+                )}
               >
                 <Image
                   src={PALACE_IMAGE_URL}
@@ -445,35 +485,99 @@ export function MemoryPalaceViolinDemo({
               </div>
 
               <div className="flex min-h-0 flex-1 flex-col overflow-hidden bg-card">
-                <CardHeader className="hidden pb-2 sm:block lg:block">
-                  <CardTitle className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <BookOpen className="size-4" />
+                <CardHeader
+                  className={cn(
+                    "pb-2",
+                    heroPreview
+                      ? "block px-4 pt-7 sm:px-7 sm:pt-10"
+                      : "hidden sm:block lg:block",
+                  )}
+                >
+                  <CardTitle
+                    className={cn(
+                      "flex items-center gap-2 text-muted-foreground",
+                      heroPreview ? "text-xs sm:text-sm" : "text-sm",
+                    )}
+                  >
+                    <BookOpen
+                      className={cn(heroPreview ? "size-5" : "size-4")}
+                    />
                     The story unfolds...
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="flex min-h-0 flex-1 items-center p-5 sm:items-start sm:p-6 sm:pt-0 lg:items-start">
-                  {activeStorySegment ? (
-                    <p
-                      key={activeStorySegment.keyword}
-                      className="text-lg leading-8 text-foreground/80 transition-all duration-500 sm:text-base sm:leading-7"
-                    >
-                      <span>{activeStorySegment.before}</span>
-                      <span
+                <CardContent
+                  className={cn(
+                    "min-h-0 flex-1",
+                    heroPreview
+                      ? "p-4 pt-2 sm:p-7 sm:pt-6"
+                      : "p-5 sm:p-6 sm:pt-0",
+                  )}
+                >
+                  <div className="flex h-full min-h-0 items-center lg:hidden">
+                    {activeStorySegment ? (
+                      <p
+                        key={activeStorySegment.keyword}
                         className={cn(
-                          "animate-keyword-glow mx-1 inline-block scale-110 font-bold transition-all duration-500",
-                          WORD_COLORS[activeStorySegment.keyword].tailwind,
+                          "text-foreground/80 transition-all duration-500",
+                          heroPreview
+                            ? "text-[0.78rem] leading-[1.55] sm:text-base sm:leading-7"
+                            : "text-lg leading-8 sm:text-base sm:leading-7",
                         )}
                       >
-                        {activeStorySegment.displayKeyword ||
-                          activeStorySegment.keyword}
-                      </span>
-                      <span>{activeStorySegment.after}</span>
-                    </p>
-                  ) : (
-                    <p className="text-lg leading-8 text-foreground/50 sm:text-base sm:leading-7">
-                      The story unfolds...
-                    </p>
-                  )}
+                        <span>{activeStorySegment.before}</span>
+                        <span
+                          className={cn(
+                            "animate-keyword-glow mx-1 inline-block scale-110 font-bold transition-all duration-500",
+                            WORD_COLORS[activeStorySegment.keyword].tailwind,
+                          )}
+                        >
+                          {activeStorySegment.displayKeyword ||
+                            activeStorySegment.keyword}
+                        </span>
+                        <span>{activeStorySegment.after}</span>
+                      </p>
+                    ) : (
+                      <p className="text-lg leading-8 text-foreground/50 sm:text-base sm:leading-7">
+                        The story unfolds...
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="hidden h-full min-h-0 space-y-2.5 overflow-y-auto pr-3 lg:block">
+                    {STORY_SEGMENTS.map((segment, index) => {
+                      const colors = WORD_COLORS[segment.keyword];
+                      const isActive = index === recallKeywordIndex;
+
+                      return (
+                        <p
+                          key={segment.keyword}
+                          className={cn(
+                            "text-sm leading-6 transition-all duration-500",
+                            index < visibleStoryLines
+                              ? "translate-x-0 opacity-100"
+                              : "-translate-x-4 opacity-0",
+                          )}
+                        >
+                          <span className="text-foreground/80">
+                            {segment.before}
+                          </span>
+                          <span
+                            className={cn(
+                              "font-bold transition-all duration-500",
+                              colors.tailwind,
+                              isActive &&
+                                "animate-keyword-glow mx-1 inline-block scale-125",
+                            )}
+                          >
+                            {segment.displayKeyword || segment.keyword}
+                          </span>
+                          <span className="text-foreground/80">
+                            {segment.after}
+                          </span>
+                        </p>
+                      );
+                    })}
+                  </div>
                 </CardContent>
               </div>
             </div>
@@ -488,8 +592,8 @@ export function MemoryPalaceViolinDemo({
                 : "pointer-events-none translate-y-8 opacity-0",
             )}
           >
-            <Card className="w-full max-w-md rounded-lg border-2 shadow-none">
-              <CardContent className="flex min-h-[240px] flex-col items-center justify-center gap-5 p-5 text-center sm:p-6">
+            <Card className="w-full max-w-md rounded-lg border-0 shadow-none">
+              <CardContent className="flex min--[240px] flex-col items-center justify-center gap-5 p-5 text-center sm:p-6">
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <Brain className="size-4 text-primary" />
                   Test your memory
@@ -545,24 +649,45 @@ export function MemoryPalaceViolinDemo({
             <div
               className={cn(
                 "flex flex-col items-center gap-5 text-center transition-all duration-700",
+                heroPreview && "gap-3 sm:gap-5",
                 showSuccess
                   ? "translate-y-0 opacity-100"
                   : "translate-y-4 opacity-0",
               )}
             >
-              <div className="flex size-20 items-center justify-center rounded-full border-2 border-primary bg-primary/10 shadow-lg">
-                <Trophy className="size-10 text-primary" />
+              <div
+                className={cn(
+                  "flex items-center justify-center rounded-full border-2 border-primary bg-primary/10 shadow-lg",
+                  heroPreview ? "size-14 sm:size-20" : "size-20",
+                )}
+              >
+                <Trophy
+                  className={cn(
+                    "text-primary",
+                    heroPreview ? "size-7 sm:size-10" : "size-10",
+                  )}
+                />
               </div>
               <div className="space-y-2">
-                <h3 className="text-2xl font-bold text-foreground">
+                <h3
+                  className={cn(
+                    "font-bold text-foreground",
+                    heroPreview ? "text-xl sm:text-2xl" : "text-2xl",
+                  )}
+                >
                   You remembered the path.
                 </h3>
-                <p className="max-w-sm text-muted-foreground">
+                <p
+                  className={cn(
+                    "max-w-sm text-muted-foreground",
+                    heroPreview && "text-sm sm:text-base",
+                  )}
+                >
                   A list became a place you can revisit anytime.
                 </p>
               </div>
 
-              <div className="flex flex-wrap justify-center gap-2">
+              <div className="flex flex-wrap justify-center gap-1.5 sm:gap-2">
                 {WORDS.map((word) => {
                   const colors = WORD_COLORS[word];
 
@@ -571,7 +696,7 @@ export function MemoryPalaceViolinDemo({
                       key={word}
                       variant="outline"
                       className={cn(
-                        "border-2 px-3 py-1 text-xs",
+                        "border-2 px-2 py-1 text-[0.65rem] sm:px-3 sm:text-xs",
                         colors.bg,
                         colors.text,
                         colors.border,
@@ -586,9 +711,11 @@ export function MemoryPalaceViolinDemo({
           </div>
         </CardContent>
 
-        <div className="px-5 pb-4 pt-2 sm:px-6">
-          <Progress value={progressValue} className="h-1.5" />
-        </div>
+        {!heroPreview && (
+          <div className="px-5 pb-4 pt-2 sm:px-6">
+            <Progress value={progressValue} className="h-1.5" />
+          </div>
+        )}
       </Card>
     </div>
   );

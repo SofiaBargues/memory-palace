@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { type ReactNode, useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import { ArrowLeft, Check, RefreshCw } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -65,7 +65,13 @@ const LOCATION_DISPLAY_NAMES: Record<string, string> = {
 const LOCATION_ICONS: Record<string, JSX.Element> = {
   Plaza: (
     <svg viewBox="0 0 170 92" className="h-full w-full" aria-hidden="true">
-      <g fill="none" stroke="#111827" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.1">
+      <g
+        fill="none"
+        stroke="#111827"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2.1"
+      >
         <path d="M7 76H143" />
         <path d="M27 76H50M58 76H99M111 76H140" />
         <path d="M35 73V33" />
@@ -88,7 +94,13 @@ const LOCATION_ICONS: Record<string, JSX.Element> = {
   ),
   Cascadas: (
     <svg viewBox="0 0 150 102" className="h-full w-full" aria-hidden="true">
-      <g fill="none" stroke="#111827" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.1">
+      <g
+        fill="none"
+        stroke="#111827"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2.1"
+      >
         <path d="M29 86C17 80 20 65 31 62C25 52 33 39 43 42C45 27 57 20 67 28C77 18 95 24 97 40C108 39 116 50 110 60C125 61 131 80 116 88" />
         <path d="M51 87C45 78 49 69 55 65C60 58 58 49 62 39" />
         <path d="M75 88C68 78 71 66 75 59C80 49 77 38 82 30" />
@@ -106,7 +118,13 @@ const LOCATION_ICONS: Record<string, JSX.Element> = {
   ),
   Clinic: (
     <svg viewBox="0 0 150 104" className="h-full w-full" aria-hidden="true">
-      <g fill="none" stroke="#111827" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.1">
+      <g
+        fill="none"
+        stroke="#111827"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2.1"
+      >
         <path d="M23 91H127" />
         <path d="M38 91V25H112V91" />
         <path d="M30 57H38" />
@@ -131,11 +149,13 @@ const LOCATION_ICONS: Record<string, JSX.Element> = {
 interface MemoryPalaceDemoProps {
   className?: string;
   showChooseWordsStep?: boolean;
+  footer?: ReactNode;
 }
 
 export function MemoryPalaceDemo({
   className,
   showChooseWordsStep = true,
+  footer,
 }: MemoryPalaceDemoProps) {
   const initialStep = showChooseWordsStep ? 1 : 2;
   const visibleSteps = showChooseWordsStep ? [1, 2, 3] : [2, 3];
@@ -280,7 +300,7 @@ export function MemoryPalaceDemo({
   return (
     <div
       className={cn(
-        "w-full px-4 pb-0 pt-4 overflow-hidden bg-transparent md:p-6 md:rounded-lg md:bg-slate-100 md:shadow-xl md:ring-1 md:ring-slate-200",
+        "w-full overflow-hidden bg-transparent px-4 pb-4 pt-4 md:p-6",
         className,
       )}
     >
@@ -295,38 +315,45 @@ export function MemoryPalaceDemo({
         </p> */}
       </motion.div>
 
-      <div className="mb-4 flex justify-center gap-2 md:mb-5">
-        {visibleSteps.map((step) => (
-          <motion.button
-            key={step}
-            type="button"
-            onClick={() => selectStep(step)}
-            className={cn(
-              "flex items-center gap-2 rounded-full border px-3 py-2 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 sm:px-4",
-              currentStep === step
-                ? "border-slate-900 bg-slate-900 text-white"
-                : currentStep > step
-                  ? "border-teal-500 bg-teal-500 text-white"
-                  : "border-slate-200 bg-white text-slate-400",
-            )}
-            animate={{ scale: currentStep === step ? 1.04 : 1 }}
-          >
-            <span className="flex size-5 items-center justify-center rounded-full bg-white/20">
-              {currentStep > step ? (
-                <Check className="size-3" />
-              ) : (
-                visibleSteps.indexOf(step) + 1
-              )}
-            </span>
-            <span className={cn(currentStep === step ? "inline" : "hidden", "sm:inline")}>
-              {step === 1
+      <div
+        className="mb-4 flex justify-center md:mb-5"
+        role="tablist"
+        aria-label="Memory palace steps"
+      >
+        <div className="flex w-[min(78%,15rem)] items-center justify-center gap-2">
+          {visibleSteps.map((step) => {
+            const stepLabel =
+              step === 1
                 ? "Choose words"
                 : step === 2
-                  ? "Go through the palace"
-                  : "Test memory"}
-            </span>
-          </motion.button>
-        ))}
+                  ? "Read the story and find the words"
+                  : "Test memory";
+
+            return (
+              <motion.button
+                key={step}
+                type="button"
+                onClick={() => selectStep(step)}
+                role="tab"
+                aria-label={stepLabel}
+                aria-selected={currentStep === step}
+                className={cn(
+                  "h-2.5 flex-1 rounded-full border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2",
+                  "border-slate-950/10 bg-white/10 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.16),inset_0_1px_2px_rgba(15,23,42,0.08)] backdrop-blur-[1px]",
+                  currentStep === step &&
+                    "border-black/40 bg-black shadow-[0_0_0_1px_rgba(0,0,0,0.12),inset_0_1px_2px_rgba(255,255,255,0.18)]",
+                  currentStep > step && "border-slate-950/20 bg-slate-900/[0.18]",
+                )}
+                animate={{
+                  scaleY: currentStep === step ? 1.12 : 1,
+                  opacity: currentStep >= step ? 1 : 0.82,
+                }}
+              >
+                <span className="sr-only">{stepLabel}</span>
+              </motion.button>
+            );
+          })}
+        </div>
       </div>
 
       <div
@@ -335,13 +362,13 @@ export function MemoryPalaceDemo({
           currentStep === 1
             ? "min-h-[390px] md:min-h-[640px]"
             : isRecallStep
-            ? "min-h-[475px] md:min-h-[640px]"
-            : "min-h-[425px] md:min-h-[640px]",
+              ? "min-h-[475px] md:min-h-[640px]"
+              : "min-h-[425px] md:min-h-[640px]",
         )}
       >
         <AnimatePresence mode="wait">
           {currentStep === 1 && (
-            <div className="mx-auto w-[92%] sm:w-full">
+            <div className="mx-auto w-full">
               <motion.div
                 key="step-1"
                 initial={{ opacity: 0 }}
@@ -351,7 +378,7 @@ export function MemoryPalaceDemo({
                 className="mx-auto max-w-2xl"
               >
                 <motion.div
-                  className="rounded-lg bg-white p-3 shadow-lg ring-1 ring-slate-100 md:p-5"
+                  className="rounded-lg bg-white/80 p-3 shadow-lg ring-1 ring-slate-100/80 backdrop-blur md:p-5"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                 >
@@ -412,10 +439,19 @@ export function MemoryPalaceDemo({
                   </div>
 
                   <div className="mt-3 flex justify-center gap-3 md:mt-5">
-                    <Button variant="outline" size="sm" disabled className="h-7 text-[10px] md:h-8 md:text-xs">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      disabled
+                      className="h-7 text-[10px] md:h-8 md:text-xs"
+                    >
                       Clean all
                     </Button>
-                    <Button size="sm" disabled={!showLabels} className="h-7 text-[10px] md:h-8 md:text-xs">
+                    <Button
+                      size="sm"
+                      disabled={!showLabels}
+                      className="h-7 text-[10px] md:h-8 md:text-xs"
+                    >
                       {showLabels ? "Generating..." : "Generate Palace"}
                     </Button>
                   </div>
@@ -434,19 +470,6 @@ export function MemoryPalaceDemo({
               className="grid gap-5 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]"
             >
               <motion.div className="relative hidden rounded-lg bg-white p-5 shadow-lg ring-1 ring-slate-100 lg:block">
-                <motion.div
-                  key={currentSlide}
-                  className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 rounded-full bg-teal-500 px-4 py-1 text-sm font-medium text-white"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                >
-                  {currentSlide === 0
-                    ? "First 3 words"
-                    : currentSlide === 1
-                      ? "Next 3 words"
-                      : "Final 3 words"}
-                </motion.div>
-
                 <div className="mt-3 space-y-2">
                   {WORDS.map((word, index) => {
                     const isActive =
@@ -459,7 +482,6 @@ export function MemoryPalaceDemo({
                         key={word}
                         className={cn(
                           "flex items-center gap-2 rounded-lg px-2 py-1.5 transition-colors",
-                          isActive && "border border-teal-200 bg-teal-50",
                         )}
                         animate={{
                           opacity: isActive ? 1 : 0.35,
@@ -470,7 +492,7 @@ export function MemoryPalaceDemo({
                           className={cn(
                             "w-5 text-right text-sm",
                             isActive
-                              ? "font-semibold text-teal-600"
+                              ? "font-semibold text-slate-950"
                               : "text-slate-400",
                           )}
                         >
@@ -482,13 +504,11 @@ export function MemoryPalaceDemo({
                           className={cn(
                             "h-9 text-sm",
                             isActive
-                              ? "border-teal-300 bg-teal-100 font-medium"
+                              ? "border-transparent bg-transparent font-medium shadow-none"
                               : "bg-slate-50",
                           )}
                         />
-                        {isActive ? (
-                          <Check className="size-4 text-teal-500" />
-                        ) : (
+                        {!isActive && (
                           <RefreshCw className="size-4 text-slate-300" />
                         )}
                       </motion.div>
@@ -497,8 +517,8 @@ export function MemoryPalaceDemo({
                 </div>
               </motion.div>
 
-              <motion.div className="relative min-h-[500px] sm:min-h-[520px]">
-                <div className="relative h-[470px] sm:h-[500px]">
+              <motion.div className="relative min-h-[420px] sm:min-h-[440px]">
+                <div className="relative h-[390px] sm:h-[410px]">
                   <AnimatePresence initial={false}>
                     {PALACE_LOCATIONS.slice(0, currentSlide + 1).map(
                       (location, index) => {
@@ -540,14 +560,6 @@ export function MemoryPalaceDemo({
                             exit={{ opacity: 0, y: -20, scale: 0.96 }}
                             transition={{ duration: 0.36, ease: "easeOut" }}
                           >
-                            <motion.div
-                              className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full bg-teal-500 px-4 py-1 text-sm font-medium text-white"
-                              initial={{ opacity: 0, y: 10 }}
-                              animate={{ opacity: 1, y: 0 }}
-                            >
-                              Story page {index + 1}
-                            </motion.div>
-
                             <div className="mt-3">
                               <h3 className="mb-3 text-xl font-bold text-slate-950">
                                 {location.title}
@@ -592,7 +604,7 @@ export function MemoryPalaceDemo({
                       key={location.id}
                       className={cn(
                         "size-2 rounded-full transition-colors",
-                        index === currentSlide ? "bg-teal-500" : "bg-slate-200",
+                        index === currentSlide ? "bg-slate-950" : "bg-slate-200",
                       )}
                     />
                   ))}
@@ -602,7 +614,7 @@ export function MemoryPalaceDemo({
           )}
 
           {currentStep === 3 && (
-            <div className="mx-auto w-[92%] sm:w-full">
+            <div className="mx-auto w-full">
               <motion.div
                 key="step-3"
                 initial={{ opacity: 0, x: 80 }}
@@ -617,7 +629,11 @@ export function MemoryPalaceDemo({
                   </h3>
 
                   <div className="relative min-h-[420px]">
-                    <svg className="absolute inset-0 z-0 h-full w-full" viewBox="0 0 248 420" aria-hidden="true">
+                    <svg
+                      className="absolute inset-0 z-0 h-full w-full"
+                      viewBox="0 0 248 420"
+                      aria-hidden="true"
+                    >
                       <motion.path
                         d="M46 40 V112 C46 136 66 138 85 138 H104 C126 138 130 150 130 170 V188 M46 172 V244 C46 268 66 270 85 270 H104 C126 270 130 282 130 302 V318"
                         fill="none"
@@ -627,7 +643,10 @@ export function MemoryPalaceDemo({
                         strokeLinejoin="round"
                         strokeWidth="3"
                         initial={{ opacity: 0, pathLength: 0 }}
-                        animate={{ opacity: showPath ? 1 : 0, pathLength: showPath ? 1 : 0 }}
+                        animate={{
+                          opacity: showPath ? 1 : 0,
+                          pathLength: showPath ? 1 : 0,
+                        }}
                         transition={{ delay: 0.1, duration: 0.7 }}
                       />
                     </svg>
@@ -668,7 +687,7 @@ export function MemoryPalaceDemo({
                   </div>
                 </motion.div>
 
-                <motion.div className="rounded-lg bg-white p-3 shadow-lg ring-1 ring-slate-100 md:p-5">
+                <motion.div className="rounded-lg bg-white/80 p-3 shadow-lg ring-1 ring-slate-100/80 backdrop-blur md:p-5">
                   <div className="mb-2 flex items-center justify-between md:mb-3">
                     <h3 className="text-sm font-bold text-slate-950 md:text-lg">
                       Test Your Memory
@@ -715,7 +734,7 @@ export function MemoryPalaceDemo({
                               className={cn(
                                 "h-6 text-[10px] md:h-8 md:text-xs",
                                 isFilled
-                                  ? "border-transparent bg-green-100"
+                                  ? "border-transparent bg-green-50 shadow-none"
                                   : "bg-white",
                               )}
                             />
@@ -764,6 +783,7 @@ export function MemoryPalaceDemo({
           )}
         </AnimatePresence>
       </div>
+      {footer && <div className="mt-4">{footer}</div>}
     </div>
   );
 }
