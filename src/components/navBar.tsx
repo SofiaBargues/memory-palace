@@ -5,7 +5,7 @@ import { Button } from "./ui/button";
 
 export function NavBar() {
   return (
-    <header className="w-full border-b border-b-[#dfe4ec] bg-[#fdfdfb] p-2 sm:p-4 lg:p-3">
+    <header className="w-full border-b border-b-black/10 bg-white p-2 sm:p-4 lg:p-3">
       <div className="mx-auto flex max-w-7xl items-center justify-between">
         <Link href="/">
           <Button variant="ghost" className="h-auto px-0 hover:bg-transparent">
@@ -15,10 +15,10 @@ export function NavBar() {
             </div>
           </Button>
         </Link>
-        <nav className="hidden items-center gap-11 text-sm font-medium text-[#111318] md:flex">
+        <nav className="hidden items-center gap-11 text-sm font-medium text-black md:flex">
           <Link href="/palaces">Palaces</Link>
           <Link href="/how-it-works">How it works</Link>
-          <span className="h-8 w-px bg-[#cbd3df]" aria-hidden="true" />
+          <span className="h-8 w-px bg-black/15" aria-hidden="true" />
           <a
             href="https://github.com/SofiaBargues/memory-palace"
             aria-label="Memory Palace on GitHub"
@@ -28,10 +28,16 @@ export function NavBar() {
         </nav>
         <button
           type="button"
-          className="flex size-11 items-center justify-center text-[#111318] md:hidden"
+          className="flex size-11 items-center justify-center text-black md:hidden"
           aria-label="Open navigation"
         >
-          <Menu className="size-5" />
+          <a
+            href="https://github.com/SofiaBargues/memory-palace"
+            aria-label="Memory Palace on GitHub"
+          >
+            <GithubIcon className="size-5" />
+          </a>
+          {/* <Menu className="size-5" /> */}
         </button>
       </div>
     </header>

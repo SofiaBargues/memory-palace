@@ -33,12 +33,14 @@ function wait(milliseconds: number) {
 
 export function MemoryGame({
   initialPalaceId,
+  initialStep = "tutorial",
 }: {
   initialPalaceId: string | undefined;
+  initialStep?: PalaceStep;
 }) {
   const [palace, setPalace] = useState<Palace | null>(null);
   // const [_, setPalaceId] = useState(initialPalaceId);
-  const [step, setStep] = useState<PalaceStep>("tutorial");
+  const [step, setStep] = useState<PalaceStep>(initialStep);
   const [loading, setLoading] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(0);
   const loadingStartedAtRef = useRef<number | null>(null);

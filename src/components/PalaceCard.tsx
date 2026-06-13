@@ -15,11 +15,16 @@ const PalaceCard = ({ palace }: { palace: MongoPalace }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [progress, setProgress] = useState(0); // Progreso de la barra
   const _id = palace._id;
+  const imageCount = palace.images.length;
+  const coverImage = palace.images[0] || "/castle.svg";
+  const currentImage = palace.images[currentImageIndex] || coverImage;
   useEffect(() => {
+    if (imageCount === 0) return;
+
     // Cambiar la imagen cada 3 segundos (3000 milisegundos)
     const intervalId = setInterval(() => {
       setCurrentImageIndex(
-        (prevIndex) => (prevIndex + 1) % palace.images.length
+        (prevIndex) => (prevIndex + 1) % imageCount
       );
       setProgress(0);
     }, 3000);
@@ -39,20 +44,21 @@ const PalaceCard = ({ palace }: { palace: MongoPalace }) => {
       clearInterval(progressInterval);
       clearInterval(intervalId);
     };
-  }, [palace.images.length]);
+  }, [imageCount]);
 
   return (
     <>
-      <Card className="overflow-hidden  cursor-pointer transition-transform hover:scale-105">
-        <CardContent className="p-0">
+      <Card className="h-full overflow-hidden cursor-pointer transition-transform hover:scale-105">
+        <CardContent className="h-full p-0">
           <Dialog>
             <DialogTrigger asChild>
-              <div className="relative aspect-square ">
+              <div className="relative aspect-square w-full overflow-hidden">
                 <Image
-                  src={palace.images[0]}
-                  alt={"item.title"}
-                  layout="fill"
-                  objectFit="cover"
+                  src={coverImage}
+                  alt={palace.title}
+                  fill
+                  sizes="(min-width: 1536px) 25vw, (min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                  className="object-cover"
                 />
                 <div className="absolute inset-0 bg-black bg-opacity-50 transition-opacity md:opacity-0 hover:opacity-100 flex items-end">
                   <div className="p-4 text-white">
@@ -68,14 +74,15 @@ const PalaceCard = ({ palace }: { palace: MongoPalace }) => {
               </DialogHeader>
               <div className="flex flex-col gap-4">
                 <div>
-                  <Image
-                    src={palace.images[currentImageIndex]}
-                    alt="{item.title}"
-                    width={600}
-                    height={600}
-                    layout="responsive"
-                    className="rounded-2xl"
-                  />
+                  <div className="relative aspect-square w-full overflow-hidden rounded-2xl">
+                    <Image
+                      src={currentImage}
+                      alt={palace.title}
+                      fill
+                      sizes="(min-width: 640px) 600px, 100vw"
+                      className="object-cover"
+                    />
+                  </div>
                   {/* Barra de progreso debajo de la imagen */}
                   <div className="relative mt-2">
                     <div className="absolute bottom-0 left-0 h-1 bg-white w-full rounded-full"></div>

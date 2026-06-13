@@ -19,7 +19,7 @@ export function TutorialStep({
         footer={
           <Button
             size="lg"
-            className="h-11 w-full gap-2 bg-slate-950 text-white shadow-md hover:bg-slate-900"
+            className="h-11 w-full gap-2 text-white shadow-md"
             onClick={onContinueClick}
           >
             Continue

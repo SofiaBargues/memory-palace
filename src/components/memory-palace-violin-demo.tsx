@@ -82,6 +82,8 @@ const PALACE_IMAGE_URL = "/images/memory-palace.png";
 const PALACE_IMAGE_ASPECT_RATIO = 1024 / 1536;
 const BASE_RECALL_IMAGE_WIDTH = 240;
 const STEP_PADDING_CLASS = "p-3 sm:p-6";
+const LABEL_HALF_WIDTH = 58;
+const LABEL_HEIGHT = 30;
 
 interface MemoryPalaceViolinDemoProps {
   className?: string;
@@ -251,16 +253,16 @@ export function MemoryPalaceViolinDemo({
       const renderedImage =
         frameAspectRatio > PALACE_IMAGE_ASPECT_RATIO
           ? {
-              width,
-              height: width / PALACE_IMAGE_ASPECT_RATIO,
-              x: 0,
-              y: (height - width / PALACE_IMAGE_ASPECT_RATIO) / 2,
-            }
-          : {
               width: height * PALACE_IMAGE_ASPECT_RATIO,
               height,
               x: (width - height * PALACE_IMAGE_ASPECT_RATIO) / 2,
               y: 0,
+            }
+          : {
+              width,
+              height: width / PALACE_IMAGE_ASPECT_RATIO,
+              x: 0,
+              y: (height - width / PALACE_IMAGE_ASPECT_RATIO) / 2,
             };
 
       return {
@@ -287,6 +289,82 @@ export function MemoryPalaceViolinDemo({
     [recallImageSize],
   );
 
+  const getRenderedImageBounds = useCallback(() => {
+    const { width, height } = recallImageSize;
+
+    if (!width || !height) {
+      return { left: 0, right: 100, top: 0, bottom: 100 };
+    }
+
+    const frameAspectRatio = width / height;
+    const renderedImage =
+      frameAspectRatio > PALACE_IMAGE_ASPECT_RATIO
+        ? {
+            width: height * PALACE_IMAGE_ASPECT_RATIO,
+            height,
+            x: (width - height * PALACE_IMAGE_ASPECT_RATIO) / 2,
+            y: 0,
+          }
+        : {
+            width,
+            height: width / PALACE_IMAGE_ASPECT_RATIO,
+            x: 0,
+            y: (height - width / PALACE_IMAGE_ASPECT_RATIO) / 2,
+          };
+
+    return {
+      left: (renderedImage.x / width) * 100,
+      right: ((renderedImage.x + renderedImage.width) / width) * 100,
+      top: (renderedImage.y / height) * 100,
+      bottom: ((renderedImage.y + renderedImage.height) / height) * 100,
+    };
+  }, [recallImageSize]);
+
+  const getObjectLabelPlacement = useCallback(
+    (position: { x: number; y: number }) => {
+      const bounds = getRenderedImageBounds();
+      const { width, height } = recallImageSize;
+      const xGutter = width ? (LABEL_HALF_WIDTH / width) * 100 : 18;
+      const yGutter = height ? (LABEL_HEIGHT / height) * 100 : 8;
+      const showBelow = position.y < bounds.top + 24;
+
+      return {
+        x: Math.min(
+          bounds.right - xGutter,
+          Math.max(bounds.left + xGutter, position.x),
+        ),
+        y: showBelow
+          ? Math.min(
+              bounds.bottom - yGutter,
+              Math.max(bounds.top + yGutter, position.y + 14),
+            )
+          : Math.min(
+              bounds.bottom - yGutter,
+              Math.max(bounds.top + yGutter, position.y - 12),
+            ),
+        transform: showBelow
+          ? "translate(-50%, 0)"
+          : "translate(-50%, -100%)",
+      };
+    },
+    [getRenderedImageBounds, recallImageSize],
+  );
+
+  const getObjectRevealMask = useCallback(
+    (position: { x: number; y: number; size: number }) => {
+      const radius = Math.round(position.size / 1.35);
+
+      return `radial-gradient(circle ${radius}px at ${position.x}% ${position.y}%, black 0 58%, rgba(0, 0, 0, 0.72) 68%, transparent 100%)`;
+    },
+    [],
+  );
+
+  const getObjectHighlightMask = useCallback(
+    (position: { x: number; y: number }) =>
+      `radial-gradient(circle at ${position.x}% ${position.y}%, black 0 45%, rgba(0, 0, 0, 0.55) 62%, transparent 100%)`,
+    [],
+  );
+
   const stepIndex = STEPS.indexOf(currentStep);
   const progressValue = ((stepIndex + 1) / STEPS.length) * 100;
   const activeRecallWord =
@@ -300,9 +378,14 @@ export function MemoryPalaceViolinDemo({
     recallKeywordIndex >= 0 && recallKeywordIndex < STORY_SEGMENTS.length
       ? STORY_SEGMENTS[recallKeywordIndex]
       : null;
+  const activeRecallLabelPlacement = activeRecallPosition
+    ? getObjectLabelPlacement(activeRecallPosition)
+    : null;
+
   const activeRecallHighlightSize = activeRecallPosition
     ? Math.round(activeRecallPosition.size * 1.25)
     : 0;
+
   return (
     <div className={cn("w-full max-w-3xl", className)}>
       <Card className="overflow-hidden rounded-lg border-0 bg-transparent shadow-none">
@@ -401,14 +484,14 @@ export function MemoryPalaceViolinDemo({
                   src={PALACE_IMAGE_URL}
                   alt="Memory palace scene"
                   fill
-                  className="object-cover grayscale"
+                  className="object-contain grayscale"
                   sizes="(min-width: 1024px) 24rem, 100vw"
                   priority
                 />
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-card/60 via-transparent to-transparent" />
                 {revealedObjects.map((word) => {
                   const pos = getRecallObjectPosition(word);
-                  const radius = Math.round(pos.size / 1.5);
+                  const mask = getObjectRevealMask(pos);
 
                   return (
                     <Image
@@ -417,10 +500,11 @@ export function MemoryPalaceViolinDemo({
                       alt=""
                       aria-hidden="true"
                       fill
-                      className="z-10 object-cover"
+                      className="z-10 object-contain"
                       sizes="(min-width: 1024px) 24rem, 100vw"
                       style={{
-                        clipPath: `circle(${radius}px at ${pos.x}% ${pos.y}%)`,
+                        WebkitMaskImage: mask,
+                        maskImage: mask,
                       }}
                     />
                   );
@@ -436,34 +520,35 @@ export function MemoryPalaceViolinDemo({
                         height: `${activeRecallHighlightSize}px`,
                         transform: "translate(-50%, -50%)",
                         boxShadow:
-                          "0 0 0 1px rgba(255, 255, 255, 0.55), 0 0 28px 18px rgba(255, 255, 255, 0.88), 0 0 62px 34px rgba(255, 255, 255, 0.5)",
+                          "0 0 30px 18px rgba(255, 255, 255, 0.82), 0 0 62px 34px rgba(255, 255, 255, 0.42)",
                         background:
                           "radial-gradient(circle, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.24) 52%, transparent 76%)",
+                        WebkitMaskImage:
+                          getObjectHighlightMask(activeRecallPosition),
+                        maskImage: getObjectHighlightMask(activeRecallPosition),
                       }}
                     />
-                    <Badge
-                      variant="outline"
-                      className={cn(
-                        "animate-bounce-subtle pointer-events-none absolute z-30 select-none border-2 bg-white/85 px-3 py-1.5 text-sm font-bold shadow-xl backdrop-blur",
-                        WORD_COLORS[activeRecallWord].text,
-                        WORD_COLORS[activeRecallWord].border,
-                      )}
-                      style={{
-                        left: `${activeRecallPosition.x}%`,
-                        top: `${activeRecallPosition.y - 12}%`,
-                        transform: "translate(-50%, -100%)",
-                      }}
-                    >
-                      {activeRecallWord.toUpperCase()}
-                    </Badge>
                   </>
                 )}
-                <Badge
+                {activeRecallWord && activeRecallLabelPlacement && (
+                  <Badge
+                    variant="outline"
+                    className="pointer-events-none absolute z-30 max-w-[7.5rem] select-none whitespace-nowrap border-0 bg-white px-2.5 py-1 text-[0.68rem] font-extrabold uppercase tracking-normal text-slate-950 shadow-[0_8px_22px_rgba(0,0,0,0.28)] ring-0 sm:px-3 sm:py-1.5 sm:text-xs"
+                    style={{
+                      left: `${activeRecallLabelPlacement.x}%`,
+                      top: `${activeRecallLabelPlacement.y}%`,
+                      transform: activeRecallLabelPlacement.transform,
+                    }}
+                  >
+                    {activeRecallWord}
+                  </Badge>
+                )}
+                {/* <Badge
                   variant="outline"
                   className="absolute left-3 top-3 z-30 border-border bg-white/85 text-foreground shadow-md backdrop-blur"
                 >
                   Your Memory Palace
-                </Badge>
+                </Badge> */}
                 <div className="absolute bottom-3 left-3 right-3 z-30 flex gap-1.5">
                   {WORDS.map((word) => {
                     const colors = WORD_COLORS[word];

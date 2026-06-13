@@ -16,6 +16,7 @@ import { Progress } from "@/components/ui/progress";
 import { ArrowLeft, Check, X, Brain, Trophy } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Container } from "../Container";
+import { cn } from "@/lib/utils";
 
 type Step = "testIntro" | "testFill" | "testResult";
 
@@ -207,36 +208,47 @@ export default function MemoryTestStep({
             <div className="space-y-2">
               <h3 className="font-semibold">Answers:</h3>
               <div className="space-y-2">
-                {wordsToRemember.map((word, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center justify-between p-2 text-sm md:text-lg rounded-md bg-muted"
-                  >
-                    <div className="flex items-center gap-2">
-                      {areWordsEqual(userAnswers[index], word) ? (
-                        <Check className="h-5 w-5 text-green-500" />
-                      ) : (
-                        <X className="h-5 w-5 text-red-500" />
+                {wordsToRemember.map((word, index) => {
+                  const isCorrect = areWordsEqual(userAnswers[index], word);
+
+                  return (
+                    <div
+                      key={index}
+                      className={cn(
+                        "flex items-center justify-between rounded-md border p-2 text-sm md:text-lg",
+                        isCorrect
+                          ? "border-green-200 bg-green-50"
+                          : "border-red-300 bg-red-50 text-red-700",
                       )}
-                      <span>
-                        Word {index + 1}: <strong>{word}</strong>
-                      </span>
-                    </div>
-                    <div className="text-sm">
-                      {userAnswers[index] ? (
-                        areWordsEqual(userAnswers[index], word) ? (
-                          <span className="text-green-500">Correct</span>
+                    >
+                      <div className="flex items-center gap-2">
+                        {isCorrect ? (
+                          <Check className="h-5 w-5 text-green-500" />
                         ) : (
-                          <span className="text-red-500">
-                            Your answer: {userAnswers[index]}
+                          <X className="h-5 w-5 stroke-[3] text-red-500" />
+                        )}
+                        <span>
+                          Word {index + 1}: <strong>{word}</strong>
+                        </span>
+                      </div>
+                      <div className="text-sm">
+                        {userAnswers[index] ? (
+                          isCorrect ? (
+                            <span className="text-green-500">Correct</span>
+                          ) : (
+                            <span className="font-medium text-red-600">
+                              Your answer: {userAnswers[index]}
+                            </span>
+                          )
+                        ) : (
+                          <span className="font-medium text-red-600">
+                            No reply
                           </span>
-                        )
-                      ) : (
-                        <span className="text-muted-foreground">No reply</span>
-                      )}
+                        )}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
             <div className="flex gap-4 text-md text-muted-foreground">

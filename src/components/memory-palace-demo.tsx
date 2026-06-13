@@ -2,7 +2,7 @@
 
 import { type ReactNode, useCallback, useEffect, useState } from "react";
 import Image from "next/image";
-import { ArrowLeft, Check, RefreshCw } from "lucide-react";
+import { ArrowLeft, Check, RefreshCw, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { Button } from "@/components/ui/button";
@@ -21,34 +21,46 @@ const WORDS = [
   "Kiwi",
 ];
 
+const DEMO_TEST_ANSWERS = [
+  "Apple",
+  "Bnana",
+  "Orange",
+  "Strawbery",
+  "Pineapple",
+  "Mango",
+  "Watermelom",
+  "Grape",
+  "Kiwi",
+];
+
 const PALACE_LOCATIONS = [
   {
     id: 1,
     name: "Plaza",
-    image: "/images/story-1-park.jpg",
-    title: "A Day of Unexpected Adventures",
+    image: "/images/demo-fruits-orchard.png",
+    title: "The Orchard's Bounty",
     story:
-      "I packed a snack and headed to the park. I took a bite of my crisp **apple**. A playful monkey offered me a **banana**, and on my way home I enjoyed a juicy **orange**.",
+      "As I entered the lush orchard, I spotted a shiny red **Apple** hanging from a low branch. Next, I tiptoed over to a tall tree where a yellow **Banana** was just within my reach, swinging gently in the breeze. A bit further on, the citrusy scent led me to a quaint shed filled with boxes of fresh **Orange**s, glowing under the sunlight.",
     keywords: ["apple", "banana", "orange"],
     wordIndices: [0, 1, 2],
   },
   {
     id: 2,
     name: "Cascadas",
-    image: "/images/story-2-waterfall.jpg",
-    title: "A Trail Through the Waterfall",
+    image: "/images/demo-tropical-goodness.png",
+    title: "The Tropical Patch",
     story:
-      "I followed a hidden trail and discovered a sparkling waterfall. I picked a **strawberry**, found a giant **pineapple**, and blended a ripe **mango** into a smoothie.",
+      "Beside the shed, there were rows of lush bushes dotted with juicy **Strawberry**, and I couldn't resist plucking one to taste its sweetness. Moving deeper into the orchard, I stumbled upon a tropical patch where a majestic **Pineapple** stood, its spiky crown reaching toward the sky. Beside it, hanging from a sturdy tree, golden **Mango**es swayed gently, their fragrance weaving a welcoming aroma.",
     keywords: ["strawberry", "pineapple", "mango"],
     wordIndices: [3, 4, 5],
   },
   {
     id: 3,
     name: "Clinic",
-    image: "/images/story-3-medical.jpg",
-    title: "The Last Room at Night",
+    image: "/images/demo-riverside-fruits.png",
+    title: "The Riverbank Gazebo",
     story:
-      "Under bright hallway lights I ate a slice of **watermelon**, shared a sweet **grape**, and finished with a tangy **kiwi** before leaving the palace.",
+      "Near the riverbank, the vibrant, striped flesh of a large **Watermelon** tempted me for a refreshing taste on this sunny day. Vines around a small gazebo were heavy with plump, purple **Grape**s, and I plucked one off to savor its tart skin. Finally, in a little patch of its own, lay fuzzy brown **Kiwi**s nestled together like tiny treasures waiting to be picked.",
     keywords: ["watermelon", "grape", "kiwi"],
     wordIndices: [6, 7, 8],
   },
@@ -57,92 +69,41 @@ const PALACE_LOCATIONS = [
 const STORY_STEP_DELAY_MS = 2100;
 
 const LOCATION_DISPLAY_NAMES: Record<string, string> = {
-  Plaza: "Plaza",
-  Cascadas: "Cascadas",
-  Clinic: "Medical facility",
+  Plaza: "Fruit stand",
+  Cascadas: "Orchard",
+  Clinic: "Pergola",
 };
 
 const LOCATION_ICONS: Record<string, JSX.Element> = {
   Plaza: (
-    <svg viewBox="0 0 170 92" className="h-full w-full" aria-hidden="true">
-      <g
-        fill="none"
-        stroke="#111827"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="2.1"
-      >
-        <path d="M7 76H143" />
-        <path d="M27 76H50M58 76H99M111 76H140" />
-        <path d="M35 73V33" />
-        <path d="M31 73H39" />
-        <path d="M31 46H39" />
-        <path d="M33 33H37L39 23H31L33 33Z" />
-        <path d="M32 23L35 17L38 23" />
-        <path d="M28 29H42" />
-        <path d="M63 76V50H107V76" />
-        <path d="M58 50H112" />
-        <path d="M61 58H109" />
-        <path d="M61 66H109" />
-        <path d="M124 77V21" />
-        <path d="M124 47L108 32" />
-        <path d="M124 54L140 39" />
-        <path d="M113 77C103 78 101 66 109 61C100 55 104 41 113 42C109 30 119 19 130 25C134 14 150 15 151 29C162 31 166 46 157 54C166 63 158 79 143 76" />
-        <path d="M117 76C119 69 127 69 130 76" />
-      </g>
-    </svg>
+    <Image
+      src="/images/memory-path-fruit-stand.png"
+      alt=""
+      width={220}
+      height={220}
+      className="h-full w-full object-contain"
+      aria-hidden="true"
+    />
   ),
   Cascadas: (
-    <svg viewBox="0 0 150 102" className="h-full w-full" aria-hidden="true">
-      <g
-        fill="none"
-        stroke="#111827"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="2.1"
-      >
-        <path d="M29 86C17 80 20 65 31 62C25 52 33 39 43 42C45 27 57 20 67 28C77 18 95 24 97 40C108 39 116 50 110 60C125 61 131 80 116 88" />
-        <path d="M51 87C45 78 49 69 55 65C60 58 58 49 62 39" />
-        <path d="M75 88C68 78 71 66 75 59C80 49 77 38 82 30" />
-        <path d="M94 88C88 80 89 69 95 62C101 55 99 45 103 38" />
-        <path d="M47 89C58 96 88 96 105 89" />
-        <path d="M20 91H127" />
-        <path d="M18 62C13 59 12 54 17 51C20 45 29 47 30 53" />
-        <path d="M119 51C122 45 132 46 134 53C141 52 144 61 137 65" />
-        <path d="M10 72C15 70 20 72 22 76" />
-        <path d="M128 75C133 72 139 73 143 77" />
-        <path d="M31 91C28 83 35 78 40 84" />
-        <path d="M116 91C119 82 111 78 106 85" />
-      </g>
-    </svg>
+    <Image
+      src="/images/memory-path-orchard.png"
+      alt=""
+      width={220}
+      height={220}
+      className="h-full w-full object-contain"
+      aria-hidden="true"
+    />
   ),
   Clinic: (
-    <svg viewBox="0 0 150 104" className="h-full w-full" aria-hidden="true">
-      <g
-        fill="none"
-        stroke="#111827"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="2.1"
-      >
-        <path d="M23 91H127" />
-        <path d="M38 91V25H112V91" />
-        <path d="M30 57H38" />
-        <path d="M112 57H121" />
-        <path d="M51 91V48H99V91" />
-        <path d="M64 91V61H85V91" />
-        <path d="M57 54H93" />
-        <path d="M68 74L75 66" />
-        <path d="M88 79L94 72" />
-        <path d="M71 31H80V22H90V31H99V41H90V50H80V41H71V31Z" />
-        <path d="M24 91V75" />
-        <path d="M19 75H29" />
-        <path d="M21 69C15 64 17 55 25 55C32 56 34 65 28 69" />
-        <path d="M126 91V75" />
-        <path d="M121 75H131" />
-        <path d="M123 69C117 64 119 55 127 55C134 56 136 65 130 69" />
-      </g>
-    </svg>
+    <Image
+      src="/images/memory-path-pergola.png"
+      alt=""
+      width={220}
+      height={220}
+      className="h-full w-full object-contain"
+      aria-hidden="true"
+    />
   ),
 };
 
@@ -268,23 +229,43 @@ export function MemoryPalaceDemo({
       return;
     }
 
-    if (currentFillingWord < WORDS.length - 1) {
+    if (currentFillingWord === -1) {
       const timer = window.setTimeout(() => {
-        const nextWord = currentFillingWord + 1;
-        setCurrentFillingWord(nextWord);
+        setCurrentFillingWord(0);
+      }, 400);
+
+      return () => window.clearTimeout(timer);
+    }
+
+    const targetAnswer = DEMO_TEST_ANSWERS[currentFillingWord];
+    const currentAnswer = testAnswers[currentFillingWord];
+
+    if (currentAnswer.length < targetAnswer.length) {
+      const timer = window.setTimeout(() => {
         setTestAnswers((previous) => {
           const nextAnswers = [...previous];
-          nextAnswers[nextWord] = WORDS[nextWord];
+          nextAnswers[currentFillingWord] = targetAnswer.slice(
+            0,
+            currentAnswer.length + 1,
+          );
           return nextAnswers;
         });
-      }, 400);
+      }, 75);
+
+      return () => window.clearTimeout(timer);
+    }
+
+    if (currentFillingWord < WORDS.length - 1) {
+      const timer = window.setTimeout(() => {
+        setCurrentFillingWord((previous) => previous + 1);
+      }, 280);
 
       return () => window.clearTimeout(timer);
     }
 
     const timer = window.setTimeout(resetDemo, 4000);
     return () => window.clearTimeout(timer);
-  }, [currentStep, currentFillingWord, resetDemo, showPath]);
+  }, [currentStep, currentFillingWord, resetDemo, showPath, testAnswers]);
 
   const renderStoryWithBold = (story: string) =>
     story.split(/\*\*(.*?)\*\*/g).map((part, index) =>
@@ -296,6 +277,13 @@ export function MemoryPalaceDemo({
         <span key={`${part}-${index}`}>{part}</span>
       ),
     );
+
+  const allTestAnswersComplete = testAnswers.every(
+    (answer, index) => answer === DEMO_TEST_ANSWERS[index],
+  );
+  const hasTestErrors =
+    allTestAnswersComplete &&
+    testAnswers.some((answer, index) => answer !== WORDS[index]);
 
   return (
     <div
@@ -342,7 +330,8 @@ export function MemoryPalaceDemo({
                   "border-slate-950/10 bg-white/10 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.16),inset_0_1px_2px_rgba(15,23,42,0.08)] backdrop-blur-[1px]",
                   currentStep === step &&
                     "border-black/40 bg-black shadow-[0_0_0_1px_rgba(0,0,0,0.12),inset_0_1px_2px_rgba(255,255,255,0.18)]",
-                  currentStep > step && "border-slate-950/20 bg-slate-900/[0.18]",
+                  currentStep > step &&
+                    "border-slate-950/20 bg-slate-900/[0.18]",
                 )}
                 animate={{
                   scaleY: currentStep === step ? 1.12 : 1,
@@ -363,7 +352,7 @@ export function MemoryPalaceDemo({
             ? "min-h-[390px] md:min-h-[640px]"
             : isRecallStep
               ? "min-h-[475px] md:min-h-[640px]"
-              : "min-h-[425px] md:min-h-[640px]",
+              : "min-h-[520px] md:min-h-[640px]",
         )}
       >
         <AnimatePresence mode="wait">
@@ -517,8 +506,8 @@ export function MemoryPalaceDemo({
                 </div>
               </motion.div>
 
-              <motion.div className="relative min-h-[420px] sm:min-h-[440px]">
-                <div className="relative h-[390px] sm:h-[410px]">
+              <motion.div className="relative min-h-[760px] sm:min-h-[790px] md:min-h-[830px]">
+                <div className="relative h-[730px] sm:h-[760px] md:h-[800px]">
                   <AnimatePresence initial={false}>
                     {PALACE_LOCATIONS.slice(0, currentSlide + 1).map(
                       (location, index) => {
@@ -564,12 +553,12 @@ export function MemoryPalaceDemo({
                               <h3 className="mb-3 text-xl font-bold text-slate-950">
                                 {location.title}
                               </h3>
-                              <div className="relative mb-4 h-48 w-full overflow-hidden rounded-lg">
+                              <div className="relative mb-4 aspect-square w-full overflow-hidden rounded-lg">
                                 <Image
                                   src={location.image}
                                   alt={location.name}
                                   fill
-                                  className="object-cover"
+                                  className="object-contain"
                                   sizes="(min-width: 1024px) 25rem, 100vw"
                                 />
                               </div>
@@ -604,7 +593,9 @@ export function MemoryPalaceDemo({
                       key={location.id}
                       className={cn(
                         "size-2 rounded-full transition-colors",
-                        index === currentSlide ? "bg-slate-950" : "bg-slate-200",
+                        index === currentSlide
+                          ? "bg-slate-950"
+                          : "bg-slate-200",
                       )}
                     />
                   ))}
@@ -666,7 +657,7 @@ export function MemoryPalaceDemo({
                             className={cn(
                               "z-10 flex size-8 items-center justify-center rounded-full border-2 bg-white text-base font-medium shadow-sm",
                               locationIndex === 0
-                                ? "border-teal-400 text-teal-600 shadow-[0_0_14px_rgba(20,184,166,0.42)]"
+                                ? "border-black-400 text-black-600 shadow-black"
                                 : "border-slate-300 text-slate-500",
                             )}
                           >
@@ -704,23 +695,38 @@ export function MemoryPalaceDemo({
                   <div className="space-y-1.5 md:space-y-1.5">
                     {WORDS.map((word, index) => {
                       const locationIndex = Math.floor(index / 3);
-                      const isFilled = testAnswers[index] !== "";
+                      const typedAnswer = testAnswers[index];
+                      const isStarted = typedAnswer !== "";
+                      const isFilled = typedAnswer === DEMO_TEST_ANSWERS[index];
                       const isCurrentlyFilling = index === currentFillingWord;
+                      const isCorrect = typedAnswer === word;
+                      const hasError = isFilled && !isCorrect;
+                      const isTyping = isCurrentlyFilling && !isFilled;
 
                       return (
                         <motion.div
                           key={word}
                           className={cn(
                             "flex items-center gap-2 rounded-lg border px-2 py-0.5 transition-colors md:py-1.5",
-                            isFilled
-                              ? "border-green-200 bg-green-50"
-                              : isCurrentlyFilling
-                                ? "border-teal-200 bg-teal-50"
-                                : "border-transparent",
+                            hasError
+                              ? "border-red-300 bg-red-50"
+                              : isFilled
+                                ? "border-green-200 bg-green-50"
+                                : isCurrentlyFilling || isStarted
+                                  ? "border-teal-200 bg-teal-50"
+                                  : "border-transparent",
                           )}
-                          animate={{ scale: isCurrentlyFilling ? 1.01 : 1 }}
+                          animate={{
+                            scale: isCurrentlyFilling ? 1.01 : 1,
+                            x: hasError ? [0, -2, 2, -1, 1, 0] : 0,
+                          }}
                         >
-                          <span className="w-10 text-[10px] text-slate-500 md:w-12 md:text-xs">
+                          <span
+                            className={cn(
+                              "w-10 text-[10px] text-slate-500 md:w-12 md:text-xs",
+                              hasError && "font-medium text-red-600",
+                            )}
+                          >
                             Word {index + 1}
                           </span>
                           <span className="hidden w-16 truncate rounded bg-slate-100 px-1.5 py-0.5 text-center text-[10px] text-slate-400 sm:block">
@@ -728,23 +734,39 @@ export function MemoryPalaceDemo({
                           </span>
                           <div className="relative flex-1">
                             <Input
-                              value={testAnswers[index]}
+                              value={typedAnswer}
                               readOnly
                               placeholder="Enter word..."
                               className={cn(
-                                "h-6 text-[10px] md:h-8 md:text-xs",
-                                isFilled
-                                  ? "border-transparent bg-green-50 shadow-none"
-                                  : "bg-white",
+                                "h-6 pr-8 text-[10px] md:h-8 md:text-xs",
+                                hasError
+                                  ? "border-transparent bg-red-50 text-red-700 shadow-none"
+                                  : isFilled
+                                    ? "border-transparent bg-green-50 shadow-none"
+                                    : "bg-white",
                               )}
                             />
+                            {isTyping && (
+                              <motion.span
+                                className="absolute right-3 top-1/2 h-3.5 w-px -translate-y-1/2 bg-slate-900 md:h-4"
+                                animate={{ opacity: [0, 1, 1, 0] }}
+                                transition={{
+                                  duration: 0.7,
+                                  repeat: Infinity,
+                                }}
+                              />
+                            )}
                             {isFilled && (
                               <motion.div
                                 className="absolute right-2 top-1/2 -translate-y-1/2"
                                 initial={{ scale: 0 }}
                                 animate={{ scale: 1 }}
                               >
-                                <Check className="size-3.5 text-green-500" />
+                                {hasError ? (
+                                  <X className="size-3.5 stroke-[3] text-red-500" />
+                                ) : (
+                                  <Check className="size-3.5 text-green-500" />
+                                )}
                               </motion.div>
                             )}
                           </div>
@@ -767,13 +789,17 @@ export function MemoryPalaceDemo({
                       disabled
                       className={cn(
                         "h-7 text-[10px] text-white md:h-8 md:text-xs",
-                        testAnswers.every(Boolean)
-                          ? "bg-green-600"
-                          : "bg-slate-900",
+                        hasTestErrors
+                          ? "bg-red-600"
+                          : allTestAnswersComplete
+                            ? "bg-green-600"
+                            : "bg-slate-900",
                       )}
                     >
-                      {testAnswers.every(Boolean)
-                        ? "All Correct!"
+                      {allTestAnswersComplete
+                        ? hasTestErrors
+                          ? "3 Errors"
+                          : "All Correct!"
                         : "Verify Answers"}
                     </Button>
                   </div>
@@ -783,7 +809,7 @@ export function MemoryPalaceDemo({
           )}
         </AnimatePresence>
       </div>
-      {footer && <div className="mt-4">{footer}</div>}
+      {footer && <div className="relative z-20 mt-5">{footer}</div>}
     </div>
   );
 }
