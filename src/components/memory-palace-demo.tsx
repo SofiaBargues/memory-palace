@@ -6,7 +6,6 @@ import {
   ArrowLeft,
   Check,
   MoreHorizontal,
-  Plus,
   RefreshCw,
   X,
 } from "lucide-react";
@@ -597,7 +596,6 @@ export function MemoryPalaceDemo({
 
                   <div className="space-y-1.5 md:space-y-1.5">
                     {WORDS.map((word, index) => {
-                      const locationIndex = Math.floor(index / 3);
                       const typedAnswer = testAnswers[index];
                       const isStarted = typedAnswer !== "";
                       const isFilled = typedAnswer === DEMO_TEST_ANSWERS[index];

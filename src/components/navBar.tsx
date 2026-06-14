@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { GithubIcon, Menu } from "lucide-react";
+import { GithubIcon } from "lucide-react";
 import { CastleLogo } from "./castle-logo";
 import { Button } from "./ui/button";
 

@@ -16,7 +16,7 @@ import { Container } from "../Container";
 
 // Random words for each category
 const getRandomWord = (
-  category: "animals" | "fruits" | "objects",
+  category: "animals" | "groceries" | "objects",
   exclude: string[] = []
 ) => {
   const list = [...PREDEFINED_LISTS[category]];
@@ -156,7 +156,7 @@ export function ChooseWordsStep({
               <div>
                 <CardTitle>
                   {selectedCategory === "animals" && "Animals"}
-                  {selectedCategory === "fruits" && "Fruits"}
+                  {selectedCategory === "groceries" && "Groceries"}
                   {selectedCategory === "objects" && "Objects"}
                   {selectedCategory === "custom" && "Custom List"}
                 </CardTitle>
@@ -166,8 +166,8 @@ export function ChooseWordsStep({
                     : `List of words from the category ${
                         selectedCategory === "animals"
                           ? "Animals"
-                          : selectedCategory === "fruits"
-                          ? "Fruits"
+                          : selectedCategory === "groceries"
+                          ? "Groceries"
                           : "Objects"
                       }`}
                 </CardDescription>
