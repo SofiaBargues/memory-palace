@@ -119,7 +119,7 @@ export function StoryStep({
           />
           <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/60 to-transparent" />
           <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/35 to-transparent" />
-        
+
           {isFirstSlide ? (
             <Link
               href="/palaces"
@@ -375,7 +375,7 @@ export function StoryStep({
                       </div>
                     </div>
 
-                    <nav className="grid grid-cols-2 items-center gap-4 border-black/18 pt-5">
+                    <nav className="grid grid-cols-2 items-center gap-4 pt-5">
                       {isFirstSlide ? (
                         <Button
                           asChild

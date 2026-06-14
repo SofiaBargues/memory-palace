@@ -40,23 +40,24 @@ export function ChooseWordsStep({
   // const [wordsOld, setWords] = useState<string[]>(Array(9).fill(""));
   const [step, setStep] = useState<"categories" | "words">("categories");
   const [selectedCategory, setSelectedCategory] = useState<
-    "animals" | "fruits" | "objects" | "custom"
+    "animals" | "groceries" | "objects" | "custom"
   >("custom");
   const [formErrorMessage, setFormErrorMessage] = useState<null | string>(null);
 
   // Fill words with a category
   const selectCategory = (
-    category: "animals" | "fruits" | "objects" | "custom"
+    category: "animals" | "groceries" | "objects" | "custom"
   ) => {
     setSelectedCategory(category);
-
     if (category !== "custom") {
-      const newWords = PREDEFINED_LISTS[category].slice(0, 9);
+      const newWords = [...PREDEFINED_LISTS[category]]
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 9);
+
       setWords(newWords);
     } else {
       setWords(Array(9).fill(""));
     }
-
     setStep("words");
   };
 
@@ -64,9 +65,9 @@ export function ChooseWordsStep({
   const refreshWord = (index: number) => {
     if (selectedCategory === "custom") {
       // If custom, use a random category
-      const categories: ("animals" | "fruits" | "objects")[] = [
+      const categories: ("animals" | "groceries" | "objects")[] = [
         "animals",
-        "fruits",
+        "groceries",
         "objects",
       ];
       const randomCategory =
@@ -117,19 +118,19 @@ export function ChooseWordsStep({
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto">
             <CategoryCard
-              title="Animals"
-              description="Memorize a list of 9 different animals"
-              onClick={() => selectCategory("animals")}
-            />
-            <CategoryCard
-              title="Fruits"
-              description="Memorize a list of 9 different fruits"
-              onClick={() => selectCategory("fruits")}
+              title="Groceries"
+              description="Memorize a list of 9 different grocery items"
+              onClick={() => selectCategory("groceries")}
             />
             <CategoryCard
               title="Objects"
               description="Memorize a list of 9 different objects"
               onClick={() => selectCategory("objects")}
+            />
+            <CategoryCard
+              title="Animals"
+              description="Memorize a list of 9 different animals"
+              onClick={() => selectCategory("animals")}
             />
             <CategoryCard
               title="Custom"
