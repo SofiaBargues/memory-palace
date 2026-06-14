@@ -17,6 +17,7 @@ export function TutorialStep({
         className="mx-auto"
         showChooseWordsStep={isNew}
         footer={
+           
           <Button
             size="lg"
             className="h-11 w-full gap-2 text-white shadow-md"

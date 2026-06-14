@@ -2,7 +2,14 @@
 
 import { type ReactNode, useCallback, useEffect, useState } from "react";
 import Image from "next/image";
-import { ArrowLeft, Check, RefreshCw, X } from "lucide-react";
+import {
+  ArrowLeft,
+  Check,
+  MoreHorizontal,
+  Plus,
+  RefreshCw,
+  X,
+} from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { Button } from "@/components/ui/button";
@@ -23,12 +30,12 @@ const WORDS = [
 
 const DEMO_TEST_ANSWERS = [
   "Apple",
-  "Bnana",
+  "Dog",
   "Orange",
-  "Strawbery",
+  "Lion",
   "Pineapple",
   "Mango",
-  "Watermelom",
+  "Cat",
   "Grape",
   "Kiwi",
 ];
@@ -68,44 +75,19 @@ const PALACE_LOCATIONS = [
 
 const STORY_STEP_DELAY_MS = 2100;
 
+const WORD_GROUPS = PALACE_LOCATIONS.map((location) => ({
+  id: location.id,
+  keywords: location.keywords,
+  wordIndices: location.wordIndices,
+}));
+
 const LOCATION_DISPLAY_NAMES: Record<string, string> = {
   Plaza: "Fruit stand",
   Cascadas: "Orchard",
   Clinic: "Pergola",
 };
 
-const LOCATION_ICONS: Record<string, JSX.Element> = {
-  Plaza: (
-    <Image
-      src="/images/memory-path-fruit-stand.png"
-      alt=""
-      width={220}
-      height={220}
-      className="h-full w-full object-contain"
-      aria-hidden="true"
-    />
-  ),
-  Cascadas: (
-    <Image
-      src="/images/memory-path-orchard.png"
-      alt=""
-      width={220}
-      height={220}
-      className="h-full w-full object-contain"
-      aria-hidden="true"
-    />
-  ),
-  Clinic: (
-    <Image
-      src="/images/memory-path-pergola.png"
-      alt=""
-      width={220}
-      height={220}
-      className="h-full w-full object-contain"
-      aria-hidden="true"
-    />
-  ),
-};
+const MEMORY_PATH_DRAW_DELAY_MS = 1900;
 
 interface MemoryPalaceDemoProps {
   className?: string;
@@ -232,7 +214,7 @@ export function MemoryPalaceDemo({
     if (currentFillingWord === -1) {
       const timer = window.setTimeout(() => {
         setCurrentFillingWord(0);
-      }, 400);
+      }, MEMORY_PATH_DRAW_DELAY_MS);
 
       return () => window.clearTimeout(timer);
     }
@@ -262,10 +244,7 @@ export function MemoryPalaceDemo({
 
       return () => window.clearTimeout(timer);
     }
-
-    const timer = window.setTimeout(resetDemo, 4000);
-    return () => window.clearTimeout(timer);
-  }, [currentStep, currentFillingWord, resetDemo, showPath, testAnswers]);
+  }, [currentStep, currentFillingWord, showPath, testAnswers]);
 
   const renderStoryWithBold = (story: string) =>
     story.split(/\*\*(.*?)\*\*/g).map((part, index) =>
@@ -286,63 +265,51 @@ export function MemoryPalaceDemo({
     testAnswers.some((answer, index) => answer !== WORDS[index]);
 
   return (
-    <div
-      className={cn(
-        "w-full overflow-hidden bg-transparent px-4 pb-4 pt-4 md:p-6",
-        className,
-      )}
-    >
-      <motion.div
-        className="hidden"
-        initial={{ opacity: 0, y: -12 }}
-        animate={{ opacity: 1, y: 0 }}
-      >
-        {/* <h2 className="text-2xl font-bold text-slate-950 md:text-3xl">Memory Palace</h2>
-        <p className="mt-1 text-sm text-slate-500">
-          Choose words, build scenes, then walk the route to remember them.
-        </p> */}
-      </motion.div>
-
+    <div className={cn("w-full overflow-hidden bg-transparent ", className)}>
       <div
-        className="mb-4 flex justify-center md:mb-5"
+        className="mb-4 flex justify-center md:mb-5 flex-col items-center gap-2"
         role="tablist"
         aria-label="Memory palace steps"
       >
-        <div className="flex w-[min(78%,15rem)] items-center justify-center gap-2">
-          {visibleSteps.map((step) => {
-            const stepLabel =
-              step === 1
-                ? "Choose words"
-                : step === 2
-                  ? "Read the story and find the words"
-                  : "Test memory";
+        <h1 className="text-[2.00rem] font-extrabold   text-primary">
+          How it works?
+        </h1>
+        <>
+          <div className="flex w-[min(78%,15rem)] items-center justify-center gap-2">
+            {visibleSteps.map((step) => {
+              const stepLabel =
+                step === 1
+                  ? "Choose words"
+                  : step === 2
+                    ? "Read the story and find the words"
+                    : "Test memory";
 
-            return (
-              <motion.button
-                key={step}
-                type="button"
-                onClick={() => selectStep(step)}
-                role="tab"
-                aria-label={stepLabel}
-                aria-selected={currentStep === step}
-                className={cn(
-                  "h-2.5 flex-1 rounded-full border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2",
-                  "border-slate-950/10 bg-white/10 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.16),inset_0_1px_2px_rgba(15,23,42,0.08)] backdrop-blur-[1px]",
-                  currentStep === step &&
-                    "border-black/40 bg-black shadow-[0_0_0_1px_rgba(0,0,0,0.12),inset_0_1px_2px_rgba(255,255,255,0.18)]",
-                  currentStep > step &&
-                    "border-slate-950/20 bg-slate-900/[0.18]",
-                )}
-                animate={{
-                  scaleY: currentStep === step ? 1.12 : 1,
-                  opacity: currentStep >= step ? 1 : 0.82,
-                }}
-              >
-                <span className="sr-only">{stepLabel}</span>
-              </motion.button>
-            );
-          })}
-        </div>
+              return (
+                <motion.button
+                  key={step}
+                  type="button"
+                  onClick={() => selectStep(step)}
+                  role="tab"
+                  aria-label={stepLabel}
+                  aria-selected={currentStep === step}
+                  className={cn(
+                    "h-2.5 flex-1 rounded-full border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2",
+                    "border-slate-950/10  shadow-[inset_0_0_0_1px_rgba(255,255,255,0.16),inset_0_1px_2px_rgba(15,23,42,0.08)] backdrop-blur-[1px]",
+                    currentStep === step &&
+                      "border-black/40 shadow-[0_0_0_1px_rgba(0,0,0,0.12),inset_0_1px_2px_rgba(255,255,255,0.18)]",
+                    currentStep > step && "border-slate-950/20 ",
+                  )}
+                  animate={{
+                    scaleY: currentStep === step ? 1.12 : 1,
+                    opacity: currentStep >= step ? 1 : 0.82,
+                  }}
+                >
+                  <span className="sr-only">{stepLabel}</span>
+                </motion.button>
+              );
+            })}
+          </div>
+        </>
       </div>
 
       <div
@@ -374,10 +341,9 @@ export function MemoryPalaceDemo({
                   <div className="mb-3 flex items-center gap-3 md:mb-5">
                     <ArrowLeft className="size-5 text-slate-400" />
                     <div>
-                      <h3 className="font-semibold text-slate-950">Fruits</h3>
-                      <p className="text-xs text-slate-500 md:text-sm">
+                      <h3 className="font-semibold text-slate-950 md:text-md">
                         Words to memorize
-                      </p>
+                      </h3>
                     </div>
                   </div>
 
@@ -456,150 +422,113 @@ export function MemoryPalaceDemo({
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -80 }}
               transition={{ duration: 0.45 }}
-              className="grid gap-5 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]"
+              className="mx-auto grid w-full max-w-6xl gap-12 md:grid-cols-[minmax(13rem,0.32fr)_minmax(0,1fr)] md:gap-5"
             >
-              <motion.div className="relative hidden rounded-lg bg-white p-5 shadow-lg ring-1 ring-slate-100 lg:block">
-                <div className="mt-3 space-y-2">
-                  {WORDS.map((word, index) => {
-                    const isActive =
-                      PALACE_LOCATIONS[currentSlide].wordIndices.includes(
-                        index,
-                      );
+              <motion.aside className="hidden rounded-lg border border-slate-200 bg-white p-4 shadow-sm md:block md:p-5 ">
+                <h3 className="mb-4 text-center text-md font-semibold text-slate-950">
+                  Word Groups
+                </h3>
+                <div className="flex flex-col h-full justify-evenly ">
+                  {WORD_GROUPS.map((group, groupIndex) => {
+                    const isActive = groupIndex === currentSlide;
 
                     return (
-                      <motion.div
-                        key={word}
+                      <motion.button
+                        key={group.id}
+                        type="button"
+                        onClick={() => setCurrentSlide(groupIndex)}
                         className={cn(
-                          "flex items-center gap-2 rounded-lg px-2 py-1.5 transition-colors",
+                          "min-w-0 bg-white p-3  gap-6 transition",
+                          isActive ? "font-medium text-slate-950 " : "",
                         )}
                         animate={{
-                          opacity: isActive ? 1 : 0.35,
-                          scale: isActive ? 1.02 : 1,
+                          scale: isActive ? 1.01 : 1,
                         }}
                       >
-                        <span
-                          className={cn(
-                            "w-5 text-right text-sm",
-                            isActive
-                              ? "font-semibold text-slate-950"
-                              : "text-slate-400",
-                          )}
-                        >
-                          {index + 1}.
-                        </span>
-                        <Input
-                          value={word}
-                          readOnly
-                          className={cn(
-                            "h-9 text-sm",
-                            isActive
-                              ? "border-transparent bg-transparent font-medium shadow-none"
-                              : "bg-slate-50",
-                          )}
-                        />
-                        {!isActive && (
-                          <RefreshCw className="size-4 text-slate-300" />
-                        )}
-                      </motion.div>
+                        <div className="space-y-1.5 pl-8 md:pl-3 ">
+                          {group.keywords.map((keyword) => (
+                            <p
+                              key={keyword}
+                              className={cn(
+                                "truncate text-xs capitalize leading-5 md:text-sm",
+                                isActive
+                                  ? "font-medium text-slate-950"
+                                  : "text-slate-500",
+                              )}
+                            >
+                              {keyword}
+                            </p>
+                          ))}
+                        </div>
+                      </motion.button>
                     );
                   })}
                 </div>
-              </motion.div>
+              </motion.aside>
 
-              <motion.div className="relative min-h-[760px] sm:min-h-[790px] md:min-h-[830px]">
-                <div className="relative h-[730px] sm:h-[760px] md:h-[800px]">
-                  <AnimatePresence initial={false}>
-                    {PALACE_LOCATIONS.slice(0, currentSlide + 1).map(
-                      (location, index) => {
-                        const stackDepth = currentSlide - index;
-                        const isTopStory = stackDepth === 0;
-                        const xOffset =
-                          stackDepth === 0
-                            ? 0
-                            : stackDepth % 2 === 0
-                              ? -22
-                              : 22;
+              <motion.div className="min-w-0">
+                <AnimatePresence mode="wait">
+                  <motion.article
+                    key={PALACE_LOCATIONS[currentSlide].id}
+                    className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm md:p-5"
+                    initial={{ opacity: 0, y: 18 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -12 }}
+                    transition={{ duration: 0.3, ease: "easeOut" }}
+                  >
+                    <div className="mb-3 flex items-start justify-between gap-4">
+                      <h3 className="text-xl font-bold leading-tight text-slate-950 md:text-2xl">
+                        {PALACE_LOCATIONS[currentSlide].title}
+                      </h3>
+                      <MoreHorizontal className="mt-1 size-5 shrink-0 text-slate-950" />
+                    </div>
 
-                        return (
-                          <motion.article
-                            key={location.id}
-                            className="absolute inset-x-0 top-0 rounded-lg bg-white p-5 shadow-lg ring-1 ring-slate-100"
-                            style={{
-                              zIndex: index + 1,
-                              transformOrigin: "center top",
-                            }}
-                            initial={{
-                              opacity: 0,
-                              y: 70,
-                              scale: 0.96,
-                              rotate: 0,
-                            }}
-                            animate={{
-                              opacity: Math.max(0.5, 1 - stackDepth * 0.16),
-                              x: xOffset,
-                              y: stackDepth * 24,
-                              scale: 1 - stackDepth * 0.06,
-                              rotate:
-                                stackDepth === 0
-                                  ? 0
-                                  : stackDepth % 2 === 0
-                                    ? -4
-                                    : 4,
-                            }}
-                            exit={{ opacity: 0, y: -20, scale: 0.96 }}
-                            transition={{ duration: 0.36, ease: "easeOut" }}
-                          >
-                            <div className="mt-3">
-                              <h3 className="mb-3 text-xl font-bold text-slate-950">
-                                {location.title}
-                              </h3>
-                              <div className="relative mb-4 aspect-square w-full overflow-hidden rounded-lg">
-                                <Image
-                                  src={location.image}
-                                  alt={location.name}
-                                  fill
-                                  className="object-contain"
-                                  sizes="(min-width: 1024px) 25rem, 100vw"
-                                />
-                              </div>
-                              <p className="mb-4 text-sm leading-relaxed text-slate-600">
-                                {renderStoryWithBold(location.story)}
-                              </p>
-                              <div className="flex flex-wrap gap-2">
-                                {location.keywords.map((keyword) => (
-                                  <span
-                                    key={keyword}
-                                    className="rounded-full bg-slate-100 px-3 py-1 text-sm text-slate-700"
-                                  >
-                                    {keyword}
-                                  </span>
-                                ))}
-                              </div>
-                            </div>
+                    <div className="relative mb-4 aspect-[16/9] w-full overflow-hidden rounded-lg bg-slate-100">
+                      <Image
+                        src={PALACE_LOCATIONS[currentSlide].image}
+                        alt={PALACE_LOCATIONS[currentSlide].name}
+                        fill
+                        className="object-cover"
+                        sizes="(min-width: 1024px) 52rem, 100vw"
+                      />
+                    </div>
 
-                            {!isTopStory && (
-                              <div className="absolute inset-0 rounded-lg bg-white/20" />
-                            )}
-                          </motion.article>
-                        );
-                      },
-                    )}
-                  </AnimatePresence>
-                </div>
-
-                <div className="flex justify-center gap-2">
-                  {PALACE_LOCATIONS.map((location, index) => (
-                    <div
-                      key={location.id}
-                      className={cn(
-                        "size-2 rounded-full transition-colors",
-                        index === currentSlide
-                          ? "bg-slate-950"
-                          : "bg-slate-200",
+                    <p className="mb-4 text-sm leading-relaxed text-slate-600 md:text-[0.95rem]">
+                      {renderStoryWithBold(
+                        PALACE_LOCATIONS[currentSlide].story,
                       )}
-                    />
-                  ))}
-                </div>
+                    </p>
+
+                    <div className="flex flex-wrap gap-2">
+                      {PALACE_LOCATIONS[currentSlide].keywords.map(
+                        (keyword) => (
+                          <span
+                            key={keyword}
+                            className="rounded-md bg-slate-100 px-3 py-1 text-xs lowercase text-slate-600 md:text-sm"
+                          >
+                            {keyword}
+                          </span>
+                        ),
+                      )}
+                    </div>
+                    <div className="mt-5 flex justify-center gap-3">
+                      {PALACE_LOCATIONS.map((location, index) => (
+                        <button
+                          key={location.id}
+                          type="button"
+                          onClick={() => setCurrentSlide(index)}
+                          aria-label={`Go to story scene ${index + 1}`}
+                          className={cn(
+                            "size-2.5 rounded-full transition-colors",
+                            index === currentSlide
+                              ? "bg-slate-950"
+                              : "bg-slate-300 hover:bg-slate-400",
+                          )}
+                        />
+                      ))}
+                    </div>
+                  </motion.article>
+                </AnimatePresence>
               </motion.div>
             </motion.div>
           )}
@@ -619,32 +548,11 @@ export function MemoryPalaceDemo({
                     Memory path
                   </h3>
 
-                  <div className="relative min-h-[420px]">
-                    <svg
-                      className="absolute inset-0 z-0 h-full w-full"
-                      viewBox="0 0 248 420"
-                      aria-hidden="true"
-                    >
-                      <motion.path
-                        d="M46 40 V112 C46 136 66 138 85 138 H104 C126 138 130 150 130 170 V188 M46 172 V244 C46 268 66 270 85 270 H104 C126 270 130 282 130 302 V318"
-                        fill="none"
-                        stroke="#0f9f9a"
-                        strokeDasharray="8 10"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="3"
-                        initial={{ opacity: 0, pathLength: 0 }}
-                        animate={{
-                          opacity: showPath ? 1 : 0,
-                          pathLength: showPath ? 1 : 0,
-                        }}
-                        transition={{ delay: 0.1, duration: 0.7 }}
-                      />
-                    </svg>
+                  <div className="relative flex min-h-[420px] flex-col items-center gap-4 justify-between">
                     {PALACE_LOCATIONS.map((location, locationIndex) => (
                       <motion.div
                         key={location.id}
-                        className="relative z-10 mb-5 grid min-h-[118px] grid-cols-[3.5rem_minmax(0,1fr)] items-center last:mb-0"
+                        className="relative z-10 flex w-full justify-center"
                         initial={{ opacity: 0, y: 15 }}
                         animate={{
                           opacity: showPath ? 1 : 0,
@@ -652,24 +560,19 @@ export function MemoryPalaceDemo({
                         }}
                         transition={{ delay: locationIndex * 0.25 }}
                       >
-                        <div className="flex h-full items-start justify-center pt-2">
-                          <div
-                            className={cn(
-                              "z-10 flex size-8 items-center justify-center rounded-full border-2 bg-white text-base font-medium shadow-sm",
-                              locationIndex === 0
-                                ? "border-black-400 text-black-600 shadow-black"
-                                : "border-slate-300 text-slate-500",
-                            )}
-                          >
+                        <div className="relative h-36 w-40 overflow-hidden rounded-[24px] bg-slate-100 shadow-[0_14px_30px_rgba(15,23,42,0.14)] ring-1 ring-black/5">
+                          <Image
+                            src={location.image}
+                            alt={LOCATION_DISPLAY_NAMES[location.name]}
+                            fill
+                            sizes="10rem"
+                            className="scale-[1.54] object-cover blur-[1.7px] saturate-[0.92]"
+                          />
+                          <div className="absolute inset-0 bg-white/10" />
+                          <span className="absolute left-3 top-3 flex size-7 items-center justify-center rounded-full bg-white/25 text-sm font-bold text-slate-700 shadow-sm">
                             {locationIndex + 1}
-                          </div>
-                        </div>
-
-                        <div className="flex flex-col items-center">
-                          <div className="h-24 w-36">
-                            {LOCATION_ICONS[location.name]}
-                          </div>
-                          <span className="mt-1 text-center text-base font-medium leading-tight text-slate-950">
+                          </span>
+                          <span className="absolute inset-x-3 bottom-3 rounded-md bg-white/25 px-2 py-1 text-center text-sm font-extrabold leading-tight text-slate-950 shadow-sm backdrop-blur">
                             {LOCATION_DISPLAY_NAMES[location.name]}
                           </span>
                         </div>
@@ -680,7 +583,7 @@ export function MemoryPalaceDemo({
 
                 <motion.div className="rounded-lg bg-white/80 p-3 shadow-lg ring-1 ring-slate-100/80 backdrop-blur md:p-5">
                   <div className="mb-2 flex items-center justify-between md:mb-3">
-                    <h3 className="text-sm font-bold text-slate-950 md:text-lg">
+                    <h3 className="text-sm font-bold text-slate-950 md:text-md">
                       Test Your Memory
                     </h3>
                     <span className="rounded bg-slate-100 px-2 py-1 font-mono text-[10px] text-slate-500 md:text-xs">
@@ -700,7 +603,8 @@ export function MemoryPalaceDemo({
                       const isFilled = typedAnswer === DEMO_TEST_ANSWERS[index];
                       const isCurrentlyFilling = index === currentFillingWord;
                       const isCorrect = typedAnswer === word;
-                      const hasError = isFilled && !isCorrect;
+                      const isVerified = allTestAnswersComplete && isFilled;
+                      const hasError = isVerified && !isCorrect;
                       const isTyping = isCurrentlyFilling && !isFilled;
 
                       return (
@@ -710,10 +614,10 @@ export function MemoryPalaceDemo({
                             "flex items-center gap-2 rounded-lg border px-2 py-0.5 transition-colors md:py-1.5",
                             hasError
                               ? "border-red-300 bg-red-50"
-                              : isFilled
+                              : isVerified
                                 ? "border-green-200 bg-green-50"
                                 : isCurrentlyFilling || isStarted
-                                  ? "border-teal-200 bg-teal-50"
+                                  ? "border-gray-200 bg-gray-50"
                                   : "border-transparent",
                           )}
                           animate={{
@@ -729,9 +633,6 @@ export function MemoryPalaceDemo({
                           >
                             Word {index + 1}
                           </span>
-                          <span className="hidden w-16 truncate rounded bg-slate-100 px-1.5 py-0.5 text-center text-[10px] text-slate-400 sm:block">
-                            {PALACE_LOCATIONS[locationIndex].name}
-                          </span>
                           <div className="relative flex-1">
                             <Input
                               value={typedAnswer}
@@ -741,7 +642,7 @@ export function MemoryPalaceDemo({
                                 "h-6 pr-8 text-[10px] md:h-8 md:text-xs",
                                 hasError
                                   ? "border-transparent bg-red-50 text-red-700 shadow-none"
-                                  : isFilled
+                                  : isVerified
                                     ? "border-transparent bg-green-50 shadow-none"
                                     : "bg-white",
                               )}
@@ -756,7 +657,7 @@ export function MemoryPalaceDemo({
                                 }}
                               />
                             )}
-                            {isFilled && (
+                            {isVerified && (
                               <motion.div
                                 className="absolute right-2 top-1/2 -translate-y-1/2"
                                 initial={{ scale: 0 }}
@@ -809,7 +710,9 @@ export function MemoryPalaceDemo({
           )}
         </AnimatePresence>
       </div>
-      {footer && <div className="relative z-20 mt-5">{footer}</div>}
+      {footer && isRecallStep && (
+        <div className="relative z-20 mt-5">{footer}</div>
+      )}
     </div>
   );
 }

@@ -468,18 +468,20 @@ export function MemoryPalaceViolinDemo({
                 className={cn(
                   "relative shrink-0 overflow-hidden bg-muted",
                   heroPreview
-                    ? "h-full w-[55%] border-r border-[#d7dde7]"
+                    ? "h-full aspect-[1024/1536] border-r border-[#d7dde7]"
                     : "h-[260px] w-full border-b-2 border-border sm:h-72 lg:h-full lg:w-1/2 lg:border-b-0 lg:border-r-2",
                 )}
               >
-                <Image
-                  src={PALACE_IMAGE_URL}
-                  alt=""
-                  aria-hidden="true"
-                  fill
-                  className="scale-110 object-cover opacity-35 blur-md"
-                  sizes="(min-width: 1024px) 24rem, 100vw"
-                />
+                {!heroPreview && (
+                  <Image
+                    src={PALACE_IMAGE_URL}
+                    alt=""
+                    aria-hidden="true"
+                    fill
+                    className="scale-110 object-cover opacity-35 blur-md"
+                    sizes="(min-width: 1024px) 24rem, 100vw"
+                  />
+                )}
                 <Image
                   src={PALACE_IMAGE_URL}
                   alt="Memory palace scene"
