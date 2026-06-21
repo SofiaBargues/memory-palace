@@ -1,162 +1,58 @@
 import { OpenAI } from "openai";
-import { zodResponseFormat } from "openai/helpers/zod.mjs";
 import { uploadToCloudinary } from "./uploadToCloudinary";
-import { Story, StoryImages } from "./types";
+import { buildTriptychPrompt } from "@/server/palace/buildTriptychPrompt";
+import { createTriptychPalace } from "@/server/palace/createTriptychPalace";
+import { cropTriptychBase64 } from "@/server/palace/cropTriptych";
+import { generatePalacePlan } from "@/server/palace/generatePalacePlan";
+import { generateTriptychImage } from "@/server/palace/generateTriptychImage";
+import { validateWords } from "@/server/palace/validateWords";
 
-export const maxDuration = 60;
+export const runtime = "nodejs";
+export const maxDuration = 120;
 
 export async function POST(request: Request) {
-  // stop the img generator
-  // return;
-  //todo: frene la generacion de imagenes saca rertutn para que funcione
   try {
-    // 1. obtengo words del request
-    const res = await request.json();
-    const words = res.words;
+    const body = await request.json();
+    const words = validateWords(body.words);
 
-    // 2. crea un cliente de open ai
+    console.info("[generate] starting pov triptych palace", { words });
+
     const openai = new OpenAI({
       apiKey: process.env.OPENAI_API_KEY,
     });
 
-    // 3. crea senteces
-    const completionSentences = await openai.chat.completions.parse({
-      model: "gpt-4o",
-      temperature: 1.2,
-      messages: [
-        {
-          role: "system",
-          content: `You are a Loci method builder. 
-- Create a memorable story using all the words in the list, keeping them in the exact order of the input.
-
-Style:
-- Keep the writing at a 5th grade level, using clear, simple imagery.
-- The story is narrated in first person, where the reader moves through different places and interacts with the words.
-- Wrap the word from the user input in a bold HTML tag in the output E.g.  alice -> <b>alice</b>
-
-Steps:
-1. For each word in the user input write a sentence in the output sentences array. The output "sentences" array has 9 elements.
-  `,
-        },
-        {
-          role: "user",
-          content: JSON.stringify(words),
-        },
-      ],
-      response_format: zodResponseFormat(Story, "story"),
+    console.info("[generate] creating palace plan");
+    const plan = await generatePalacePlan(openai, words);
+    console.info("[generate] creating triptych prompt", {
+      title: plan.title,
+      scenario: plan.scenario.name,
     });
+    const { imagePrompt } = await buildTriptychPrompt(openai, plan);
+    console.info("[generate] generating triptych image");
+    const triptychBase64 = await generateTriptychImage(openai, imagePrompt);
+    console.info("[generate] cropping triptych image");
+    const slideBase64Images = cropTriptychBase64(triptychBase64);
 
-    const storySentences = completionSentences.choices[0].message.parsed;
+    console.info("[generate] uploading images");
+    const [triptychImage, ...images] = await Promise.all([
+      uploadToCloudinary(triptychBase64),
+      ...slideBase64Images.map((image) => uploadToCloudinary(image)),
+    ]);
 
-    if (storySentences === null) {
-      return new Response(JSON.stringify({ message: "Story is Null" }), {
-        status: 500,
-      });
-    }
-    // 4. crea img Promt
-    const step2Completion = await openai.chat.completions.parse({
-      model: "gpt-4o",
-      temperature: 0.5,
-      messages: [
-        {
-          role: "system",
-          content: `You are a Loci method builder. 
-- Create a title for the story.
-- Create three GPT Image 2 prompts.
-Steps:
-1. For each element in the input array, craft a prompt to generate an image with "GPT Image 2".
-2. The 3 words wrapped in bold tags in each input element must appear in the final image. 
-3. The title is related to the most memorable thing in the first part of the story.
-4. The title is original and doesn't include the word "Adventure" `,
-        },
-        {
-          role: "user",
-          content: JSON.stringify([
-            storySentences.sentences.slice(0, 3).join(" "),
-            storySentences.sentences.slice(3, 6).join(" "),
-            storySentences.sentences.slice(6, 9).join(" "),
-          ]),
-        },
-      ],
-      response_format: zodResponseFormat(StoryImages, "story"),
-    });
-
-    const step2response = step2Completion.choices[0].message.parsed;
-
-    if (step2response === null) {
-      return new Response(JSON.stringify({ message: "Story Images is Null" }), {
-        status: 500,
-      });
-    }
-
-    // 5. creo las imagenes con dalle 3
-
-    const imgPrompts = step2response.imagePrompts;
-
-    // DALLE
-    const promises = imgPrompts.map((imgPrompt) =>
-      openai.images.generate({
-        model: "gpt-image-2",
-        prompt: imgPrompt,
-        quality: "low",
-      })
-    );
-
-    // // DALLE
-    // const promises = imgPrompts.map((imgPrompt) =>
-    //   openai.images.generate({
-    //     response_format: "url", // Can be `b64_json`
-    //     model: "dall-e-3",
-    //     size: "1024x1024",
-    //     // model: "dall-e-2",
-    //     // size: "256x256",
-    //     prompt: imgPrompt + " " + "Don't write text in the images.",
-    //     n: 1,
-    //     quality: "standard",
-    //   })
-    // );
-    const responses = await Promise.all(promises);
-
-    const base64Images = responses
-      .map((res) => res.data?.[0]?.b64_json)
-      .filter(Boolean); // Filtrar valores undefined
-
-    // 6. guardo img en cloudinary
-
-    const persistentImages = [];
-    for (const image of base64Images) {
-      if (image) {
-        persistentImages.push(await uploadToCloudinary(image));
-      }
-    }
-
-    // 7. construyo Palace
-    const { sentences } = storySentences;
-    const { imagePrompts, title } = step2response;
-    const palace = {
-      title,
+    console.info("[generate] saving palace");
+    const savedPalace = await createTriptychPalace({
       words,
-      imagePrompts,
-      sentences,
-      images: persistentImages,
-    };
-    console.log(sentences);
-    console.log(storySentences);
-    // 8. guardo palace en mongo
-    const palaceResponse = await fetch(
-      process.env.NEXT_PUBLIC_URL + "/api/v1/palace",
-      {
-        method: "POST",
-        body: JSON.stringify(palace),
-      }
-    );
-    const savedPalace = await palaceResponse.json();
+      plan,
+      triptychImage,
+      images,
+      imagePrompt,
+    });
 
     return Response.json(savedPalace);
   } catch (error) {
-    console.error(error);
+    console.error("[generate] failed", error);
     const errorMessage = (error as Error).message;
-    console.error(errorMessage);
+
     return new Response(JSON.stringify({ message: errorMessage }), {
       status: 500,
     });

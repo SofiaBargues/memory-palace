@@ -8,27 +8,120 @@ import { ChooseWordsStep } from "./steps/chooseWordsStep";
 import { StoryStep } from "./steps/storyStep";
 import { TutorialStep } from "./steps/tutorialStep";
 import { flushSync } from "react-dom";
+import { Check, Circle, LoaderCircle } from "lucide-react";
 
 export type PalaceStep = "chooseWords" | "story" | "memoryTest" | "tutorial";
 
-const LOADING_START_PROGRESS = 8;
-const LOADING_MAX_PROGRESS = 98;
 const LOADING_COMPLETE_DELAY_MS = 250;
-const LOADING_ESTIMATED_DURATION_MS = 45000;
 
-function getTimedLoadingProgress(startedAt: number) {
-  const elapsedMilliseconds = Date.now() - startedAt;
-  const progressRange = LOADING_MAX_PROGRESS - LOADING_START_PROGRESS;
-  const elapsedRatio = Math.min(
-    elapsedMilliseconds / LOADING_ESTIMATED_DURATION_MS,
-    1
-  );
-
-  return Math.round(LOADING_START_PROGRESS + progressRange * elapsedRatio);
-}
+const GENERATION_STEPS = [
+  { label: "Reading words", startsAt: 0 },
+  { label: "Building palace route", startsAt: 4 },
+  { label: "Writing scene prompts", startsAt: 10 },
+  { label: "Generating triptych image", startsAt: 16 },
+  { label: "Cropping and uploading images", startsAt: Number.POSITIVE_INFINITY },
+  { label: "Saving palace", startsAt: Number.POSITIVE_INFINITY },
+];
 
 function wait(milliseconds: number) {
   return new Promise((resolve) => window.setTimeout(resolve, milliseconds));
+}
+
+function LoadingStepItem({
+  label,
+  status,
+}: {
+  label: string;
+  status: "complete" | "active" | "pending";
+}) {
+  return (
+    <li className="grid grid-cols-[1.25rem_1fr] items-center gap-4 text-sm">
+      <span className="flex size-5 items-center justify-center">
+        {status === "complete" && <Check className="size-4 stroke-[1.8]" />}
+        {status === "active" && (
+          <LoaderCircle className="size-4 animate-spin stroke-[2]" />
+        )}
+        {status === "pending" && (
+          <Circle className="size-4 stroke-[1.6] text-muted-foreground" />
+        )}
+      </span>
+      <span
+        className={
+          status === "active"
+            ? "font-semibold text-foreground"
+            : status === "pending"
+              ? "text-muted-foreground"
+              : "text-foreground"
+        }
+      >
+        {label}
+      </span>
+    </li>
+  );
+}
+
+function PalaceLoadingScreen({
+  isNewPalace,
+  elapsedSeconds,
+}: {
+  isNewPalace: boolean;
+  elapsedSeconds: number;
+}) {
+  if (!isNewPalace) {
+    return (
+      <div className="w-full max-w-xl text-center">
+        <p className="text-2xl font-medium">Loading Palace</p>
+        <div className="mt-5">
+          <Progress value={100} animated className="h-3 bg-muted" />
+        </div>
+        <p className="mt-5 text-sm text-muted-foreground">
+          Fetching your saved palace.
+        </p>
+      </div>
+    );
+  }
+
+  const activeStepIndex = GENERATION_STEPS.reduce(
+    (activeIndex, loadingStep, index) =>
+      elapsedSeconds >= loadingStep.startsAt ? index : activeIndex,
+    0
+  );
+
+  return (
+    <div className="flex w-full max-w-[34rem] flex-col items-center text-center">
+      <p className="text-2xl font-medium">Creating Palace</p>
+      <p className="mt-3 text-sm text-muted-foreground">
+        Generating your story and images. This can take a few minutes.
+      </p>
+
+      <div className="mt-10 w-full">
+        <Progress value={100} animated className="h-3 bg-muted" />
+      </div>
+
+      <ol className="mt-10 flex w-full max-w-sm flex-col gap-7 text-left">
+        {GENERATION_STEPS.map((loadingStep, index) => {
+          const status =
+            index < activeStepIndex
+              ? "complete"
+              : index === activeStepIndex
+                ? "active"
+                : "pending";
+
+          return (
+            <LoadingStepItem
+              key={loadingStep.label}
+              label={loadingStep.label}
+              status={status}
+            />
+          );
+        })}
+      </ol>
+
+      <p className="mt-11 text-sm text-muted-foreground">
+        Still working - image generation is usually the longest step.
+      </p>
+    </div>
+  );
 }
 
 export function MemoryGame({
@@ -42,7 +135,7 @@ export function MemoryGame({
   // const [_, setPalaceId] = useState(initialPalaceId);
   const [step, setStep] = useState<PalaceStep>(initialStep);
   const [loading, setLoading] = useState(false);
-  const [loadingProgress, setLoadingProgress] = useState(0);
+  const [loadingElapsedSeconds, setLoadingElapsedSeconds] = useState(0);
   const loadingStartedAtRef = useRef<number | null>(null);
 
   const [referenceWords, setReferenceWords] = useState<string[]>(
@@ -54,20 +147,22 @@ export function MemoryGame({
 
   useEffect(() => {
     if (!loading) {
-      setLoadingProgress(0);
+      setLoadingElapsedSeconds(0);
       return;
     }
 
     loadingStartedAtRef.current = Date.now();
-    setLoadingProgress(LOADING_START_PROGRESS);
+    setLoadingElapsedSeconds(0);
 
     const interval = window.setInterval(() => {
       if (!loadingStartedAtRef.current) {
         return;
       }
 
-      setLoadingProgress(getTimedLoadingProgress(loadingStartedAtRef.current));
-    }, 100);
+      setLoadingElapsedSeconds(
+        Math.floor((Date.now() - loadingStartedAtRef.current) / 1000)
+      );
+    }, 1000);
 
     return () => {
       window.clearInterval(interval);
@@ -75,7 +170,6 @@ export function MemoryGame({
   }, [loading]);
 
   const completeLoading = useCallback(async () => {
-    setLoadingProgress(100);
     await wait(LOADING_COMPLETE_DELAY_MS);
     loadingStartedAtRef.current = null;
     setLoading(false);
@@ -122,7 +216,11 @@ export function MemoryGame({
       });
 
       if (!response.ok) {
-        throw new Error("Network response was not ok " + response.statusText);
+        const errorData = await response.json().catch(() => null);
+        throw new Error(
+          errorData?.message ||
+            "Network response was not ok " + response.statusText
+        );
       }
       const generatedPalace = await response.json(); // Convierte la respuesta a JSON
       return generatedPalace as Palace;
@@ -162,16 +260,11 @@ export function MemoryGame({
     return (
       <div className="w-full container m-auto md:p-10 flex flex-col gap-4">
         <Card className="w-full md:max-w-5xl rounded-none md:rounded-xl m-auto ">
-          <CardContent className="flex justify-center items-center h-[900px] flex-col gap-5 px-8">
-            <div className="w-full max-w-xl space-y-4 text-center">
-              <p className="font-medium text-2xl">
-                {isNewPalace ? "Creating Palace" : "Loading Palace"}
-              </p>
-              <Progress value={loadingProgress} animated className="h-4" />
-              <p className="text-sm text-muted-foreground">
-                Generating the story and images. This can take a few seconds.
-              </p>
-            </div>
+          <CardContent className="flex min-h-[720px] flex-col items-center justify-center px-8 py-16 md:min-h-[810px]">
+            <PalaceLoadingScreen
+              isNewPalace={isNewPalace}
+              elapsedSeconds={loadingElapsedSeconds}
+            />
           </CardContent>
         </Card>
       </div>
