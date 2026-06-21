@@ -1,6 +1,25 @@
 // Generated with ChatGPT. Cloudinary SDK doesn't work on edge runtime
 
-export async function uploadToCloudinary(imageData: string): Promise<string> {
+type UploadTimingContext = {
+  runId?: string;
+  imageName?: string;
+};
+
+function formatDuration(milliseconds: number) {
+  return `${(milliseconds / 1000).toFixed(2)}s`;
+}
+
+function base64SizeInBytes(imageData: string) {
+  return Math.round((imageData.length * 3) / 4);
+}
+
+export async function uploadToCloudinary(
+  imageData: string,
+  timingContext: UploadTimingContext = {}
+): Promise<string> {
+  const uploadStartedAt = performance.now();
+  const runId = timingContext.runId || "unknown";
+  const imageName = timingContext.imageName || "image";
   const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
   const apiKey = process.env.CLOUDINARY_API_KEY;
   const apiSecret = process.env.CLOUDINARY_API_SECRET;
@@ -13,6 +32,10 @@ export async function uploadToCloudinary(imageData: string): Promise<string> {
   if (!imageData) {
     throw new Error("imageData parameter is required and cannot be empty");
   }
+
+  console.info(`[generate:${runId}] upload ${imageName} started`, {
+    approximateBytes: base64SizeInBytes(imageData),
+  });
 
   // URL de la API de Cloudinary para subir imágenes
   const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
@@ -39,15 +62,26 @@ export async function uploadToCloudinary(imageData: string): Promise<string> {
 
   if (!response.ok) {
     const body = await response.json();
+    const uploadFailedAt = performance.now();
 
     // Usar console.dir para inspeccionar el objeto completo
     console.dir(body, { depth: null });
+    console.error(`[generate:${runId}] upload ${imageName} failed`, {
+      duration: formatDuration(uploadFailedAt - uploadStartedAt),
+      status: response.status,
+      statusText: response.statusText,
+    });
 
     throw new Error(`Error al subir la imagen: ${JSON.stringify(body)}`);
   }
 
   // Extraer y devolver la URL de la imagen subida
   const data = await response.json();
+  const uploadEndedAt = performance.now();
+  console.info(`[generate:${runId}] upload ${imageName} finished`, {
+    duration: formatDuration(uploadEndedAt - uploadStartedAt),
+    secureUrl: data.secure_url,
+  });
   return data.secure_url;
 }
 function sha1(message: string): string {

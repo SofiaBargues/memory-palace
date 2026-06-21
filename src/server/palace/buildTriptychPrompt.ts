@@ -1,17 +1,13 @@
 import { OpenAI } from "openai";
 import { zodResponseFormat } from "openai/helpers/zod.mjs";
-import {
-  PalacePlan,
-  TriptychPrompt,
-  TriptychPromptSchema,
-} from "./types";
+import { PalacePlan, TriptychPrompt, TriptychPromptSchema } from "./types";
 
 export async function buildTriptychPrompt(
   openai: OpenAI,
-  plan: PalacePlan
+  plan: PalacePlan,
 ): Promise<TriptychPrompt> {
   const completion = await openai.chat.completions.parse({
-    model: "gpt-5",
+    model: "gpt-5.4-mini",
     messages: [
       {
         role: "system",
@@ -52,10 +48,7 @@ Hard requirements:
         content: JSON.stringify(plan),
       },
     ],
-    response_format: zodResponseFormat(
-      TriptychPromptSchema,
-      "triptych_prompt"
-    ),
+    response_format: zodResponseFormat(TriptychPromptSchema, "triptych_prompt"),
   });
 
   const triptychPrompt = completion.choices[0].message.parsed;

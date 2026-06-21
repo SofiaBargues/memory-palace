@@ -6,12 +6,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
-  Drawer,
-  DrawerContent,
-  DrawerDescription,
-  DrawerTitle,
-} from "@/components/ui/drawer";
-import {
   ArrowLeft,
   BookOpen,
   ChevronLeft,
@@ -21,6 +15,8 @@ import {
 
 const INTRO_STORAGE_PREFIX = "memory-palace-intro-seen";
 const INTRO_TEXT = "Visualize the scene and connect each keyword to a place.";
+const SCENE_IMAGE_SIZES =
+  "(min-width: 1280px) 54vw, (min-width: 1024px) 58vw, 100vw";
 
 export function StoryStep({
   palace,
@@ -111,11 +107,11 @@ export function StoryStep({
             alt="Memory palace scene"
             fill
             priority
-            sizes="100vw"
+            sizes={SCENE_IMAGE_SIZES}
             className={`object-contain transition duration-300 ${
               showIntroPopup ? "blur-sm scale-[1.02]" : ""
             }`}
-            onLoadingComplete={updateImageRatio}
+            onLoad={(event) => updateImageRatio(event.currentTarget)}
           />
           <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/60 to-transparent" />
           <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/35 to-transparent" />
@@ -160,33 +156,26 @@ export function StoryStep({
           </div>
         </section>
 
-        <Drawer
-          open
-          modal={false}
-          dismissible={false}
-          shouldScaleBackground={false}
+        <div
+          className="fixed inset-x-0 bottom-0 z-[60] flex h-auto max-h-[calc(100svh-(min(calc(100vw/var(--scene-image-ratio)),62svh)*0.8))] flex-col overflow-hidden rounded-t-[1.9rem] border-0 bg-white pt-0 shadow-[0_-18px_38px_rgba(13,32,23,0.16)] outline-none lg:hidden"
+          style={
+            {
+              "--scene-image-ratio": desktopImageRatio,
+            } as React.CSSProperties
+          }
         >
-          <DrawerContent
-            overlayClassName="hidden"
-            className="z-[60] max-h-[calc(100svh-(min(calc(100vw/var(--scene-image-ratio)),62svh)*0.8))] overflow-hidden rounded-t-[1.9rem] border-0 bg-white pt-0 shadow-[0_-18px_38px_rgba(13,32,23,0.16)] outline-none lg:hidden"
-            style={
-              {
-                "--scene-image-ratio": desktopImageRatio,
-              } as React.CSSProperties
-            }
-            onOpenAutoFocus={(event) => event.preventDefault()}
-          >
-            <DrawerTitle className="sr-only">Memory palace story</DrawerTitle>
-            <DrawerDescription className="sr-only">
-              Read the scene and review the keywords for this step.
-            </DrawerDescription>
+          <div className="mx-auto mt-4 h-2 w-[100px] rounded-full bg-muted" />
+          <h2 className="sr-only">Memory palace story</h2>
+          <p className="sr-only">
+            Read the scene and review the keywords for this step.
+          </p>
 
-            <div
-              ref={mobileScrollRef}
-              className={`flex min-h-0 flex-1 flex-col overflow-y-auto px-6 pb-24 pt-5 transition duration-300 ${
-                showIntroPopup ? "blur-sm" : ""
-              }`}
-            >
+          <div
+            ref={mobileScrollRef}
+            className={`flex min-h-0 flex-1 flex-col overflow-y-auto px-6 pb-24 pt-5 transition duration-300 ${
+              showIntroPopup ? "blur-sm" : ""
+            }`}
+          >
               <div className="flex flex-1 items-center gap-4 py-6">
                 <BookOpen className="mt-0.5 h-8 w-8 shrink-0 self-start text-black" />
                 <div className="space-y-5 text-[1.02rem] leading-[1.5] text-[#10212c] [&_b]:font-extrabold [&_strong]:font-extrabold">
@@ -257,8 +246,7 @@ export function StoryStep({
                 )}
               </Button>
             </nav>
-          </DrawerContent>
-        </Drawer>
+        </div>
       </div>
 
       <div className="hidden lg:block">
@@ -283,11 +271,11 @@ export function StoryStep({
                   alt="Memory palace scene"
                   fill
                   priority
-                  sizes="100vw"
+                  sizes={SCENE_IMAGE_SIZES}
                   className={`object-contain object-center transition duration-300 ${
                     showIntroPopup ? "blur-sm scale-[1.02]" : ""
                   }`}
-                  onLoadingComplete={updateImageRatio}
+                  onLoad={(event) => updateImageRatio(event.currentTarget)}
                 />
                 <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.18)_0%,rgba(0,0,0,0.05)_50%,rgba(0,0,0,0.26)_100%)]" />
                 <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-black/62 to-transparent" />

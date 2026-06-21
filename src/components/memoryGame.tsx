@@ -12,8 +12,6 @@ import { Check, Circle, LoaderCircle } from "lucide-react";
 
 export type PalaceStep = "chooseWords" | "story" | "memoryTest" | "tutorial";
 
-const LOADING_COMPLETE_DELAY_MS = 250;
-
 const GENERATION_STEPS = [
   { label: "Reading words", startsAt: 0 },
   { label: "Building palace route", startsAt: 4 },
@@ -22,10 +20,6 @@ const GENERATION_STEPS = [
   { label: "Cropping and uploading images", startsAt: Number.POSITIVE_INFINITY },
   { label: "Saving palace", startsAt: Number.POSITIVE_INFINITY },
 ];
-
-function wait(milliseconds: number) {
-  return new Promise((resolve) => window.setTimeout(resolve, milliseconds));
-}
 
 function LoadingStepItem({
   label,
@@ -170,7 +164,6 @@ export function MemoryGame({
   }, [loading]);
 
   const completeLoading = useCallback(async () => {
-    await wait(LOADING_COMPLETE_DELAY_MS);
     loadingStartedAtRef.current = null;
     setLoading(false);
   }, []);
