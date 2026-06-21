@@ -8,7 +8,7 @@ import { generateTriptychImage } from "@/server/palace/generateTriptychImage";
 import { validateWords } from "@/server/palace/validateWords";
 
 export const runtime = "nodejs";
-export const maxDuration = 120;
+export const maxDuration = 300;
 
 function formatDuration(milliseconds: number) {
   return `${(milliseconds / 1000).toFixed(2)}s`;
