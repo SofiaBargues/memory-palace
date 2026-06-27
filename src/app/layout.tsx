@@ -17,7 +17,29 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   title: "Memory Palace",
-  description: "Use the Loci method to memorize anything.",
+  description:
+    "Unlock your mind's potential: Use AI-guided Memory Palaces to turn information into lasting stories.",
+  openGraph: {
+    title: "Memory Palace",
+    description:
+      "Unlock your mind's potential: Use AI-guided Memory Palaces to turn information into lasting stories.",
+    type: "website",
+    images: [
+      {
+        url: "/opengraph-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Memory Palace app preview",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Memory Palace",
+    description:
+      "Unlock your mind's potential: Use AI-guided Memory Palaces to turn information into lasting stories.",
+    images: ["/opengraph-image.png"],
+  },
 };
 
 export default function RootLayout({
