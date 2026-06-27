@@ -17,7 +17,10 @@ const GENERATION_STEPS = [
   { label: "Building palace route", startsAt: 4 },
   { label: "Writing scene prompts", startsAt: 10 },
   { label: "Generating triptych image", startsAt: 16 },
-  { label: "Cropping and uploading images", startsAt: Number.POSITIVE_INFINITY },
+  {
+    label: "Cropping and uploading images",
+    startsAt: Number.POSITIVE_INFINITY,
+  },
   { label: "Saving palace", startsAt: Number.POSITIVE_INFINITY },
 ];
 
@@ -78,14 +81,14 @@ function PalaceLoadingScreen({
   const activeStepIndex = GENERATION_STEPS.reduce(
     (activeIndex, loadingStep, index) =>
       elapsedSeconds >= loadingStep.startsAt ? index : activeIndex,
-    0
+    0,
   );
 
   return (
     <div className="flex w-full max-w-[34rem] flex-col items-center text-center">
       <p className="text-2xl font-medium">Creating Palace</p>
       <p className="mt-3 text-sm text-muted-foreground">
-        Generating your story and images. This can take a few minutes.
+        Generating your story and images. This take a few minutes.
       </p>
 
       <div className="mt-10 w-full">
@@ -110,9 +113,9 @@ function PalaceLoadingScreen({
           );
         })}
       </ol>
-
-      <p className="mt-11 text-sm text-muted-foreground">
-        Still working - image generation is usually the longest step.
+      <p className="mt-11 text-sm text-accent-foreground">
+        We are working - Image generation takes at least 2 minutes. Note this is
+        the longest step in this process.
       </p>
     </div>
   );
@@ -133,7 +136,7 @@ export function MemoryGame({
   const loadingStartedAtRef = useRef<number | null>(null);
 
   const [referenceWords, setReferenceWords] = useState<string[]>(
-    new Array(9).fill(undefined)
+    new Array(9).fill(undefined),
   );
   const [slideSelected, setSlideSelected] = useState(0);
 
@@ -154,7 +157,7 @@ export function MemoryGame({
       }
 
       setLoadingElapsedSeconds(
-        Math.floor((Date.now() - loadingStartedAtRef.current) / 1000)
+        Math.floor((Date.now() - loadingStartedAtRef.current) / 1000),
       );
     }, 1000);
 
@@ -182,7 +185,7 @@ export function MemoryGame({
         if (response.ok) {
           const result = await response.json();
           const fetchedPalace = result.data.find(
-            (value: Palace & { _id: string }) => value._id === initialPalaceId
+            (value: Palace & { _id: string }) => value._id === initialPalaceId,
           );
           setPalace(fetchedPalace);
           setReferenceWords(fetchedPalace?.words);
@@ -212,7 +215,7 @@ export function MemoryGame({
         const errorData = await response.json().catch(() => null);
         throw new Error(
           errorData?.message ||
-            "Network response was not ok " + response.statusText
+            "Network response was not ok " + response.statusText,
         );
       }
       const generatedPalace = await response.json(); // Convierte la respuesta a JSON
