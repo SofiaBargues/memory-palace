@@ -114,7 +114,7 @@ function PalaceLoadingScreen({
         })}
       </ol>
       <p className="mt-11 text-sm text-accent-foreground">
-        We are working - Image generation takes at least 2 minutes. Note this is
+        Image generation takes at least 3 minutes, this is
         the longest step in this process.
       </p>
     </div>

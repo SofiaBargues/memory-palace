@@ -79,7 +79,9 @@ export async function POST(request: Request) {
       validateWords(body.words)
     );
 
-    console.info(`[generate:${runId}] starting pov triptych palace`, { words });
+    console.info(`[generate:${runId}] starting third-person triptych palace`, {
+      words,
+    });
 
     const openai = new OpenAI({
       apiKey: process.env.OPENAI_API_KEY,
@@ -96,7 +98,7 @@ export async function POST(request: Request) {
       buildTriptychPrompt(openai, plan)
     );
     const triptychBase64 = await timePhase("generate triptych image", () =>
-      generateTriptychImage(openai, imagePrompt)
+      generateTriptychImage(openai, imagePrompt, runId)
     );
     const slideBase64Images = timeSyncPhase("crop triptych image", () =>
       cropTriptychBase64(triptychBase64)

@@ -36,6 +36,12 @@ export interface MongoPalace extends Document {
     movement: string;
     bodyPresence: string;
   };
+  protagonist?: {
+    name: string;
+    appearance: string;
+    clothing: string;
+    distinguishingFeature: string;
+  };
   route?: {
     sceneIndex: number;
     place: string;
@@ -44,6 +50,7 @@ export interface MongoPalace extends Document {
     memoryCues: {
       word: string;
       interpretedAs?: string;
+      mnemonicTechnique?: string;
       objectDescription: string;
       weirdAction: string;
       scaleChange?: string;
@@ -66,6 +73,7 @@ const memoryCueSchema = new mongoose.Schema(
   {
     word: String,
     interpretedAs: String,
+    mnemonicTechnique: String,
     objectDescription: String,
     weirdAction: String,
     scaleChange: String,
@@ -138,6 +146,12 @@ const palaceSchema = new mongoose.Schema<MongoPalace>(
       camera: String,
       movement: String,
       bodyPresence: String,
+    },
+    protagonist: {
+      name: String,
+      appearance: String,
+      clothing: String,
+      distinguishingFeature: String,
     },
     route: [sceneSchema],
     recurringSecondaryCharacters: [

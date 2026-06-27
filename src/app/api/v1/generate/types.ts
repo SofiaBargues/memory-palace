@@ -57,6 +57,14 @@ export const Palace = z.object({
       bodyPresence: z.string(),
     })
     .optional(),
+  protagonist: z
+    .object({
+      name: z.string(),
+      appearance: z.string(),
+      clothing: z.string(),
+      distinguishingFeature: z.string(),
+    })
+    .optional(),
   route: z
     .array(
       z.object({
@@ -68,6 +76,7 @@ export const Palace = z.object({
           z.object({
             word: z.string(),
             interpretedAs: z.string().optional(),
+            mnemonicTechnique: z.string().optional(),
             objectDescription: z.string(),
             weirdAction: z.string(),
             scaleChange: z.string().optional(),

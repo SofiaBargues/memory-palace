@@ -40,8 +40,8 @@ export async function createTriptychPalace({
   const sentences = route.flatMap((scene) => scene.storySentences);
 
   return PalaceSchema.create({
-    schemaVersion: 2,
-    generationMode: "pov_triptych",
+    schemaVersion: 3,
+    generationMode: "third_person_triptych",
     title: plan.title,
     words,
     sentences,
@@ -53,6 +53,7 @@ export async function createTriptychPalace({
     scenario: plan.scenario,
     visualStyle: plan.visualStyle,
     pointOfView: plan.pointOfView,
+    protagonist: plan.protagonist,
     route,
     recurringSecondaryCharacters: plan.recurringSecondaryCharacters,
   });
