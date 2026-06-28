@@ -220,8 +220,8 @@ export function MemoryGame({
       }
       const generatedPalace = await response.json(); // Convierte la respuesta a JSON
       return generatedPalace as Palace;
-    } catch (error) {
-      console.error("Fetch error:", error);
+    } catch {
+      return undefined;
     }
   }
 
@@ -245,7 +245,6 @@ export function MemoryGame({
     const generatedPalace = await generatePalace();
     if (!generatedPalace) {
       setLoading(false);
-      console.error("Palace is undefined");
       return;
     }
     await completeLoading();

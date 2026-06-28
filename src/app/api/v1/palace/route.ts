@@ -50,9 +50,7 @@ export async function GET(request: Request) {
       },
     });
   } catch (error) {
-    console.error(error);
     const errorMessage = (error as Error).message;
-    console.error(errorMessage);
     return new Response(JSON.stringify({ message: errorMessage }), {
       status: 500,
     });
@@ -68,9 +66,7 @@ export async function POST(request: Request) {
 
     return Response.json(newPalace);
   } catch (error) {
-    console.error(error);
     const errorMessage = (error as Error).message;
-    console.error(errorMessage);
     return new Response(JSON.stringify({ message: errorMessage }), {
       status: 500,
     });

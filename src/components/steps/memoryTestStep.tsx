@@ -96,7 +96,6 @@ export default function MemoryTestStep({
     setStep("testFill");
   };
   const handleVerify = () => {
-    console.log("Verifying words:", userAnswers);
     setStep("testResult");
   };
   const handleBackToIntro = () => {
