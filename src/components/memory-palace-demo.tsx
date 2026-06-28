@@ -92,12 +92,14 @@ interface MemoryPalaceDemoProps {
   className?: string;
   showChooseWordsStep?: boolean;
   footer?: ReactNode;
+  onSkipDemo?: () => void;
 }
 
 export function MemoryPalaceDemo({
   className,
   showChooseWordsStep = true,
   footer,
+  onSkipDemo,
 }: MemoryPalaceDemoProps) {
   const initialStep = showChooseWordsStep ? 1 : 2;
   const visibleSteps = showChooseWordsStep ? [1, 2, 3] : [2, 3];
@@ -708,6 +710,16 @@ export function MemoryPalaceDemo({
           )}
         </AnimatePresence>
       </div>
+      {onSkipDemo && currentStep < 3 && (
+        <Button
+          size="lg"
+          variant="secondary"
+          className="relative z-20 mt-5 h-11 w-full"
+          onClick={onSkipDemo}
+        >
+          Skip demo
+        </Button>
+      )}
       {footer && isRecallStep && (
         <div className="relative z-20 mt-5">{footer}</div>
       )}

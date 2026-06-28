@@ -16,8 +16,8 @@ export function TutorialStep({
       <MemoryPalaceDemo
         className="mx-auto"
         showChooseWordsStep={isNew}
+        onSkipDemo={onContinueClick}
         footer={
-           
           <Button
             size="lg"
             className="h-11 w-full gap-2 text-white shadow-md"
