@@ -2,7 +2,6 @@
 
 import { FormEvent, useState } from "react";
 import {
-  Check,
   Flower2,
   LoaderCircle,
   MessageSquareText,
