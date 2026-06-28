@@ -1,5 +1,6 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
+import posthog from "posthog-js";
 import { Palace } from "../app/api/v1/generate/types";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -206,8 +207,13 @@ export function MemoryGame({
 
   async function generatePalace(): Promise<Palace | undefined> {
     try {
+      const distinctId = posthog.get_distinct_id();
       const response = await fetch("/api/v1/generate", {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(distinctId ? { "x-posthog-distinct-id": distinctId } : {}),
+        },
         body: JSON.stringify({ words: referenceWords }),
       });
 

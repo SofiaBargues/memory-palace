@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import posthog from "posthog-js";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -59,6 +60,7 @@ export function ChooseWordsStep({
       setWords(Array(9).fill(""));
     }
     setStep("words");
+    posthog.capture("word_category_selected", { category });
   };
 
   // Refresh a single word
@@ -221,6 +223,10 @@ export function ChooseWordsStep({
                       setFormErrorMessage("All words must be different");
                     } else {
                       setFormErrorMessage(null);
+                      posthog.capture("palace_generate_clicked", {
+                        word_count: words.length,
+                        category: selectedCategory,
+                      });
                       await onGeneratePalaceClick();
                     }
                   }}

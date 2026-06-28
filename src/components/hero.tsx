@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { CastleLogo } from "@/components/castle-logo";
 import { ArrowRight, MapPin, Sparkles, X } from "lucide-react";
+import posthog from "posthog-js";
 
 const Hero = ({}) => {
   return (
@@ -18,7 +19,11 @@ const Hero = ({}) => {
       <div className="my-8 hidden border-t border-dashed border-black/25 lg:block" />
 
       <div className="space-y-3">
-        <a href="/palace" className="block">
+        <a
+          href="/palace"
+          className="block"
+          onClick={() => posthog.capture("create_palace_cta_clicked")}
+        >
           <Button
             size="lg"
             className="h-[3.25rem] w-full justify-between rounded-[5px] bg-black px-7 text-base font-semibold text-white shadow-[0_14px_34px_rgba(0,0,0,0.2)] transition-transform hover:-translate-y-0.5 hover:bg-[#262626] sm:h-14"
@@ -27,7 +32,11 @@ const Hero = ({}) => {
             <Sparkles className="size-5" />
           </Button>
         </a>
-        <a href="/palaces" className="block">
+        <a
+          href="/palaces"
+          className="block"
+          onClick={() => posthog.capture("choose_palace_cta_clicked")}
+        >
           <Button
             size="lg"
             variant="outline"

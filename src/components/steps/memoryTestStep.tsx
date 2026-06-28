@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import posthog from "posthog-js";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -94,9 +95,20 @@ export default function MemoryTestStep({
 
   const handleStartTest = () => {
     setStep("testFill");
+    posthog.capture("memory_test_started", {
+      word_count: wordsToRemember.length,
+    });
   };
   const handleVerify = () => {
     setStep("testResult");
+    posthog.capture("memory_test_completed", {
+      word_count: wordsToRemember.length,
+      full_matches: fullMatches,
+      unordered_matches: unorderedMatches,
+      score,
+      score_percentage: Math.round((score / wordsToRemember.length) * 100),
+      time_elapsed_seconds: timeElapsed,
+    });
   };
   const handleBackToIntro = () => {
     setStep("testIntro");

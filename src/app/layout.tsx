@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { NavBar } from "@/components/navBar";
 import { Footer } from "@/components/footer";
+import { PHProvider } from "./providers";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -53,9 +54,11 @@ export default function RootLayout({
         suppressHydrationWarning
         className={`flex min-h-screen flex-col ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <NavBar />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <PHProvider>
+          <NavBar />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </PHProvider>
       </body>
     </html>
   );

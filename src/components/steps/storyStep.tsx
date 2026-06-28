@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import posthog from "posthog-js";
 import { Palace } from "../../app/api/v1/generate/types";
 import Image from "next/image";
 import Link from "next/link";
@@ -72,8 +73,17 @@ export function StoryStep({
 
   const goNext = () => {
     if (isLastSlide) {
+      posthog.capture("palace_story_completed", {
+        palace_title: palace.title,
+        total_slides: palace.images.length,
+      });
       onFinishClick();
     } else {
+      posthog.capture("palace_story_slide_advanced", {
+        palace_title: palace.title,
+        slide_index: slideSelected + 1,
+        total_slides: palace.images.length,
+      });
       setSlideSelected(slideSelected + 1);
     }
   };

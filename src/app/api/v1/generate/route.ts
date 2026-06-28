@@ -6,11 +6,15 @@ import { cropTriptychBase64 } from "@/server/palace/cropTriptych";
 import { generatePalacePlan } from "@/server/palace/generatePalacePlan";
 import { generateTriptychImage } from "@/server/palace/generateTriptychImage";
 import { validateWords } from "@/server/palace/validateWords";
+import { getPostHogClient } from "@/lib/posthog-server";
 
 export const runtime = "nodejs";
 export const maxDuration = 300;
 
 export async function POST(request: Request) {
+  const distinctId = request.headers.get("x-posthog-distinct-id") ?? "anonymous";
+  const posthog = getPostHogClient();
+
   try {
     const body = await request.json();
     const words = validateWords(body.words);
@@ -37,9 +41,26 @@ export async function POST(request: Request) {
       imagePrompt,
     });
 
+    posthog.capture({
+      distinctId,
+      event: "palace_generated",
+      properties: {
+        word_count: words.length,
+        palace_title: plan.title,
+      },
+    });
+
     return Response.json(savedPalace);
   } catch (error) {
     const errorMessage = (error as Error).message;
+
+    posthog.capture({
+      distinctId,
+      event: "palace_generation_failed",
+      properties: {
+        error_message: errorMessage,
+      },
+    });
 
     return new Response(JSON.stringify({ message: errorMessage }), {
       status: 500,
