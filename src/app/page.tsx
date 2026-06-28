@@ -8,7 +8,7 @@ import { Compass, Footprints, ListChecks } from "lucide-react";
 const steps = [
   {
     number: "01",
-    title: "Words",
+    title: "Words to remember",
     body: "Start with the list you need to remember.",
     icon: ListChecks,
   },
