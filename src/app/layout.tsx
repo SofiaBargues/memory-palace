@@ -4,6 +4,7 @@ import "./globals.css";
 import { NavBar } from "@/components/navBar";
 import { Footer } from "@/components/footer";
 import { PHProvider } from "./providers";
+import { FeedbackWidget } from "@/components/feedback-widget";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -58,6 +59,7 @@ export default function RootLayout({
           <NavBar />
           <main className="flex-1">{children}</main>
           <Footer />
+          <FeedbackWidget />
         </PHProvider>
       </body>
     </html>
